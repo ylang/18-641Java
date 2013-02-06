@@ -1,5 +1,7 @@
-bin/*.*
-.classpath
-.project
+CarConfig/bin/*.*
+CarConfig/.classpath
+CarConfig/.project
+CarConfig/.settings/
+
 
 

@@ -13,11 +13,15 @@ import java.io.ObjectOutputStream;
 public class Controller {
 
 	public static void main(String[] args) {
-		OptionSet options = new OptionSet("Focus Wagon ZTW");
 
-		Automotive focus = new Automotive(18445, "Focus Wagon ZTW", options);
 		File file = new File("car.dat");
-
+		
+		
+		System.out.println("parse and create =====================");
+		Automotive focus = parse();
+		focus.printInfo();
+		
+		System.out.println("serialize and output to file ===============");
 		if (file.exists()) {
 			file.delete();
 		}
@@ -28,10 +32,11 @@ public class Controller {
 			out.writeObject(focus);
 			out.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 
+		System.out.println("deserialize and print ======================");
 		try {
 			ObjectInputStream in = new ObjectInputStream(new FileInputStream(
 					file));
@@ -39,10 +44,8 @@ public class Controller {
 			inFocus.printInfo();
 			in.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -79,7 +82,8 @@ public class Controller {
 			in = new BufferedReader(new FileReader("input.txt"));
 			String line = null;
 			int n = 0;
-			while ((line = in.readLine().trim()) != null) {
+			while ((line = in.readLine()) != null) {
+				line = line.trim();
 				if (n == 0) {
 					name = line;
 				} else if (n == 1) {
@@ -88,7 +92,7 @@ public class Controller {
 					optionNum = Integer.parseInt(line);
 					options = new OptionSet(name, optionNum);
 				} else {
-					options.setOption(n - 2, line.split(":")[0],
+					options.setOption(n - 3, line.split(":")[0],
 							Integer.parseInt(line.split(":")[1]));
 				}
 				n++;

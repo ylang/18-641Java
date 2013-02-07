@@ -1,9 +1,10 @@
 package automotive;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class OptionSet implements Serializable{
+public class OptionSet implements Serializable {
 
 	private static final long serialVersionUID = -7562075447134713419L;
 	private String name;
@@ -41,7 +42,10 @@ public class OptionSet implements Serializable{
 		if (this.options == null) {
 			this.options = new ArrayList<Option>();
 		}
-		this.options.set(i, new Option(name, price));
+		if (i < this.options.size())
+			this.options.set(i, new Option(name, price));
+		else 
+			this.options.add(i, new Option(name, price));
 	}
 
 	public Option getOption(String name) {
@@ -61,7 +65,7 @@ public class OptionSet implements Serializable{
 			return this.options.get(index).getPrice();
 		}
 	}
-	
+
 	public void printAllOptions() {
 		for (Option op : this.options) {
 			System.out.println(op.getName() + " : " + op.getPrice());
@@ -88,7 +92,7 @@ public class OptionSet implements Serializable{
 	private class Option implements Serializable {
 
 		private static final long serialVersionUID = -5285313855089330316L;
-		
+
 		private String name;
 		private int price;
 
@@ -101,6 +105,7 @@ public class OptionSet implements Serializable{
 			return this.name;
 		}
 
+		@SuppressWarnings("unused")
 		public void setName(String name) {
 			this.name = name;
 		}
@@ -109,6 +114,7 @@ public class OptionSet implements Serializable{
 			return this.price;
 		}
 
+		@SuppressWarnings("unused")
 		public void setPrice(int price) {
 			this.price = price;
 		}

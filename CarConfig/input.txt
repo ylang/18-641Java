@@ -4,5 +4,5 @@ Focus Wagon ZTW
 Fort Knox Gold Clearcoat Metallic:0
 standard:-815
 ABS:400
-AirBag: 350
-PowerMoonroof: 595
+AirBag:350
+PowerMoonroof:595

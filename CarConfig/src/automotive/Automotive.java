@@ -1,8 +1,11 @@
 package automotive;
 
+import java.io.Serializable;
 
+public class Automotive implements Serializable {
 
-public class Automotive {
+	private static final long serialVersionUID = -207791647369713043L;
+	
 	private OptionSet options;
 	private int basePrice;
 	private String model;
@@ -30,5 +33,4 @@ public class Automotive {
 		System.out.println("base price : " + this.basePrice);
 		this.options.printAllOptions();
 	}
-	
 }

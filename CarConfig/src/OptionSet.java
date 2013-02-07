@@ -1,7 +1,8 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class OptionSet {
+public class OptionSet implements Serializable{
 
 	private String name;
 	private ArrayList<Option> options;
@@ -79,7 +80,7 @@ public class OptionSet {
 		}
 	}
 
-	private class Option {
+	private class Option implements Serializable {
 
 		private String name;
 		private int price;

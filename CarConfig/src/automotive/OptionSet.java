@@ -10,13 +10,10 @@ public class OptionSet implements Serializable{
 	private ArrayList<Option> options;
 
 	public OptionSet() {
-		// this.name = new String();
-		// this.options = new ArrayList<Option>();
 	}
 
 	public OptionSet(String name) {
 		this.name = name;
-		// this.options = new ArrayList<Option>();
 	}
 
 	public OptionSet(String name, int count) {
@@ -84,6 +81,8 @@ public class OptionSet implements Serializable{
 
 	private class Option implements Serializable {
 
+		private static final long serialVersionUID = -5285313855089330316L;
+		
 		private String name;
 		private int price;
 

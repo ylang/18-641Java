@@ -1,0 +1,8 @@
+Focus Wagon ZTW
+18445
+5
+Fort Knox Gold Clearcoat Metallic:0
+standard:-815
+ABS:400
+AirBag: 350
+PowerMoonroof: 595

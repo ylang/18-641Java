@@ -1,8 +1,5 @@
 package automotive;
 
-import java.util.ArrayList;
-
-import javax.swing.text.html.Option;
 
 
 public class Automotive {

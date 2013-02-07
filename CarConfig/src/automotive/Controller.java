@@ -16,8 +16,8 @@ public class Controller {
 		OptionSet options = new OptionSet("Focus Wagon ZTW");
 
 		Automotive focus = new Automotive(18445, "Focus Wagon ZTW", options);
+		File file = new File("car.dat");
 
-		File file = new File("car.txt");
 		if (file.exists()) {
 			file.delete();
 		}

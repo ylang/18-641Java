@@ -1,8 +1,9 @@
+package automotive;
 
-public class Automobile {
+public class Automotive {
 	private OptionSet options;
 	
-	public Automobile(OptionSet options) {
+	public Automotive(OptionSet options) {
 		this.options = options;
 	}
 	

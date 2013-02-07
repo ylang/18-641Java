@@ -5,6 +5,7 @@ import java.util.Collections;
 
 public class OptionSet implements Serializable{
 
+	private static final long serialVersionUID = -7562075447134713419L;
 	private String name;
 	private ArrayList<Option> options;
 

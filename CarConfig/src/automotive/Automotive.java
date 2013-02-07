@@ -1,13 +1,12 @@
 package automotive;
 
-import java.util.ArrayList;
 
 public class Automotive {
-	private ArrayList<OptionSet> options;
+	private OptionSet options;
 	private int basePrice;
 	private String name;
 	
-	public Automotive(int basePrice, String name, ArrayList<OptionSet> options) {
+	public Automotive(int basePrice, String name, OptionSet options) {
 		this.basePrice = basePrice;
 		this.name = name;
 		this.options = options;
@@ -21,8 +20,12 @@ public class Automotive {
 		return this.name;
 	}
 	
-	public ArrayList<OptionSet> getOptions() {
+	public OptionSet getOptions() {
 		return this.options;
+	}
+	
+	public void printInfo() {
+		
 	}
 	
 }

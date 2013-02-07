@@ -64,6 +64,12 @@ public class OptionSet implements Serializable{
 			return this.options.get(index).getPrice();
 		}
 	}
+	
+	public void printAllOptions() {
+		for (Option op : this.options) {
+			System.out.println(op.getName() + " : " + op.getPrice());
+		}
+	}
 
 	private int findOption(String name) {
 		if (name == null) {

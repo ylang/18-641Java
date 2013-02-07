@@ -1,14 +1,18 @@
 package automotive;
 
+import java.util.ArrayList;
+
+import javax.swing.text.html.Option;
+
 
 public class Automotive {
 	private OptionSet options;
 	private int basePrice;
-	private String name;
+	private String model;
 	
-	public Automotive(int basePrice, String name, OptionSet options) {
+	public Automotive(int basePrice, String model, OptionSet options) {
 		this.basePrice = basePrice;
-		this.name = name;
+		this.model = model;
 		this.options = options;
 	}
 	
@@ -16,8 +20,8 @@ public class Automotive {
 		return this.basePrice;
 	}
 	
-	public String getName() {
-		return this.name;
+	public String getModel() {
+		return this.model;
 	}
 	
 	public OptionSet getOptions() {
@@ -25,7 +29,9 @@ public class Automotive {
 	}
 	
 	public void printInfo() {
-		
+		System.out.println("model : " + this.model);
+		System.out.println("base price : " + this.basePrice);
+		this.options.printAllOptions();
 	}
 	
 }

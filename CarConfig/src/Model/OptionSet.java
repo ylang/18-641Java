@@ -1,16 +1,19 @@
-package automotive;
+package Model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 
 public class OptionSet implements Serializable {
 
 	private static final long serialVersionUID = -7562075447134713419L;
 	private String name;
 	private ArrayList<Option> options;
+	private Option choice;
 
 	public OptionSet() {
+		// leave everything null
 	}
 
 	public OptionSet(String name) {
@@ -31,7 +34,7 @@ public class OptionSet implements Serializable {
 	}
 
 	public ArrayList<Option> getOptions() {
-		return (ArrayList<Option>) Collections.unmodifiableList(this.options);
+		return this.options;
 	}
 
 	public void setOptions(ArrayList<Option> options) {
@@ -46,6 +49,27 @@ public class OptionSet implements Serializable {
 			this.options.set(i, new Option(name, price));
 		else 
 			this.options.add(i, new Option(name, price));
+	}
+	
+	/**
+	 * Updating an option. If the a option with the specific name is 
+	 * existed, the price of the option is updated and it will return 
+	 * true. Otherwise, it will do nothing and return false.
+	 * @param name the name of the option
+	 * @param price the updated price
+	 * @return true if updating successes, otherwise false.
+	 */
+	public boolean updateOption(String name, int price) {
+		if (this.options == null) {
+			this.options = new ArrayList<Option>();
+		}
+		int index = this.findOption(name);
+		if (index == -1) {
+			return false;
+		} else {
+			this.setOption(index, name, price);
+			return true;
+		}
 	}
 
 	public Option getOption(String name) {
@@ -71,6 +95,33 @@ public class OptionSet implements Serializable {
 			System.out.println(op.getName() + " : " + op.getPrice());
 		}
 	}
+	
+	public Option getOptionChoice() {
+		return this.choice;
+	}
+	
+	public void setOptionChoice(String optionName) {
+		this.choice = this.getOption(optionName);
+		if (this.choice == null) {
+			throw new IllegalArgumentException(optionName + " is not a valid choice");
+		}
+	}
+	
+	/**
+	 * It will remove a specific option corresponding to the name.
+	 * If the option exists, it will be removed and a true will be returned.
+	 * Otherwise, nothing would be done and a false will be returned.
+	 * @param name option name
+	 * @return true if removing successfully, otherwise false.
+	 */
+	public boolean removeOption(String name) {
+		int index = this.findOption(name);
+		if (index == -1) {
+			return false;
+		}
+		this.options.remove(index);
+		return true;
+	}
 
 	private int findOption(String name) {
 		if (name == null) {
@@ -83,40 +134,9 @@ public class OptionSet implements Serializable {
 					return i;
 				}
 			}
-			return 0;
+			return -1;
 		} else {
 			return -1;
-		}
-	}
-
-	private class Option implements Serializable {
-
-		private static final long serialVersionUID = -5285313855089330316L;
-
-		private String name;
-		private int price;
-
-		public Option(String name, int price) {
-			this.name = name;
-			this.price = price;
-		}
-
-		public String getName() {
-			return this.name;
-		}
-
-		@SuppressWarnings("unused")
-		public void setName(String name) {
-			this.name = name;
-		}
-
-		public int getPrice() {
-			return this.price;
-		}
-
-		@SuppressWarnings("unused")
-		public void setPrice(int price) {
-			this.price = price;
 		}
 	}
 }

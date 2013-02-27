@@ -1,8 +1,14 @@
+Ford
 Focus Wagon ZTW
 18445
-5
-Fort Knox Gold Clearcoat Metallic:0
-standard:-815
-ABS:400
-AirBag:350
-PowerMoonroof:595
+optionSet,Color,9,Fort Knox Gold Clearcoat Metallic,0,Liquid Grey Clearcoat Metallic,0,Infra-Red Clearcoat,0,Grabber Green Clearcoat Metallic,0,Sangria Red Clearcoat Metallic,0,Blue Clearcoat Metallic,0,Twilight Blue Clearcoat Metallic,0,CD Silver Clearcoat Metallic,0,Pitch Black Clearcoat,0,Cloud 9 White Clearcoat,0
+optionSet,Transmission,2,automatic,0,standard,-815
+optionSet,Brakes/Traction Control,3,standard,0,ABS,400,ABS with Advance Trac,1625
+optionSet,Side Impact Air Bags,2,not present,0,present,350
+optionSet,Power Moonroof,2,not present,0,present,595
+end of setup
+Color:Fort Knox Gold Clearcoat Metallic
+Transmission:standard
+Brakes/Traction Control:ABS
+Side Impact Air Bags:present
+Power Moonroof:present

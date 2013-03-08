@@ -13,13 +13,16 @@ import Util.ObjectIO;
 
 public class ClientMessageHandler {
 
-	static Scanner sc = new Scanner(System.in);
-
+	/**
+	 * Return the type_id of a response message from server
+	 * @param messageId message id that suppose to be 
+	 * @param response response message from server 
+	 * @return type_id
+	 */
 	public static int processResponse(String messageId, String response) {
 		String args[] = response.split(";;;");
 		if (args.length != 3) {
-			// TODO: not valid message
-			return -1;
+			throw new IllegalArgumentException("invalid message");
 		}
 		if (messageId.equals(args[0])) {
 			return Integer.parseInt(args[1]);
@@ -27,7 +30,16 @@ public class ClientMessageHandler {
 		return -1;
 	}
 
-	public static Message processMessageFromServer(Message message)
+	/**
+	 * Process a message during select a car model
+	 * @param message message sent from server
+	 * @param sc scanner of console
+	 * @return a replying message should be sent to server
+	 * @throws NoSuchElementException 
+	 * @throws ClassNotFoundException
+	 * @throws IOException
+	 */
+	public static Message processMessageFromServer(Message message, Scanner sc)
 			throws NoSuchElementException, ClassNotFoundException, IOException {
 
 		Message reply = null;
@@ -94,10 +106,8 @@ public class ClientMessageHandler {
 							throw new IndexOutOfBoundsException();
 						}
 					} catch (Exception e) {
-						e.printStackTrace();
 						System.out
 								.println("The number you typed is invalid. Please re-enter the choice");
-						System.exit(42);
 						System.out.print(">");
 					}
 				}
@@ -129,7 +139,6 @@ public class ClientMessageHandler {
 			System.out.println("unkown type: " + message.getType());
 			break;
 		}
-		// sc.close();
 		return reply;
 	}
 }

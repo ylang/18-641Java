@@ -1,5 +1,11 @@
 package Util;
 
+/**
+ * A class represents a message exchanged between server and client in this program
+ * A message contains a message id, a type id and its payload.
+ * @author ylang
+ *
+ */
 public class Message {
 	private String id, payload;
 	private int type;

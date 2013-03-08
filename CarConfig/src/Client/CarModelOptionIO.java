@@ -12,18 +12,38 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * A client to create a model with available options on the server.
+ * @author ylang
+ *
+ */
 public class CarModelOptionIO {
 	 
     private String host;
     private int port;
     private Logger log = Logger.getLogger("CLIENT");
  
-    public CarModelOptionIO(String host, int port) {
+    /**
+     * Constructor.
+     * @param host host name of server
+     * @param port host port of server
+     * @param debug wither in debug mode
+     */
+    public CarModelOptionIO(String host, int port, boolean debug) {
         this.host = host;
         this.port = port;
-        log.setLevel(Level.INFO);
+        if (debug) {
+			log.setLevel(Level.INFO);
+		} else {
+			log.setLevel(Level.WARNING);
+		}
     }
  
+    /**
+     * start to read a model from a file and pass the arguments to server.
+     * @param fileName the name of the file storing models
+     * @return true if the process successes, otherwise false;
+     */
     public boolean start(String fileName) {
         Socket socket;
         PrintWriter out;
@@ -41,10 +61,8 @@ public class CarModelOptionIO {
 	        fileReader.close();
 	        log.info("read from file finished");
 		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
         try {
@@ -88,7 +106,6 @@ public class CarModelOptionIO {
 				log.info("status = " + status);
 			}
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
         try {

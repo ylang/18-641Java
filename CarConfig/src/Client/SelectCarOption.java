@@ -7,27 +7,41 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.NoSuchElementException;
+import java.util.Scanner;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import Util.Message;
 
+/**
+ * A client of selecting a car model
+ * @author ylang
+ *
+ */
 public class SelectCarOption {
 	private String host;
 	private int port;
 	private Logger log = Logger.getLogger("CLIENT");
 
-	public SelectCarOption(String host, int port) {
+	public SelectCarOption(String host, int port, boolean debug) {
 		this.host = host;
 		this.port = port;
-		log.setLevel(Level.INFO);
+		if (debug) {
+			log.setLevel(Level.INFO);
+		} else {
+			log.setLevel(Level.WARNING);
+		}
 	}
 
+	/**
+	 * start to select a model
+	 */
 	public void start() {
 		Socket socket = null;
 		PrintWriter out = null;
 		BufferedReader in = null;
+		Scanner sc = new Scanner(System.in);
 		
 		// connect to server
 		try {
@@ -55,7 +69,7 @@ public class SelectCarOption {
 					break;
 				}
 				try {
-					Message response = ClientMessageHandler.processMessageFromServer(message);
+					Message response = ClientMessageHandler.processMessageFromServer(message, sc);
 					if (message.getType() == 15) {
 						break;
 					}
@@ -80,6 +94,8 @@ public class SelectCarOption {
 			System.out.println("Disconnect to server");
 		} catch (IOException e) {
 			System.err.println(e.getMessage());
+		} finally {
+			sc.close();
 		}
 	}
 }

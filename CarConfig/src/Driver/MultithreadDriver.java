@@ -4,7 +4,7 @@ import Model.Automotive;
 import Util.EditOptions;
 import Util.FileIO;
 
-public class Controller {
+public class MultithreadDriver {
 
 	public static void main(String[] args) {
 		String fileName = "car.dat";

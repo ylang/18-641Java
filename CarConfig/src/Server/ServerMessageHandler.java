@@ -15,6 +15,13 @@ import Util.ObjectIO;
 
 public class ServerMessageHandler {
 
+	/**
+	 * Handles message sent from client
+	 * @param message message sent from client
+	 * @return a response message should be sent to client
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
 	public static Message processMessageFromClient(Message message)
 			throws IOException, ClassNotFoundException {
 		Message reply = null;

@@ -14,6 +14,13 @@ import java.util.logging.Logger;
 import Model.Automotive;
 import Util.Message;
 
+/**
+ * A server that can build a car model and provide all the options of models,
+ * allows client to select a car and return the total price.
+ * 
+ * @author ylang
+ * 
+ */
 public class BuildCarModelOptions {
 
 	private static final int SERVER_PORT = 18641;
@@ -21,8 +28,12 @@ public class BuildCarModelOptions {
 	private Logger log = Logger.getLogger("SERVER");
 
 	@SuppressWarnings("resource")
-	public void startServer() {
-		log.setLevel(Level.INFO);
+	public void startServer(boolean debug) {
+		if (debug) {
+			log.setLevel(Level.INFO);
+		} else {
+			log.setLevel(Level.WARNING);
+		}
 		ServerSocket serverSocket;
 		try {
 			serverSocket = new ServerSocket(SERVER_PORT);
@@ -42,21 +53,34 @@ public class BuildCarModelOptions {
 				continue;
 			}
 
-			new SocketHandler(socket).start();
+			new SocketHandler(socket, debug).start();
 		}
 	}
 
+	/**
+	 * Add a model to the server
+	 * 
+	 * @param a
+	 *            target model
+	 */
 	public static void addModel(Automotive a) {
 		modelMap.put(a.getMake() + " " + a.getModel(), a);
 	}
 
+	/**
+	 * get all available models
+	 * 
+	 * @return a set of models
+	 */
 	public static Set<String> getModelSet() {
 		return modelMap.keySet();
 	}
-	
+
 	/**
 	 * Return the automotive corresponding to the name.
-	 * @param model make followed by name
+	 * 
+	 * @param model
+	 *            make followed by name
 	 * @return the automotive, or null if it is not existed.
 	 */
 	public static Automotive getModel(String model) {
@@ -64,14 +88,24 @@ public class BuildCarModelOptions {
 	}
 }
 
+/**
+ * Handle each client in an individual thread to keep thread safe.
+ * @author ylang
+ *
+ */
 class SocketHandler extends Thread {
 
 	private Socket socket;
 	private String messageId;
 	private Logger log = Logger.getLogger("SERVER_HANDLER");
 
-	public SocketHandler(Socket clientSocket) {
+	public SocketHandler(Socket clientSocket, boolean debug) {
 		this.socket = clientSocket;
+		if (debug) {
+			log.setLevel(Level.INFO);
+		} else {
+			log.setLevel(Level.SEVERE);
+		}
 	}
 
 	@Override
@@ -101,8 +135,8 @@ class SocketHandler extends Thread {
 						log.info("SERVER: set message id");
 					}
 					if (!message.checkMessageId(this.messageId)) {
-						// TODO: invalid message id
 						log.warning("SERVER: message id does not equal");
+						
 					}
 					Message response = ServerMessageHandler
 							.processMessageFromClient(message);

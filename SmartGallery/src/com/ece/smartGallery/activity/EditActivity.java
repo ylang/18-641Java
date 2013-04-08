@@ -1,7 +1,9 @@
 package com.ece.smartGallery.activity;
 
-import android.os.Bundle;
+import com.ece.smartGallery.R;
+
 import android.app.Activity;
+import android.os.Bundle;
 import android.view.Menu;
 
 public class EditActivity extends Activity {

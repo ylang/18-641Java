@@ -32,7 +32,7 @@
         android:id="@+id/gallery_list"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:scrollbars="verticalh"
+        android:scrollbars="vertical"
         ></ListView>
 
 </LinearLayout>

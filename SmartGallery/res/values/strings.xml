@@ -8,5 +8,12 @@
     <string name="add_picture">Create a new picture</string>
     <string name="title_activity_display">DisplayActivity</string>
     <string name="title_activity_edit">EditActivity</string>
+    <string name="default_picture">default picture</string>
+    <string name="default_text">default text</string>
+    <string name="option">Option</string>
+    <string name="back">Back</string>
+    <string name="add_comment_here">Add text comment here</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
 
 </resources>

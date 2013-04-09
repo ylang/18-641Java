@@ -1,4 +1,4 @@
-package com.ece.smartGallery.model;
+package com.ece.smartGallery.DBLayout;
 
 public class User {
 

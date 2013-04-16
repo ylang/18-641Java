@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Geolocation</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Tap on the button to get geolocation information and send the text message</string>
+    <string name="button">Get geolocation</string>
+    <string name="waiting">Waiting for allocation</string>
+    <string name="ready">is ready</string>
+
+</resources>

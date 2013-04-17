@@ -25,7 +25,7 @@ public final class R {
         public static final int ic_launcher=0x7f020001;
     }
     public static final class id {
-        public static final int action_settings=0x7f08000e;
+        public static final int action_settings=0x7f080011;
         public static final int add_voice_button=0x7f080008;
         public static final int display_comment=0x7f080002;
         public static final int display_geolocation=0x7f080001;
@@ -37,6 +37,9 @@ public final class R {
         public static final int edit_image=0x7f080005;
         public static final int edit_save=0x7f08000a;
         public static final int gallery_list=0x7f08000d;
+        public static final int grid_item_date=0x7f080010;
+        public static final int grid_item_geolocation=0x7f08000f;
+        public static final int grid_item_image=0x7f08000e;
         public static final int imageButton1=0x7f080003;
         public static final int imageButton2=0x7f080004;
         public static final int imageView1=0x7f08000c;
@@ -45,6 +48,7 @@ public final class R {
         public static final int activity_display=0x7f030000;
         public static final int activity_edit=0x7f030001;
         public static final int activity_home=0x7f030002;
+        public static final int home_grid_layout=0x7f030003;
     }
     public static final class menu {
         public static final int display=0x7f070000;

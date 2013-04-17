@@ -1,17 +1,23 @@
 package com.ece.smartGallery.activity;
 
-import com.ece.smartGallery.R;
-
-import android.os.Bundle;
 import android.app.Activity;
+import android.os.Bundle;
 import android.view.Menu;
+import android.widget.GridView;
+
+import com.ece.smartGallery.R;
+import com.ece.smartGallery.adapter.HomeGridAdapter;
 
 public class HomeActivity extends Activity {
+	GridView gridView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
+		gridView = (GridView) findViewById(R.id.gallery);
+		HomeGridAdapter adapter = new HomeGridAdapter(this, null);
+        gridView.setAdapter(adapter);
 	}
 
 	@Override

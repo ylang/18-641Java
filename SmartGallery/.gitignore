@@ -6,3 +6,4 @@
 .metadata
 .classpath
 .settings/
+/gen/com/ece/smartGallery/R.java

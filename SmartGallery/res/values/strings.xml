@@ -10,6 +10,14 @@
     <string name="title_activity_edit">EditActivity</string>
     <string name="default_picture">default picture</string>
     <string name="default_text">default text</string>
+    <string name="default_text_comment"> default text comment</string>
+    <string name="default_geolocation">Picture taken in: Pittsburgh</string>
+    <string name="text_comment">Text Comment: </string>
+    <string name="edit_text_comment">Record New Voice Comment: </string>
+    <string name="edit_scratch_comment">Draw New Scratch Comment: </string>
+    <string name="voice_comment">Voice Comment: </string>
+    <string name="play_voice_comment">Play</string>
+    <string name="scratch_comment">Scratch Comment: </string>
     <string name="option">Option</string>
     <string name="back">Back</string>
     <string name="add_comment_here">Add text comment here</string>

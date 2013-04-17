@@ -22,20 +22,78 @@
             android:contentDescription="@string/default_picture"
             android:minWidth="300dp"
             android:src="@drawable/ic_launcher" />
-
+        
         <TextView
             android:id="@+id/display_geolocation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:text="@string/default_text" />
-
-        <TextView
-            android:id="@+id/display_comment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:text="@string/default_text" />
+            android:text="@string/default_geolocation" />
+     	
+        <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center_vertical"
+	        android:orientation="horizontal" >
+	        
+	        <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_gravity="left"
+	            android:text="@string/text_comment" />
+	
+	        <TextView
+	            android:id="@+id/display_text_comment"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_gravity="left"
+	            android:text="@string/default_text_comment" />
+	        
+        </LinearLayout>
+        
+        <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center_vertical"
+	        android:orientation="horizontal" >
+	        
+	        <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_gravity="left"
+	            android:text="@string/voice_comment" />
+	
+			<Button
+                    android:id="@+id/play_voice_comment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="play_music_1"
+                    android:text="@string/play_voice_comment" />
+	        
+        </LinearLayout>
+        
+        <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center_vertical"
+	        android:orientation="horizontal" >
+	        
+	        <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_gravity="left"
+	            android:text="@string/scratch_comment" />
+	
+	        <ImageView
+	            android:id="@+id/display_image"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:contentDescription="@string/default_picture"
+	            android:minWidth="300dp"
+	            android:src="@drawable/ic_launcher" />
+	        
+        </LinearLayout>
     </LinearLayout>
 
     <RelativeLayout

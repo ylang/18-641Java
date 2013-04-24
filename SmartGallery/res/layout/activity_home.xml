@@ -28,11 +28,11 @@
             android:text="@string/add_picture" />
     </LinearLayout>
     
-    <ListView 
+    <GridView 
         android:id="@+id/gallery_list"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:scrollbars="vertical"
-        ></ListView>
+        ></GridView>
 
 </LinearLayout>

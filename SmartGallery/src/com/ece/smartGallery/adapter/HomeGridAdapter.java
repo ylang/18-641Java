@@ -1,6 +1,6 @@
 package com.ece.smartGallery.adapter;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -18,11 +18,11 @@ import com.ece.smartGallery.DBLayout.Photo;
 public class HomeGridAdapter extends BaseAdapter{
 
 	private int count;
-	private ArrayList<Photo> list;
+	private List<Photo> list;
 	private Bitmap[] bitmaps;
 	private Context context;
 	private LayoutInflater layoutInflater;
-	public HomeGridAdapter(Context context, ArrayList<Photo> list) {
+	public HomeGridAdapter(Context context, List<Photo> list) {
 		this.context = context;
 		this.count = list.size();
 		this.list = list;
@@ -59,7 +59,7 @@ public class HomeGridAdapter extends BaseAdapter{
 		 }
 		    
 		 ImageView imageView = (ImageView)grid.findViewById(R.id.grid_item_image);
-		 imageView.setImageBitmap(bitmaps[pos]);
+		 imageView.setImageURI(list.get(pos).getImage());
 		 TextView geoTextView = (TextView)grid.findViewById(R.id.grid_item_geolocation);
 		 TextView dateTextView = (TextView)grid.findViewById(R.id.grid_item_date);
 		 geoTextView.setText(list.get(pos).getLocation());

@@ -2,20 +2,46 @@ package com.ece.smartGallery.DBLayout;
 
 import java.io.Serializable;
 
+import android.net.Uri;
+
 public class Photo implements Serializable{
+	public static final int VOICE_TYPE = 1;
+	public static final int TEXT_TYPE = 2;
+	public static final int TOUCHPAD_TYPE = 3;
+	
 	
 	private static final long serialVersionUID = -4783890754000515921L;
 	private int id;
 //	private int albumId;
 	private String name;
 	private long timeStamp;
-	private String text;
-	private byte[] voice;
+	private String text;	//text comment
+	private byte[] voice;	//voice comment
+	private Uri imageURI;	//the URI of the image file.
+	private int commentType;
 	private String location;
 	private double lng, lat;
 	
 	public Photo() {
 		
+	}
+	
+	public int getCommentType() {
+		return this.commentType;
+	}
+	
+	public void setCommentType(int commentType) {
+		if (commentType < 4 && commentType > 0) {
+			this.commentType = commentType;
+		}
+	}
+	
+	public Uri getImage() {
+		return this.imageURI;
+	}
+	
+	public void setImage(Uri img) {
+		this.imageURI = img;
 	}
 	
 	public double getLng() {

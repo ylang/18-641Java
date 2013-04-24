@@ -44,6 +44,10 @@ public class Album implements Serializable {
 		return this.photoList;
 	}
 	
+	public int getCount() {
+		return this.count;
+	}
+	
 	/**
 	 * Add a new photo into the album
 	 * @param photo

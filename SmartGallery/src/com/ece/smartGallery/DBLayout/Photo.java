@@ -1,13 +1,38 @@
 package com.ece.smartGallery.DBLayout;
 
-public class Photo {
+import java.io.Serializable;
+
+public class Photo implements Serializable{
+	
+	private static final long serialVersionUID = -4783890754000515921L;
 	private int id;
-	private int albumId;
+//	private int albumId;
 	private String name;
 	private long timeStamp;
 	private String text;
 	private byte[] voice;
 	private String location;
+	private double lng, lat;
+	
+	public Photo() {
+		
+	}
+	
+	public double getLng() {
+		return lng;
+	}
+	
+	public void setLng(double lng) {
+		this.lng = lng;
+	}
+	
+	public double getLat() {
+		return lat;
+	}
+	
+	public void setLat(double lat) {
+		this.lat = lat;
+	}
 
 	public int getId() {
 		return id;
@@ -17,13 +42,13 @@ public class Photo {
 		this.id = id;
 	}
 
-	public int getAlbumId() {
-		return albumId;
-	}
-
-	public void setAlbumId(int albumId) {
-		this.albumId = albumId;
-	}
+//	public int getAlbumId() {
+//		return albumId;
+//	}
+//
+//	public void setAlbumId(int albumId) {
+//		this.albumId = albumId;
+//	}
 
 	public String getName() {
 		return name;

@@ -15,7 +15,7 @@ public class HomeActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
-		gridView = (GridView) findViewById(R.id.gallery);
+		gridView = (GridView) findViewById(R.id.gallery_list);
 		HomeGridAdapter adapter = new HomeGridAdapter(this, null);
         gridView.setAdapter(adapter);
 	}

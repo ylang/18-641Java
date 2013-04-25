@@ -1,11 +1,15 @@
 package com.ece.smartGallery.activity;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.Menu;
 import android.widget.GridView;
@@ -27,8 +31,35 @@ public class HomeActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		loadPhoto();
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.home, menu);
+		return true;
+	}
+	
+	public void loadPhoto() {
 		try {
 			this.album = Album.getAlbum(this);
+			if (album.getCount() == 0) {
+				Photo p = new Photo();
+				File path = this.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+				File sample = new File(path, "1.jpg");
+				p.setImage(Uri.fromFile(sample));
+				p.setLocation("Pittsburgh");
+				p.setTimeStamp(System.currentTimeMillis());
+				int id = album.addNewPhoto(this, p);
+				//p.setId(id);
+				album.addNewPhoto(this, p);
+			}
 			Log.d(TAG,
 					"Album retrieved successfully, length = "
 							+ this.album.getCount());
@@ -45,13 +76,17 @@ public class HomeActivity extends Activity {
 		gridView = (GridView) findViewById(R.id.gallery_list);
 		HomeGridAdapter adapter = new HomeGridAdapter(this, this.photoList);
 		gridView.setAdapter(adapter);
+		Log.d(TAG, "grid view adapter set");
 	}
+	
+	private class LoadPhotoTask extends AsyncTask<Void, Void, Void> {
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.home, menu);
-		return true;
+		@Override
+		protected Void doInBackground(Void... arg0) {
+			loadPhoto();
+			return null;
+		}
+		
 	}
 
 }

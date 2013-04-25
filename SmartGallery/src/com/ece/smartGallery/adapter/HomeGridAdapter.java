@@ -1,35 +1,50 @@
 package com.ece.smartGallery.adapter;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
+import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.TextView;
 
 import com.ece.smartGallery.R;
 import com.ece.smartGallery.DBLayout.Photo;
+import com.ece.smartGallery.activity.DisplayActivity;
 
-public class HomeGridAdapter extends BaseAdapter{
-
+public class HomeGridAdapter extends BaseAdapter {
+	private final String TAG = this.getClass().getName();
 	private int count;
 	private List<Photo> list;
 	private Bitmap[] bitmaps;
 	private Context context;
 	private LayoutInflater layoutInflater;
+
 	public HomeGridAdapter(Context context, List<Photo> list) {
 		this.context = context;
 		this.count = list.size();
 		this.list = list;
 		layoutInflater = LayoutInflater.from(context);
 		bitmaps = new Bitmap[count];
-		for(int i = 0; i < count; i++){
-		    bitmaps[i] = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher);
+		for (int i = 0; i < count; i++) {
+			bitmaps[i] = BitmapFactory.decodeResource(context.getResources(),
+					R.drawable.ic_launcher);
 		}
 	}
 
@@ -50,20 +65,96 @@ public class HomeGridAdapter extends BaseAdapter{
 
 	@Override
 	public View getView(int pos, View view, ViewGroup parent) {
-		 View grid;
-		 if (view==null) {
-			 grid = new View(context);
-			 grid = layoutInflater.inflate(R.layout.home_grid_layout, null); 
-		 } else {
-			 grid = (View)view; 
-		 }
-		    
-		 ImageView imageView = (ImageView)grid.findViewById(R.id.grid_item_image);
-		 imageView.setImageURI(list.get(pos).getImage());
-		 TextView geoTextView = (TextView)grid.findViewById(R.id.grid_item_geolocation);
-		 TextView dateTextView = (TextView)grid.findViewById(R.id.grid_item_date);
-		 geoTextView.setText(list.get(pos).getLocation());
-		 dateTextView.setText(list.get(pos).getTimeStamp() + "");   
-		 return grid;
+		View grid;
+		if (view == null) {
+			grid = new View(context);
+			grid = layoutInflater.inflate(R.layout.home_grid_layout, null);
+		} else {
+			grid = (View) view;
+		}
+		final Photo photo = list.get(pos);
+		ImageView imageView = (ImageView) grid
+				.findViewById(R.id.grid_item_image);
+		File file = new File(photo.getImage().getPath());
+		Bitmap b = decodeFile(file);
+		Matrix mat = new Matrix();
+		mat.postRotate(this.getCameraPhotoOrientation(context,
+				photo.getImage(), file.getAbsolutePath()));
+		Bitmap bMapRotate = Bitmap.createBitmap(b, 0, 0, b.getWidth(),
+				b.getHeight(), mat, true);
+		imageView.setImageBitmap(bMapRotate);
+		imageView.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(context, DisplayActivity.class);
+				intent.putExtra(Photo.PHOTO, photo);
+				Log.d(TAG,
+						"start display activity, photo id = " + photo.getId());
+			}
+		});
+		TextView geoTextView = (TextView) grid
+				.findViewById(R.id.grid_item_geolocation);
+		TextView dateTextView = (TextView) grid
+				.findViewById(R.id.grid_item_date);
+		geoTextView.setText(photo.getLocation());
+		SimpleDateFormat sdf = new SimpleDateFormat("yy-MMM-dd",
+				Locale.getDefault());
+		dateTextView.setText(sdf.format(new Date(photo.getTimeStamp())));
+		return grid;
+	}
+
+	private Bitmap decodeFile(File f) {
+		try {
+			// Decode image size
+			BitmapFactory.Options o = new BitmapFactory.Options();
+			o.inJustDecodeBounds = true;
+			BitmapFactory.decodeStream(new FileInputStream(f), null, o);
+
+			// The new size we want to scale to
+			final int REQUIRED_SIZE = 200;
+
+			// Find the correct scale value. It should be the power of 2.
+			int scale = 1;
+			while (o.outWidth / scale / 2 >= REQUIRED_SIZE
+					&& o.outHeight / scale / 2 >= REQUIRED_SIZE)
+				scale *= 2;
+
+			// Decode with inSampleSize
+			BitmapFactory.Options o2 = new BitmapFactory.Options();
+			o2.inSampleSize = scale;
+			return BitmapFactory.decodeStream(new FileInputStream(f), null, o2);
+		} catch (FileNotFoundException e) {
+		}
+		return null;
+	}
+
+	private int getCameraPhotoOrientation(Context context, Uri imageUri,
+			String imagePath) {
+		int rotate = 0;
+		try {
+			context.getContentResolver().notifyChange(imageUri, null);
+			File imageFile = new File(imagePath);
+			ExifInterface exif = new ExifInterface(imageFile.getAbsolutePath());
+			int orientation = exif.getAttributeInt(
+					ExifInterface.TAG_ORIENTATION,
+					ExifInterface.ORIENTATION_NORMAL);
+
+			switch (orientation) {
+			case ExifInterface.ORIENTATION_ROTATE_270:
+				rotate = 270;
+				break;
+			case ExifInterface.ORIENTATION_ROTATE_180:
+				rotate = 180;
+				break;
+			case ExifInterface.ORIENTATION_ROTATE_90:
+				rotate = 90;
+				break;
+			}
+
+			Log.v(TAG, "Exif orientation: " + orientation);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return rotate;
 	}
 }

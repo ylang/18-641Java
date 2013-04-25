@@ -63,7 +63,7 @@ public class Datastorage {
 			throw new IOException("Storage is not available");
 		}
 		File path = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-		File file = new File(path, ALBUM_FILE);
+		File file = new File(path, fileName);
 		if (!file.exists()) {
 			throw new IOException("Photo does not exist");
 		}
@@ -76,8 +76,8 @@ public class Datastorage {
 		}
 		File path = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 		File file = new File(path, fileName);
-		if (!file.exists()) {
-			throw new IOException("Photo exists already");
+		if (file.exists()) {
+			file.delete();
 		}
 		savePhotoToFile(photo, file);
 	}

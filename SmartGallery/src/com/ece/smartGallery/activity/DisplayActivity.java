@@ -1,23 +1,36 @@
 package com.ece.smartGallery.activity;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import com.ece.smartGallery.R;
+import com.ece.smartGallery.DBLayout.Photo;
 
+import android.media.ExifInterface;
 import android.media.MediaPlayer;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ImageView;;
 
 public class DisplayActivity extends Activity {
     private static final String LOG_TAG = "AudioRecordTest";
+    private final String TAG = this.getClass().getName();
     private static String mFileName = null;
     
 	 private Button   mPlayButton = null;
@@ -29,6 +42,14 @@ public class DisplayActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_display);
+		
+		Intent intent = getIntent();
+		
+		Photo photo = (Photo) intent.getSerializableExtra(Photo.PHOTO);
+		ImageView imageView = ((ImageView) findViewById(R.id.display_image));
+		LoadAsyncTask task = new LoadAsyncTask(imageView,photo,this);
+		task.execute();
+
         mFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
         mFileName += "/audiorecordtest.3gp";
 		
@@ -115,5 +136,96 @@ public class DisplayActivity extends Activity {
             setOnClickListener(clicker);
         }
     }
+    
+	private Bitmap decodeFile(File f) {
+		try {
+			// Decode image size
+			BitmapFactory.Options o = new BitmapFactory.Options();
+			o.inJustDecodeBounds = true;
+			BitmapFactory.decodeStream(new FileInputStream(f), null, o);
+
+			// The new size we want to scale to
+			final int REQUIRED_SIZE = 600;
+
+			// Find the correct scale value. It should be the power of 2.
+			int scale = 1;
+			while (o.outWidth / scale / 2 >= REQUIRED_SIZE
+					&& o.outHeight / scale / 2 >= REQUIRED_SIZE)
+				scale *= 2;
+
+			// Decode with inSampleSize
+			BitmapFactory.Options o2 = new BitmapFactory.Options();
+			o2.inSampleSize = scale;
+			return BitmapFactory.decodeStream(new FileInputStream(f), null, o2);
+		} catch (FileNotFoundException e) {
+		}
+		return null;
+	}
+
+	private int getCameraPhotoOrientation(Context context, Uri imageUri,
+			String imagePath) {
+		int rotate = 0;
+		try {
+			context.getContentResolver().notifyChange(imageUri, null);
+			File imageFile = new File(imagePath);
+			ExifInterface exif = new ExifInterface(imageFile.getAbsolutePath());
+			int orientation = exif.getAttributeInt(
+					ExifInterface.TAG_ORIENTATION,
+					ExifInterface.ORIENTATION_NORMAL);
+
+			switch (orientation) {
+			case ExifInterface.ORIENTATION_ROTATE_270:
+				rotate = 270;
+				break;
+			case ExifInterface.ORIENTATION_ROTATE_180:
+				rotate = 180;
+				break;
+			case ExifInterface.ORIENTATION_ROTATE_90:
+				rotate = 90;
+				break;
+			}
+
+			Log.v(TAG, "Exif orientation: " + orientation);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return rotate;
+	}
+	
+	private void setImage(ImageView view, Bitmap b, final Photo photo) {
+		view.setImageBitmap(b);
+	}
+	
+	class LoadAsyncTask extends AsyncTask<Void, Void, Void> {
+		
+		private Photo photo;
+		private ImageView view;
+		private Bitmap bitmap;
+		private Context context;
+		LoadAsyncTask(ImageView view, Photo photo, Context context) {
+			this.photo = photo;
+			this.view = view;
+			this.context = context;
+		}
+
+		@Override
+		protected Void doInBackground(Void... arg0) {
+			File file = new File(photo.getImage().getPath());
+			Bitmap b = decodeFile(file);
+			Matrix mat = new Matrix();
+			mat.postRotate(getCameraPhotoOrientation(context,
+					photo.getImage(), file.getAbsolutePath()));
+			bitmap = Bitmap.createBitmap(b, 0, 0, b.getWidth(),
+					b.getHeight(), mat, true);
+			return null;
+		}
+		
+		@Override
+		protected void onPostExecute(Void arg0) {
+			setImage(view, bitmap, photo);
+			Log.d(TAG, "onPostExecute");
+		}
+		
+	}
 
 }

@@ -17,10 +17,9 @@
 
         <ImageView
             android:id="@+id/display_image"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:contentDescription="@string/default_picture"
-            android:minWidth="300dp"
             android:src="@drawable/ic_launcher" />
         
         <TextView

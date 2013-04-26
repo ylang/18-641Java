@@ -27,5 +27,6 @@
 
     <!-- @ruoyul Facebook app id -->
     <string name="app_id">449762498438737</string>
+    <string name="post">Post on Facebook</string>
 
 </resources>

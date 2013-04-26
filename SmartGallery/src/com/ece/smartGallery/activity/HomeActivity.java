@@ -39,7 +39,7 @@ public class HomeActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		loadPhoto();
+		//loadPhoto();
 	}
 
 	@Override
@@ -97,7 +97,6 @@ public class HomeActivity extends Activity {
 	// will be removed once integrate all parts together.
 	public void test_edit(View view){
 		Intent intent = new Intent(this,EditActivity.class);
-		
 		startActivity(intent);
 	}
 

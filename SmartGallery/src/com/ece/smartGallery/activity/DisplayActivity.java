@@ -13,13 +13,13 @@ public class DisplayActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		setContentView(R.layout.activity_display);
 		
 		Intent intent = getIntent();
 		String text_comment = intent.getStringExtra("text_comment");
 		((TextView) findViewById(R.id.display_text_comment)).setText(String.valueOf(text_comment));
 		
-		setContentView(R.layout.activity_display);
+
 	}
 
 	@Override

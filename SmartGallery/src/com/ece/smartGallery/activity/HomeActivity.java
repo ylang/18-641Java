@@ -6,12 +6,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.Toast;
 
@@ -87,6 +90,15 @@ public class HomeActivity extends Activity {
 			return null;
 		}
 		
+	}
+	
+	
+	// this method is used to go to edit page directly to test more easily
+	// will be removed once integrate all parts together.
+	public void test_edit(View view){
+		Intent intent = new Intent(this,EditActivity.class);
+		
+		startActivity(intent);
 	}
 
 }

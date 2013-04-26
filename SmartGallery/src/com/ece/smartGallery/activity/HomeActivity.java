@@ -35,7 +35,7 @@ public class HomeActivity extends Activity {
 		setContentView(R.layout.activity_home);
 		this.addPhoto = (LinearLayout) findViewById(R.id.add_new_photo);
 		this.addPhoto.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				addNewPhoto();
@@ -43,7 +43,7 @@ public class HomeActivity extends Activity {
 		});
 		db = new DatabaseHandler(getApplicationContext());
 	}
-	
+
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -60,7 +60,7 @@ public class HomeActivity extends Activity {
 		getMenuInflater().inflate(R.menu.home, menu);
 		return true;
 	}
-	
+
 	public void addNewPhoto() {
 		Photo p = new Photo();
 		File path = this.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
@@ -74,29 +74,28 @@ public class HomeActivity extends Activity {
 			Log.d(TAG, "add new photo success!");
 		}
 		this.loadPhoto();
-		
+
 	}
-	
+
 	public void loadPhoto() {
 		photoList = db.getAllPhotos(albumId);
 		if (photoList.size() == 0) {
 			Photo p = new Photo();
-			File path = this.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+			File path = this
+					.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 			File sample = new File(path, "1.jpg");
 			p.setImage(Uri.fromFile(sample));
 			p.setLocation("Pittsburgh");
 			p.setTimeStamp(System.currentTimeMillis());
 			photoList.add(p);
 		}
-		Log.d(TAG,
-				"Album retrieved successfully, length = "
-						+ photoList.size());
+		Log.d(TAG, "Album retrieved successfully, length = " + photoList.size());
 		gridView = (GridView) findViewById(R.id.gallery_list);
 		HomeGridAdapter adapter = new HomeGridAdapter(this, this.photoList);
 		gridView.setAdapter(adapter);
 		Log.d(TAG, "grid view adapter set");
 	}
-	
+
 	private class LoadPhotoTask extends AsyncTask<Void, Void, Void> {
 
 		@Override
@@ -104,14 +103,13 @@ public class HomeActivity extends Activity {
 			loadPhoto();
 			return null;
 		}
-		
+
 	}
-	
-	
+
 	// this method is used to go to edit page directly to test more easily
 	// will be removed once integrate all parts together.
-	public void test_edit(View view){
-		Intent intent = new Intent(this,EditActivity.class);
+	public void test_edit(View view) {
+		Intent intent = new Intent(this, EditActivity.class);
 		startActivity(intent);
 	}
 

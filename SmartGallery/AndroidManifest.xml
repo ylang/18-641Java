@@ -19,14 +19,11 @@
         <activity
             android:name="com.ece.smartGallery.activity.WelcomeActivity"
             android:label="@string/app_name" >
-
-            <!--
-                 <intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            -->
         </activity>
         <activity
             android:name="com.ece.smartGallery.activity.HomeActivity"
@@ -43,11 +40,15 @@
         <activity
             android:name="com.ece.smartGallery.activity.LoginActivity"
             android:label="@string/title_activity_login" >
-            <intent-filter>
+
+            <!--
+                 <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            -->
+
         </activity>
 
         <meta-data

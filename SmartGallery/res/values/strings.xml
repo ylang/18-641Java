@@ -32,5 +32,9 @@
     <string name="post">Post on Facebook</string>
     <string name="title_activity_welcome">WelcomeActivity</string>
     <string name="add_album">Create a new album</string>
+    <string name="share">share</string>
+    <string name="share_nfc">share vis NFC</string>
+    <string name="share_bluetooth">share viw bluetooth</string>
+    <string name="share_fb">share via Facebook</string>
 
 </resources>

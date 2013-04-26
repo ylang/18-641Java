@@ -18,7 +18,7 @@ public class Photo implements Serializable{
 	private String name;
 	private long timeStamp;
 	private String text;	//text comment
-	private byte[] voice;	//voice comment
+	private String voice;	//voice comment
 	private String imageURI;	//the URI of the image file. (in string)
 	private int commentType;
 	private String location;
@@ -103,11 +103,11 @@ public class Photo implements Serializable{
 		this.text = text;
 	}
 
-	public byte[] getVoice() {
+	public String getVoice() {
 		return voice;
 	}
 
-	public void setVoice(byte[] voice) {
+	public void setVoice(String voice) {
 		this.voice = voice;
 	}
 

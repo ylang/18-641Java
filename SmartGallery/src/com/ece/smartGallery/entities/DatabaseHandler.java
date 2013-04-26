@@ -72,6 +72,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			cursor.moveToFirst();
 		Album album = Album.getNewAlbum(Integer.parseInt(cursor.getString(0)),
 				cursor.getString(1), Integer.parseInt(cursor.getString(2)));
+		db.close();
 		return album;
 	}
 
@@ -144,6 +145,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		}
 
 		// return contact list
+		db.close();
 		return albumList;
 	}
 
@@ -162,6 +164,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		db.close();
 		return photo;
 	}
 
@@ -185,6 +188,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				}
 			} while (cursor.moveToNext());
 		}
+		db.close();
 		return photoList;
 	}
 
@@ -208,9 +212,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		}
 		try {
 			Datastorage.savePhoto(context, cursor.getString(1), photo);
+			db.close();
 			return true;
 		} catch (IOException e) {
 			e.printStackTrace();
+			db.close();
 			return false;
 		}
 	}

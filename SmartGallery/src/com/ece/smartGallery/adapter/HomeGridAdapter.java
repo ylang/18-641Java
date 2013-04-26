@@ -31,7 +31,6 @@ public class HomeGridAdapter extends BaseAdapter {
 	private final String TAG = this.getClass().getName();
 	private int count;
 	private List<Photo> list;
-	private Bitmap[] bitmaps;
 	private Context context;
 	private LayoutInflater layoutInflater;
 
@@ -40,11 +39,6 @@ public class HomeGridAdapter extends BaseAdapter {
 		this.count = list.size();
 		this.list = list;
 		layoutInflater = LayoutInflater.from(context);
-		bitmaps = new Bitmap[count];
-		for (int i = 0; i < count; i++) {
-			bitmaps[i] = BitmapFactory.decodeResource(context.getResources(),
-					R.drawable.ic_launcher);
-		}
 	}
 
 	@Override
@@ -54,7 +48,7 @@ public class HomeGridAdapter extends BaseAdapter {
 
 	@Override
 	public Object getItem(int pos) {
-		return bitmaps[pos];
+		return list.get(pos);
 	}
 
 	@Override

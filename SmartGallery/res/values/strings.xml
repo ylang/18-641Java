@@ -23,5 +23,9 @@
     <string name="add_comment_here">Add text comment here</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
+    <string name="title_activity_login">LoginActivity</string>
+
+    <!-- @ruoyul Facebook app id -->
+    <string name="app_id">449762498438737</string>
 
 </resources>

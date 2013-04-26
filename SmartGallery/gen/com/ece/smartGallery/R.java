@@ -216,6 +216,10 @@ containing a value of this type.
     }
     public static final class id {
         public static final int action_settings=0x7f040034;
+        public static final int action_share=0x7f040035;
+        public static final int action_share_via_bluetooth=0x7f040037;
+        public static final int action_share_via_fb=0x7f040036;
+        public static final int action_share_via_nfc=0x7f040038;
         public static final int add_new_album=0x7f040018;
         public static final int add_new_photo=0x7f040011;
         public static final int add_scratch_button=0x7f04000d;
@@ -350,6 +354,10 @@ containing a value of this type.
         public static final int post=0x7f050033;
         public static final int save=0x7f05002d;
         public static final int scratch_comment=0x7f050029;
+        public static final int share=0x7f050036;
+        public static final int share_bluetooth=0x7f050038;
+        public static final int share_fb=0x7f050039;
+        public static final int share_nfc=0x7f050037;
         public static final int text_comment=0x7f050024;
         public static final int title_activity_display=0x7f05001e;
         public static final int title_activity_edit=0x7f05001f;

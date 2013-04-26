@@ -68,9 +68,9 @@ public class HomeActivity extends Activity {
 	    switch (item.getItemId()) {
 	        case R.id.action_settings:
 	        	Intent intent = new Intent(this, LoginActivity.class);
-	        	File path = this.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-	        	File file = new File(path, "1.jpg");
-	        	intent.putExtra(Photo.PHOTO, file.getAbsolutePath());
+	        	Album a = db.getAllAlbums().get(0);
+	        	Photo p = db.getPhoto(a, a.getCount() - 1);
+	        	intent.putExtra(Photo.PHOTO, p.getImage());
 	        	startActivity(intent);
 	            return true;
 	        default:

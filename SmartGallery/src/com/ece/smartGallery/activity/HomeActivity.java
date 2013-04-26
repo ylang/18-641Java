@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -33,6 +34,7 @@ public class HomeActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
+		Log.d(TAG, "on Create");
 		this.addPhoto = (LinearLayout) findViewById(R.id.add_new_photo);
 		this.addPhoto.setOnClickListener(new View.OnClickListener() {
 
@@ -79,33 +81,12 @@ public class HomeActivity extends Activity {
 
 	public void loadPhoto() {
 		photoList = db.getAllPhotos(albumId);
-		if (photoList.size() == 0) {
-			Photo p = new Photo();
-			File path = this
-					.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-			File sample = new File(path, "1.jpg");
-			p.setImage(Uri.fromFile(sample));
-			p.setLocation("Pittsburgh");
-			p.setTimeStamp(System.currentTimeMillis());
-			photoList.add(p);
-		}
 		Log.d(TAG, "Album retrieved successfully, length = " + photoList.size());
 		gridView = (GridView) findViewById(R.id.gallery_list);
 		HomeGridAdapter adapter = new HomeGridAdapter(this, this.photoList);
 		gridView.setAdapter(adapter);
 		Log.d(TAG, "grid view adapter set");
 	}
-
-	private class LoadPhotoTask extends AsyncTask<Void, Void, Void> {
-
-		@Override
-		protected Void doInBackground(Void... arg0) {
-			loadPhoto();
-			return null;
-		}
-
-	}
-
 	// this method is used to go to edit page directly to test more easily
 	// will be removed once integrate all parts together.
 	public void test_edit(View view) {

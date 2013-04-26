@@ -61,6 +61,7 @@ public class WelcomeActivity extends Activity {
 				com.ece.smartGallery.activity.HomeActivity.class);
 		intent.putExtra(Album.ALBUM, albumId);
 		Log.d(TAG, "album " + albumId + " is selected");
+		db.close();
 		startActivity(intent);
 	}
 

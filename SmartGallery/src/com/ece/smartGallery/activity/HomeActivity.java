@@ -87,7 +87,6 @@ public class HomeActivity extends Activity {
 		gridView.setAdapter(adapter);
 		Log.d(TAG, "grid view adapter set");
 	}
-
 	// this method is used to go to edit page directly to test more easily
 	// will be removed once integrate all parts together.
 	public void test_edit(View view) {

@@ -28,5 +28,7 @@
     <!-- @ruoyul Facebook app id -->
     <string name="app_id">449762498438737</string>
     <string name="post">Post on Facebook</string>
+    <string name="title_activity_welcome">WelcomeActivity</string>
+    <string name="add_album">Create a new album</string>
 
 </resources>

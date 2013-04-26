@@ -1,21 +1,17 @@
 package com.ece.smartGallery.DBLayout;
 
 import java.io.IOException;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import android.content.Context;
 
 import com.ece.smartGallery.entities.Datastorage;
 
-public class Album implements Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 7615579591647445134L;
+public class Album {
+
+	public static final String ALBUM = "album";
+	private int id;
 	private int count;
-	private List<String> photoList;
+	private String name;
 	
 	/**
 	 * Get the album.
@@ -35,43 +31,75 @@ public class Album implements Serializable {
 		return new Album();
 	}
 	
-	protected Album() {
-		this.count = 0;
-		this.photoList = new ArrayList<String>();
+	public static Album getNewAlbum(String name) {
+		return new Album(name);
 	}
 	
-	public List<String> getPhotoFiles() {
-		return this.photoList;
+	public static Album getNewAlbum(int id, String name, int count) {
+		return new Album(id, name, count);
+	}
+	
+	protected Album(int id, String name, int count) {
+		this.name = name;
+		this.id = id;
+		this.count = count;
+	}
+	
+	protected Album(String name) {
+		this.name = name;
+		this.count = 0;
+	}
+	
+	protected Album() {
+		this.count = 0;
+	}
+	
+	public String getName() {
+		return this.name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public int getId() {
+		return this.id;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 	public int getCount() {
 		return this.count;
 	}
 	
+	public void addCountByOne() {
+		this.count ++;
+	}
 	/**
 	 * Add a new photo into the album
 	 * @param photo
 	 * @return id of the new photo, or -1 if failed to save.
 	 */
-	public int addNewPhoto(Context context, Photo photo) {
+	public String addNewPhoto(Context context, Photo photo) {
 		String fileName = "photo_" + this.count + ".dat";
 		try {
 			Datastorage.savePhoto(context, fileName, photo);
-			this.photoList.add(fileName);
 			this.count ++;
-			return (this.count - 1);
+			return fileName;
 		} catch (IOException e) {
 			e.printStackTrace();
-			return -1;
+			return null;
 		}
 	}
-	
+/*	
 	public String getPhotoFile(int id) {
 		if (id >= count) {
 			return null;
 		}
 		return this.photoList.get(id);
-	}
+	}*/
 //	private int id;
 //	private int userId;
 //	private String name;

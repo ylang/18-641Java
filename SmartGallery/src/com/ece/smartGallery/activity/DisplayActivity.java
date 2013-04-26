@@ -9,21 +9,21 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 public class DisplayActivity extends Activity {
     private static final String LOG_TAG = "AudioRecordTest";
     private static String mFileName = null;
     
-	 private PlayButton   mPlayButton = null;
+	 private Button   mPlayButton = null;
 	 private MediaPlayer   mPlayer = null;
+	 private boolean mStartPlaying = true;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -32,14 +32,29 @@ public class DisplayActivity extends Activity {
         mFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
         mFileName += "/audiorecordtest.3gp";
 		
-        LinearLayout ll = new LinearLayout(this);
-        mPlayButton = new PlayButton(this);
-        ll.addView(mPlayButton,
-            new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                0));
-        setContentView(ll);
+//        LinearLayout ll = new LinearLayout(this);
+//        mPlayButton = new PlayButton(this);
+//        ll.addView(mPlayButton,
+//            new LinearLayout.LayoutParams(
+//                ViewGroup.LayoutParams.WRAP_CONTENT,
+//                ViewGroup.LayoutParams.WRAP_CONTENT,
+//                0));
+//        setContentView(ll);
+        
+        mPlayButton = (Button) findViewById(R.id.play_voice_comment);
+        mPlayButton.setText("Start playing");
+        mPlayButton.setOnClickListener(new View.OnClickListener() {
+			
+            public void onClick(View v) {
+                onPlay(mStartPlaying);
+                if (mStartPlaying) {
+                	mPlayButton.setText("Stop playing");
+                } else {
+                	mPlayButton.setText("Start playing");
+                }
+                mStartPlaying = !mStartPlaying;
+            }
+		});
 		
 //		Intent intent = getIntent();
 //		String text_comment = intent.getStringExtra("text_comment");

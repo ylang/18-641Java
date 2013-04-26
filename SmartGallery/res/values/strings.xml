@@ -23,5 +23,7 @@
     <string name="add_comment_here">Add text comment here</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
+    <string name="clear">Clear</string>
+    <string name="title_activity_scratch">ScratchActivity</string>
 
 </resources>

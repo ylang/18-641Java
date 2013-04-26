@@ -7,9 +7,9 @@
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="17" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    
 
     <application
         android:allowBackup="true"
@@ -32,6 +32,10 @@
         <activity
             android:name="com.ece.smartGallery.activity.EditActivity"
             android:label="@string/title_activity_edit" >
+        </activity>
+        <activity
+            android:name="com.ece.smartGallery.activity.ScratchActivity"
+            android:label="@string/title_activity_scratch" >
         </activity>
     </application>
 

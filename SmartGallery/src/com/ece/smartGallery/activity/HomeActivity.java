@@ -39,7 +39,7 @@ public class HomeActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		//loadPhoto();
+		loadPhoto();
 	}
 
 	@Override

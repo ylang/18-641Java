@@ -49,10 +49,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				+ KEY_ID + " INTEGER PRIMARY KEY," + KEY_NAME + " TEXT,"
 				+ KEY_COUNT + " INTEGER" + ")";
 		db.execSQL(CREATE_ALBUM_TABLE);
-		if (this.getAllAlbums().size() == 0) {
-			//add a defult album
-			this.addAlbum("default");
-		}
 	}
 
 	// Upgrading database
@@ -72,7 +68,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_NAME, album.getName());
 		values.put(KEY_COUNT, album.getCount());
 		// Inserting Row
-		long id = db.insert(TABLE_PHOTOS, null, values);
+		long id = db.insert(TABLE_ALBUMS, null, values);
 		album.setId((int) id);
 
 		String CREATE_PHOTOS_TABLE = "CREATE TABLE " + TABLE_PHOTOS + id + "("

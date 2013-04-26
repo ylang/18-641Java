@@ -1,19 +1,14 @@
 package com.ece.smartGallery.DBLayout;
 
 import java.io.IOException;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import android.content.Context;
 
 import com.ece.smartGallery.entities.Datastorage;
 
-public class Album implements Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 7615579591647445134L;
+public class Album {
+
+	public static final String ALBUM = "album";
 	private int id;
 	private int count;
 	private String name;

@@ -25,8 +25,11 @@ public final class R {
         public static final int ic_launcher=0x7f020001;
     }
     public static final class id {
-        public static final int action_settings=0x7f080012;
+        public static final int action_settings=0x7f080017;
+        public static final int add_new_album=0x7f080010;
+        public static final int add_new_photo=0x7f08000e;
         public static final int add_voice_button=0x7f080009;
+        public static final int album_list=0x7f080011;
         public static final int display_geolocation=0x7f080001;
         public static final int display_image=0x7f080000;
         public static final int display_image2=0x7f080004;
@@ -35,30 +38,36 @@ public final class R {
         public static final int edit_comment_input=0x7f080008;
         public static final int edit_image=0x7f080007;
         public static final int edit_save=0x7f08000b;
-        public static final int gallery_list=0x7f08000e;
+        public static final int gallery_list=0x7f08000f;
         public static final int go_to_edit=0x7f08000d;
-        public static final int grid_item_date=0x7f080011;
-        public static final int grid_item_geolocation=0x7f080010;
-        public static final int grid_item_image=0x7f08000f;
+        public static final int grid_item_date=0x7f080014;
+        public static final int grid_item_geolocation=0x7f080013;
+        public static final int grid_item_image=0x7f080012;
         public static final int imageButton1=0x7f080005;
         public static final int imageButton2=0x7f080006;
         public static final int imageView1=0x7f08000a;
+        public static final int list_item_count=0x7f080016;
+        public static final int list_item_name=0x7f080015;
         public static final int play_voice_comment=0x7f080003;
     }
     public static final class layout {
         public static final int activity_display=0x7f030000;
         public static final int activity_edit=0x7f030001;
         public static final int activity_home=0x7f030002;
-        public static final int home_grid_layout=0x7f030003;
+        public static final int activity_welcome=0x7f030003;
+        public static final int home_grid_layout=0x7f030004;
+        public static final int welcome_list_layout=0x7f030005;
     }
     public static final class menu {
         public static final int display=0x7f070000;
         public static final int edit=0x7f070001;
         public static final int home=0x7f070002;
+        public static final int welcome=0x7f070003;
     }
     public static final class string {
         public static final int action_settings=0x7f050001;
         public static final int add=0x7f050003;
+        public static final int add_album=0x7f050017;
         public static final int add_comment_here=0x7f050013;
         public static final int add_picture=0x7f050004;
         public static final int app_name=0x7f050000;
@@ -78,6 +87,7 @@ public final class R {
         public static final int text_comment=0x7f05000b;
         public static final int title_activity_display=0x7f050005;
         public static final int title_activity_edit=0x7f050006;
+        public static final int title_activity_welcome=0x7f050016;
         public static final int voice_comment=0x7f05000e;
     }
     public static final class style {

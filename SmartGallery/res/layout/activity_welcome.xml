@@ -7,20 +7,14 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".HomeActivity" >
+    tools:context=".WelcomeActivity" >
 
-        <Button android:id="@+id/go_to_edit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="test_edit"
-        android:text="go to edit for testing" />
-        
     <LinearLayout
-        android:id="@+id/add_new_photo"
-        android:clickable="true"
+        android:id="@+id/add_new_album"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@drawable/bg_with_buttom_border"
+        android:clickable="true"
         android:orientation="horizontal"
         android:paddingLeft="5dp" >
 
@@ -35,24 +29,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:text="@string/add_picture"
+            android:text="@string/add_album"
             android:textColor="#FFFFFF"
             android:textSize="15sp" />
     </LinearLayout>
 
-    <GridView
-        android:padding="5dp"
-        android:id="@+id/gallery_list"
+    <ListView
+        android:id="@+id/album_list"
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
-        android:background="#FFFFFF"
-        android:columnWidth="150dp"
-        android:gravity="center"
-        android:horizontalSpacing="10dp"
-        android:numColumns="auto_fit"
-        android:stretchMode="columnWidth"
-        android:verticalSpacing="10dp" >
-    </GridView>
-
+        android:layout_height="wrap_content" >
+    </ListView>
 
 </LinearLayout>

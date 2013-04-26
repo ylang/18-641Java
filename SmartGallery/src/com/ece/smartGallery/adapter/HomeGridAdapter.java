@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ece.smartGallery.R;
+import com.ece.smartGallery.DBLayout.Album;
 import com.ece.smartGallery.DBLayout.Photo;
 import com.ece.smartGallery.activity.DisplayActivity;
 
@@ -146,6 +147,7 @@ public class HomeGridAdapter extends BaseAdapter {
 				intent.putExtra(Photo.PHOTO, photo);
 				Log.d(TAG,
 						"start display activity, photo id = " + photo.getId());
+				context.startActivity(intent);
 			}
 		});
 	}

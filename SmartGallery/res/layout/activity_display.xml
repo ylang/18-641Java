@@ -86,7 +86,7 @@
 	            android:text="@string/scratch_comment" />
 	
 	        <ImageView
-	            android:id="@+id/display_image"
+	            android:id="@+id/display_image2"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:contentDescription="@string/default_picture"

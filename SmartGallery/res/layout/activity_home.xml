@@ -9,6 +9,12 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".HomeActivity" >
 
+        <Button android:id="@+id/go_to_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="test_edit"
+        android:text="go to edit for testing" />
+        
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -46,5 +52,6 @@
         android:stretchMode="columnWidth"
         android:verticalSpacing="10dp" >
     </GridView>
+
 
 </LinearLayout>

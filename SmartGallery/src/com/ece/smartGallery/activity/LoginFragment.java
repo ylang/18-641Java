@@ -2,35 +2,26 @@ package com.ece.smartGallery.activity;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.ece.smartGallery.R;
-import com.facebook.FacebookRequestError;
+import com.ece.smartGallery.DBLayout.Photo;
 import com.facebook.HttpMethod;
 import com.facebook.Request;
 import com.facebook.RequestAsyncTask;
-import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
-import com.facebook.android.FacebookError;
 import com.facebook.widget.LoginButton;
 
 public class LoginFragment extends Fragment {
@@ -44,6 +35,8 @@ public class LoginFragment extends Fragment {
 	private static final String PENDING_PUBLISH_KEY = "pendingPublishReauthorization";
 	private boolean pendingPublishReauthorization = false;
 
+	private String photoPath;
+
 	private Session.StatusCallback callback = new Session.StatusCallback() {
 		@Override
 		public void call(Session session, SessionState state,
@@ -55,6 +48,8 @@ public class LoginFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Intent intent = getActivity().getIntent();
+		photoPath = intent.getStringExtra(Photo.PHOTO);
 		uiHelper = new UiLifecycleHelper(getActivity(), callback);
 		uiHelper.onCreate(savedInstanceState);
 	}
@@ -71,8 +66,8 @@ public class LoginFragment extends Fragment {
 		postButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				hehe();
-				Log.i("WAT", "hehe done");
+				// hehe();
+				haha();
 				// publishStory();
 			}
 		});
@@ -103,50 +98,12 @@ public class LoginFragment extends Fragment {
 		if (session != null && (session.isOpened() || session.isClosed())) {
 			onSessionStateChange(session, session.getState(), null);
 		}
-
 		uiHelper.onResume();
 	}
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		// super.onActivityResult(requestCode, resultCode, data);
-		Log.i("WAT", "onActivityResult");
-		switch (requestCode) {
-		/*
-		 * if this is the result for a photo picker from the gallery, upload the
-		 * image after scaling it. You can use the Utility.scaleImage() function
-		 * for scaling
-		 */
-		case 42: {
-			Log.i("WAT", "onActivityResult case 42");
-			if (resultCode == Activity.RESULT_OK) {
-				Uri photoUri = data.getData();
-				if (photoUri != null) {
-					Bundle params = new Bundle();
-					Log.i("WAT", photoUri.getPath());
-					try {
-						params.putByteArray("photo",
-								Utility.scaleImage(getActivity(), photoUri));
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					params.putString("caption",
-							"FbAPIs Sample App photo upload");
-					Utility.mAsyncRunner.request("me/photos", params, "POST",
-							new PhotoUploadListener(), null);
-				} else {
-					Toast.makeText(getActivity(),
-							"Error selecting image from the gallery.",
-							Toast.LENGTH_SHORT).show();
-				}
-			} else {
-				Toast.makeText(getActivity(), "No image selected for upload.",
-						Toast.LENGTH_SHORT).show();
-			}
-			break;
-		}
-		}
-
+		super.onActivityResult(requestCode, resultCode, data);
 		uiHelper.onActivityResult(requestCode, resultCode, data);
 	}
 
@@ -169,102 +126,20 @@ public class LoginFragment extends Fragment {
 		uiHelper.onSaveInstanceState(outState);
 	}
 
-	// private void publishStory() {
-	// Session session = Session.getActiveSession();
-	//
-	// if (session != null) {
-	// // Check for publish permissions
-	// List<String> permissions = session.getPermissions();
-	// if (!isSubsetOf(PERMISSIONS, permissions)) {
-	// pendingPublishReauthorization = true;
-	// Session.NewPermissionsRequest newPermissionsRequest = new
-	// Session.NewPermissionsRequest(
-	// this, PERMISSIONS);
-	// session.requestNewPublishPermissions(newPermissionsRequest);
-	// return;
-	// }
-	//
-	// Bundle postParams = new Bundle();
-	// postParams.putString("name", "Facebook SDK for Android");
-	// postParams.putString("caption",
-	// "Build great social apps and get more installs.");
-	// postParams
-	// .putString(
-	// "description",
-	// "The Facebook SDK for Android makes it easier and faster to develop Facebook integrated Android apps.");
-	// postParams.putString("link",
-	// "https://developers.facebook.com/android");
-	// postParams
-	// .putString("picture",
-	// "https://raw.github.com/fbsamples/ios-3.x-howtos/master/Images/iossdk_logo.png");
-	//
-	// Request.Callback callback = new Request.Callback() {
-	// public void onCompleted(Response response) {
-	// JSONObject graphResponse = response.getGraphObject()
-	// .getInnerJSONObject();
-	// String postId = null;
-	// try {
-	// postId = graphResponse.getString("id");
-	// } catch (JSONException e) {
-	// Log.i(TAG, "JSON error " + e.getMessage());
-	// }
-	// FacebookRequestError error = response.getError();
-	// if (error != null) {
-	// Toast.makeText(getActivity().getApplicationContext(),
-	// error.getErrorMessage(), Toast.LENGTH_SHORT)
-	// .show();
-	// } else {
-	// Toast.makeText(getActivity().getApplicationContext(),
-	// postId, Toast.LENGTH_LONG).show();
-	// }
-	// }
-	// };
-	//
-	// Request request = new Request(session, "me/feed", postParams,
-	// HttpMethod.POST, callback);
-	//
-	// RequestAsyncTask task = new RequestAsyncTask(request);
-	// task.execute();
-	// }
-	// }
-	//
-	// private boolean isSubsetOf(Collection<String> subset,
-	// Collection<String> superset) {
-	// for (String string : subset) {
-	// if (!superset.contains(string)) {
-	// return false;
-	// }
-	// }
-	// return true;
-	// }
-
-	private void hehe() {
-		Intent intent = new Intent(Intent.ACTION_PICK,
-				(MediaStore.Images.Media.EXTERNAL_CONTENT_URI));
-		Log.i("what", "hehe");
-		startActivityForResult(intent, 42);
-	}
-
-	public class PhotoUploadListener extends BaseRequestListener {
-
-		@Override
-		public void onComplete(final String response, final Object state) {
-			// dialog.dismiss();
-			// mHandler.post(new Runnable() {
-			// @Override
-			// public void run() {
-			// new UploadPhotoResultDialog(Hackbook.this,
-			// "Upload Photo executed", response).show();
-			// }
-			// });
+	private void haha() {
+		Uri photoUri = Uri.parse(this.photoPath);
+		Bundle params = new Bundle();
+		Log.i("WAT", photoUri.getPath());
+		params.putString("caption", "FbAPIs Sample App photo upload");
+		try {
+			params.putByteArray("photo",
+					Utility.scaleImage(getActivity(), photoUri));
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-
-		public void onFacebookError(FacebookError error) {
-			// dialog.dismiss();
-			// Toast.makeText(getApplicationContext(),
-			// "Facebook Error: " + error.getMessage(), Toast.LENGTH_LONG)
-			// .show();
-		}
+		Request request = new Request(Session.getActiveSession(), "me/feed",
+				params, HttpMethod.POST); // TODO callback?
+		RequestAsyncTask task = new RequestAsyncTask(request);
+		task.execute();
 	}
-
 }

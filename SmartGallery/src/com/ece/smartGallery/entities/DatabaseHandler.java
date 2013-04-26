@@ -40,6 +40,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 	public DatabaseHandler(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
+		this.context = context;
 	}
 
 	// Creating Tables
@@ -59,6 +60,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 		// Create tables again
 		onCreate(db);
+	}
+
+	public Album getAlbum(int id) {
+		SQLiteDatabase db = this.getReadableDatabase();
+
+		Cursor cursor = db.query(TABLE_ALBUMS, new String[] { KEY_ID, KEY_NAME, KEY_COUNT }, KEY_ID
+				+ "=?", new String[] { String.valueOf(id) }, null, null, null,
+				null);
+		if (cursor != null)
+			cursor.moveToFirst();
+		Album album = Album.getNewAlbum(Integer.parseInt(cursor.getString(0)),
+				cursor.getString(1), Integer.parseInt(cursor.getString(2)));
+		return album;
 	}
 
 	public Album addAlbum(String name) {
@@ -81,6 +95,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 	/**
 	 * Adding new photo
+	 * 
 	 * @param album
 	 * @param photo
 	 * @return true if added successfully, otherwise false
@@ -92,7 +107,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		String file = album.addNewPhoto(context, photo);
 		if (file != null) {
 			values.put(KEY_FILE, file);
-			db.insert(TABLE_PHOTOS + album.getId(), null, values);
+			long id = db.insert(TABLE_PHOTOS + album.getId(), null, values);
+			photo.setId((int) id);
 			values = new ContentValues();
 			values.put(KEY_NAME, album.getName());
 			values.put(KEY_COUNT, album.getCount());

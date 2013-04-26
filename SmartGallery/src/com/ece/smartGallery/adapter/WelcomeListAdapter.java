@@ -57,7 +57,7 @@ public class WelcomeListAdapter extends BaseAdapter {
 		} else if (cnt == 1) {
 			count.setText("contains 1 photo");
 		} else {
-			count.setText("contains " + cnt + "photos");
+			count.setText("contains " + cnt + " photos");
 		}
 		return row;
 	}

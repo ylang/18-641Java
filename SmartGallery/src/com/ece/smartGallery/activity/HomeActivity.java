@@ -1,8 +1,6 @@
 package com.ece.smartGallery.activity;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
@@ -14,18 +12,17 @@ import android.os.Environment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.GridView;
-import android.widget.Toast;
+import android.widget.LinearLayout;
 
 import com.ece.smartGallery.R;
 import com.ece.smartGallery.DBLayout.Album;
 import com.ece.smartGallery.DBLayout.Photo;
 import com.ece.smartGallery.adapter.HomeGridAdapter;
 import com.ece.smartGallery.entities.DatabaseHandler;
-import com.ece.smartGallery.entities.Datastorage;
 
 public class HomeActivity extends Activity {
+	private LinearLayout addPhoto;
 	private GridView gridView;
 	private int albumId;
 	private final String TAG = this.getClass().getName();
@@ -36,7 +33,15 @@ public class HomeActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
-		db = new DatabaseHandler(this);
+		this.addPhoto = (LinearLayout) findViewById(R.id.add_new_photo);
+		this.addPhoto.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				addNewPhoto();
+			}
+		});
+		db = new DatabaseHandler(getApplicationContext());
 	}
 	
 	@Override
@@ -56,6 +61,22 @@ public class HomeActivity extends Activity {
 		return true;
 	}
 	
+	public void addNewPhoto() {
+		Photo p = new Photo();
+		File path = this.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+		File sample = new File(path, "1.jpg");
+		p.setImage(Uri.fromFile(sample));
+		p.setLocation("Pittsburgh");
+		p.setTimeStamp(System.currentTimeMillis());
+		Album album = db.getAlbum(albumId);
+		boolean success = db.addPhoto(album, p);
+		if (success) {
+			Log.d(TAG, "add new photo success!");
+		}
+		this.loadPhoto();
+		
+	}
+	
 	public void loadPhoto() {
 		photoList = db.getAllPhotos(albumId);
 		if (photoList.size() == 0) {
@@ -65,7 +86,6 @@ public class HomeActivity extends Activity {
 			p.setImage(Uri.fromFile(sample));
 			p.setLocation("Pittsburgh");
 			p.setTimeStamp(System.currentTimeMillis());
-			photoList.add(p);
 			photoList.add(p);
 		}
 		Log.d(TAG,

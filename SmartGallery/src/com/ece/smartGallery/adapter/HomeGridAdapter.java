@@ -15,6 +15,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,23 +69,8 @@ public class HomeGridAdapter extends BaseAdapter {
 		final Photo photo = list.get(pos);
 		ImageView imageView = (ImageView) grid
 				.findViewById(R.id.grid_item_image);
-		File file = new File(photo.getImage().getPath());
-		Bitmap b = decodeFile(file);
-		Matrix mat = new Matrix();
-		mat.postRotate(this.getCameraPhotoOrientation(context,
-				photo.getImage(), file.getAbsolutePath()));
-		Bitmap bMapRotate = Bitmap.createBitmap(b, 0, 0, b.getWidth(),
-				b.getHeight(), mat, true);
-		imageView.setImageBitmap(bMapRotate);
-		imageView.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(context, DisplayActivity.class);
-				intent.putExtra(Photo.PHOTO, photo);
-				Log.d(TAG,
-						"start display activity, photo id = " + photo.getId());
-			}
-		});
+		LoadAsyncTask task = new LoadAsyncTask(imageView, photo);
+		task.execute();
 		TextView geoTextView = (TextView) grid
 				.findViewById(R.id.grid_item_geolocation);
 		TextView dateTextView = (TextView) grid
@@ -149,5 +135,48 @@ public class HomeGridAdapter extends BaseAdapter {
 			e.printStackTrace();
 		}
 		return rotate;
+	}
+	
+	private void setImage(ImageView view, Bitmap b, final Photo photo) {
+		view.setImageBitmap(b);
+		view.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(context, DisplayActivity.class);
+				intent.putExtra(Photo.PHOTO, photo);
+				Log.d(TAG,
+						"start display activity, photo id = " + photo.getId());
+			}
+		});
+	}
+	
+	class LoadAsyncTask extends AsyncTask<Void, Void, Void> {
+		
+		private Photo photo;
+		private ImageView view;
+		private Bitmap bitmap;
+		LoadAsyncTask(ImageView view, Photo photo) {
+			this.photo = photo;
+			this.view = view;
+		}
+
+		@Override
+		protected Void doInBackground(Void... arg0) {
+			File file = new File(photo.getImage().getPath());
+			Bitmap b = decodeFile(file);
+			Matrix mat = new Matrix();
+			mat.postRotate(getCameraPhotoOrientation(context,
+					photo.getImage(), file.getAbsolutePath()));
+			bitmap = Bitmap.createBitmap(b, 0, 0, b.getWidth(),
+					b.getHeight(), mat, true);
+			return null;
+		}
+		
+		@Override
+		protected void onPostExecute(Void arg0) {
+			setImage(view, bitmap, photo);
+			Log.d(TAG, "onPostExecute");
+		}
+		
 	}
 }

@@ -28,7 +28,6 @@ public class HomeActivity extends Activity {
 	private int albumId;
 	private final String TAG = this.getClass().getName();
 	private List<Photo> photoList;
-	private ProgressDialog progressDialog;
 	DatabaseHandler db;
 
 	@Override
@@ -54,9 +53,7 @@ public class HomeActivity extends Activity {
 		if (intent != null) {
 			albumId = intent.getIntExtra(Album.ALBUM, 0);
 		}
-		// loadPhoto();
-		LoadPhotoTask load = new LoadPhotoTask();
-		load.execute();
+		loadPhoto();
 	}
 
 	@Override
@@ -89,41 +86,6 @@ public class HomeActivity extends Activity {
 		HomeGridAdapter adapter = new HomeGridAdapter(this, this.photoList);
 		gridView.setAdapter(adapter);
 		Log.d(TAG, "grid view adapter set");
-	}
-
-	private class LoadPhotoTask extends AsyncTask<Void, Void, Void> {
-
-		@Override
-		protected void onPreExecute() {
-			/*
-			 * This is executed on UI thread before doInBackground(). It is the
-			 * perfect place to show the progress dialog.
-			 */
-			progressDialog = ProgressDialog.show(HomeActivity.this, "",
-					"Loading...");
-			Log.d(TAG, "onPreExecute");
-		}
-
-		@Override
-		protected Void doInBackground(Void... arg0) {
-			runOnUiThread(new Runnable() {
-
-				@Override
-				public void run() {
-					loadPhoto();
-				}
-
-			});
-
-			return null;
-		}
-
-		@Override
-		protected void onPostExecute(Void arg0) {
-			progressDialog.dismiss();
-			Log.d(TAG, "onPostExecute");
-		}
-
 	}
 
 	// this method is used to go to edit page directly to test more easily

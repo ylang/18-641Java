@@ -9,7 +9,7 @@
         android:targetSdkVersion="17" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -17,7 +17,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.ece.smartGallery.activity.HomeActivity"
+            android:name="com.ece.smartGallery.activity.WelcomeActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,12 +26,38 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="com.ece.smartGallery.activity.HomeActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
             android:name="com.ece.smartGallery.activity.DisplayActivity"
             android:label="@string/title_activity_display" >
         </activity>
         <activity
             android:name="com.ece.smartGallery.activity.EditActivity"
             android:label="@string/title_activity_edit" >
+        </activity>
+        <activity
+            android:name="com.ece.smartGallery.activity.LoginActivity"
+            android:label="@string/title_activity_login" >
+
+            <!--
+                 <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            -->
+
+        </activity>
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/app_id" />
+
+        <activity
+            android:name="com.facebook.LoginActivity"
+            android:label="@string/app_name" >
         </activity>
     </application>
 

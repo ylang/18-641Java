@@ -33,6 +33,7 @@ public class Datastorage {
 		return (mExternalStorageAvailable && mExternalStorageWriteable); 
 	}
 	
+	@Deprecated 
 	public static Album recoverAlbum(Context context) throws IOException{
 		if (!storageReady()) {
 			throw new IOException("Storage is not available");

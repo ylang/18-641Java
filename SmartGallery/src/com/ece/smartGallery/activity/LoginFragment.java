@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,8 +30,11 @@ import com.facebook.widget.LoginButton;
 
 public class LoginFragment extends Fragment {
 
+	// fragment activity context
+	private FragmentActivity activity;
+
+	// login button ui
 	private UiLifecycleHelper uiHelper;
-	private static final String TAG = "SmartGallery.LoginFragment";
 	private Button postButton;
 
 	// permissions
@@ -42,12 +46,16 @@ public class LoginFragment extends Fragment {
 	// the photo from the display activity
 	private Uri photoUri;
 
+	// debugging log tag
+	private static final String TAG = "SmartGallery.LoginFragment";
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Intent intent = getActivity().getIntent();
+		this.activity = getActivity();
+		Intent intent = this.activity.getIntent();
 		photoUri = intent.getParcelableExtra(Photo.PHOTO);
-		uiHelper = new UiLifecycleHelper(getActivity(),
+		uiHelper = new UiLifecycleHelper(this.activity,
 				new Session.StatusCallback() {
 					@Override
 					public void call(Session session, SessionState state,
@@ -64,7 +72,6 @@ public class LoginFragment extends Fragment {
 		View view = inflater.inflate(R.layout.activity_login, container, false);
 		LoginButton authButton = (LoginButton) view
 				.findViewById(R.id.authButton);
-		// authButton.setReadPermissions();
 		authButton.setPublishPermissions(PERMISSIONS);
 		authButton.setFragment(this);
 
@@ -131,7 +138,7 @@ public class LoginFragment extends Fragment {
 	}
 
 	/**
-	 * 
+	 * Scale photo and post to facebook.
 	 */
 	private void postPhoto() {
 		Session session = Session.getActiveSession();
@@ -153,17 +160,19 @@ public class LoginFragment extends Fragment {
 		Log.i(TAG, photoUri.getPath());
 		Bitmap bm = null;
 		try {
-			bm = Utility.scaleImage(getActivity(), photoUri);
+			bm = Utility.scaleImage(this.activity, photoUri);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
+		final FragmentActivity fa = this.activity;
 		Request request = Request.newUploadPhotoRequest(
 				Session.getActiveSession(), bm, new Request.Callback() {
 					@Override
 					public void onCompleted(Response response) {
-						Toast toast = Toast.makeText(getActivity(),
-								"Successfully posted photo", Toast.LENGTH_LONG);
+						Toast toast = Toast
+								.makeText(fa, "Successfully posted photo!",
+										Toast.LENGTH_LONG);
 						toast.show();
 					}
 				});
@@ -175,7 +184,7 @@ public class LoginFragment extends Fragment {
 	/**
 	 * @param subset
 	 * @param superset
-	 * @return
+	 * @return if the first set is a subset of the second set.
 	 */
 	private boolean isSubsetOf(Collection<String> subset,
 			Collection<String> superset) {

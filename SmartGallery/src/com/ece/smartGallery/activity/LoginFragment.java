@@ -162,8 +162,8 @@ public class LoginFragment extends Fragment {
 				Session.getActiveSession(), bm, new Request.Callback() {
 					@Override
 					public void onCompleted(Response response) {
-						Toast toast = Toast.makeText(getActivity(), "hehe",
-								Toast.LENGTH_LONG);
+						Toast toast = Toast.makeText(getActivity(),
+								"Successfully posted photo", Toast.LENGTH_LONG);
 						toast.show();
 					}
 				});

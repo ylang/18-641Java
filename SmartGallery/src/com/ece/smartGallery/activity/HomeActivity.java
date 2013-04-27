@@ -78,6 +78,9 @@ public class HomeActivity extends Activity {
 	        	intent = new Intent(this, BeamActivity.class);
 	        	startActivity(intent);
 	            return true;
+	        case R.id.action_bluetooth:
+	        	//TODO: push to bluetooth
+	        	//intent = new Intent(this);
 	        default:
 	            return super.onOptionsItemSelected(item);
 	    }
@@ -96,7 +99,10 @@ public class HomeActivity extends Activity {
 			Log.d(TAG, "add new photo success!");
 		}
 		this.loadPhoto();
-
+//		Intent intent = new Intent(this, EditActivity.class);
+//		intent.setAction(Intent.ACTION_INSERT);
+//		intent.putExtra(Album.ALBUM, album.getId());
+//		startActivity(intent);
 	}
 
 	public void loadPhoto() {

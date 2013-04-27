@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.ece.smartGallery.R;
 import com.ece.smartGallery.DBLayout.Photo;
@@ -38,6 +39,7 @@ public class LoginFragment extends Fragment {
 	private static final String PENDING_PUBLISH_KEY = "pendingPublishReauthorization";
 	private boolean pendingPublishReauthorization = false;
 
+	// the photo from the display activity
 	private Uri photoUri;
 
 	@Override
@@ -128,18 +130,17 @@ public class LoginFragment extends Fragment {
 		uiHelper.onSaveInstanceState(outState);
 	}
 
+	/**
+	 * 
+	 */
 	private void postPhoto() {
 		Session session = Session.getActiveSession();
 		if (session == null) {
 			Log.i(TAG, "session is null");
 			return;
-		} else {
-			Log.i(TAG, "session is not null");
 		}
 
 		List<String> permissions = session.getPermissions();
-		Log.i(TAG, "da" + permissions.toString());
-		Log.i(TAG, "xiao" + PERMISSIONS.toString());
 		if (!isSubsetOf(PERMISSIONS, permissions)) {
 			Log.i(TAG, "don't have permission");
 			pendingPublishReauthorization = true;
@@ -147,8 +148,6 @@ public class LoginFragment extends Fragment {
 					this, PERMISSIONS);
 			session.requestNewPublishPermissions(newPermissionsRequest);
 			return;
-		} else {
-			Log.i(TAG, "has permission");
 		}
 
 		Log.i(TAG, photoUri.getPath());
@@ -163,7 +162,9 @@ public class LoginFragment extends Fragment {
 				Session.getActiveSession(), bm, new Request.Callback() {
 					@Override
 					public void onCompleted(Response response) {
-						Log.i(TAG, response.toString());
+						Toast toast = Toast.makeText(getActivity(), "hehe",
+								Toast.LENGTH_LONG);
+						toast.show();
 					}
 				});
 		Bundle params = request.getParameters();
@@ -171,6 +172,11 @@ public class LoginFragment extends Fragment {
 		request.executeAsync();
 	}
 
+	/**
+	 * @param subset
+	 * @param superset
+	 * @return
+	 */
 	private boolean isSubsetOf(Collection<String> subset,
 			Collection<String> superset) {
 		for (String string : subset) {

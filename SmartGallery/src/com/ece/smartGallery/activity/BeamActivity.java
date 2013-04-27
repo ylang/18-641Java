@@ -9,6 +9,7 @@ import android.nfc.NfcAdapter.CreateNdefMessageCallback;
 import android.nfc.NfcEvent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,12 +19,13 @@ import com.ece.smartGallery.R;
 public class BeamActivity extends Activity implements CreateNdefMessageCallback {
     NfcAdapter mNfcAdapter;
     TextView textView;
-
+    private final String TAG = this.getClass().getName();
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_beam);
         TextView textView = (TextView) findViewById(R.id.beam_text);
+        textView.setText("on Create");
         // Check for available NFC Adapter
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
         if (mNfcAdapter == null) {
@@ -37,8 +39,10 @@ public class BeamActivity extends Activity implements CreateNdefMessageCallback 
 
     @Override
     public NdefMessage createNdefMessage(NfcEvent event) {
+    	Log.d(TAG, "ndef message created");
         String text = ("Beam me up, Android!\n\n" +
                 "Beam Time: " + System.currentTimeMillis());
+        Log.d(TAG, text);
         NdefMessage msg = new NdefMessage(
                 new NdefRecord[] { NdefRecord.createMime(
                         "application/vnd.com.ece.smartGallery.activity", text.getBytes())
@@ -74,12 +78,17 @@ public class BeamActivity extends Activity implements CreateNdefMessageCallback 
      * Parses the NDEF Message from the intent and prints to the TextView
      */
     void processIntent(Intent intent) {
+    	Log.d(TAG, "process intent, NFC message received");
         textView = (TextView) findViewById(R.id.beam_text);
         Parcelable[] rawMsgs = intent.getParcelableArrayExtra(
                 NfcAdapter.EXTRA_NDEF_MESSAGES);
         // only one message sent during the beam
         NdefMessage msg = (NdefMessage) rawMsgs[0];
         // record 0 contains the MIME type, record 1 is the AAR, if present
-        textView.setText(new String(msg.getRecords()[0].getPayload()));
+        if (msg.getRecords().length > 1) {
+        	textView.setText(new String(msg.getRecords()[1].getPayload()));
+        } else {
+        	textView.setText(new String(msg.getRecords()[0].getPayload()));
+        }
     }
 }

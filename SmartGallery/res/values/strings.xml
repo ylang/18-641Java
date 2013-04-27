@@ -36,5 +36,6 @@
     <string name="share_nfc">share vis NFC</string>
     <string name="share_bluetooth">share viw bluetooth</string>
     <string name="share_fb">share via Facebook</string>
+    <string name="title_activity_beam">BeamActivity</string>
 
 </resources>

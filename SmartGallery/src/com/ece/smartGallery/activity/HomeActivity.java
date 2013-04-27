@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import com.ece.smartGallery.R;
 import com.ece.smartGallery.DBLayout.Album;
 import com.ece.smartGallery.DBLayout.Photo;
+import com.ece.smartGallery.activity.fb.FBActivity;
 import com.ece.smartGallery.adapter.HomeGridAdapter;
 import com.ece.smartGallery.entities.DatabaseHandler;
 
@@ -61,26 +62,30 @@ public class HomeActivity extends Activity {
 		getMenuInflater().inflate(R.menu.home, menu);
 		return true;
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-	    // Handle item selection
+		// Handle item selection
 		Intent intent;
-	    switch (item.getItemId()) {
-	        case R.id.action_share_via_fb:
-	        	intent = new Intent(this, LoginActivity.class);
-	        	Album a = db.getAllAlbums().get(0);
-	        	Photo p = db.getPhoto(a, a.getCount() - 1);
-	        	intent.putExtra(Photo.PHOTO, p.getImage());
-	        	startActivity(intent);
-	            return true;
-	        case R.id.action_share_via_nfc:
-	        	intent = new Intent(this, BeamActivity.class);
-	        	startActivity(intent);
-	            return true;
-	        default:
-	            return super.onOptionsItemSelected(item);
-	    }
+		switch (item.getItemId()) {
+		case R.id.action_share_via_fb:
+			intent = new Intent(this, FBActivity.class);
+			Album a = db.getAllAlbums().get(0);
+			Photo p = db.getPhoto(a, a.getCount() - 1);
+			intent.putExtra(Photo.PHOTO, p.getImage());
+			startActivity(intent);
+			return true;
+		case R.id.action_share_via_nfc:
+			intent = new Intent(this, BeamActivity.class);
+			startActivity(intent);
+			return true;
+		case R.id.action_share_via_bluetooth:
+			intent = new Intent(this, BluetoothActivity.class);
+			startActivity(intent);
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
 
 	public void addNewPhoto() {
@@ -107,6 +112,7 @@ public class HomeActivity extends Activity {
 		gridView.setAdapter(adapter);
 		Log.d(TAG, "grid view adapter set");
 	}
+
 	// this method is used to go to edit page directly to test more easily
 	// will be removed once integrate all parts together.
 	public void test_edit(View view) {

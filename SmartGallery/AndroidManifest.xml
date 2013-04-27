@@ -5,14 +5,19 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="8"
+        android:minSdkVersion="11"
         android:targetSdkVersion="17" />
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.NFC" />
-	<permission android:name="android.permission.NFC"></permission>
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+
+    <permission android:name="android.permission.NFC" >
+    </permission>
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/gallery"
@@ -44,7 +49,7 @@
             android:label="@string/title_activity_scratch" >
         </activity>
         <activity
-            android:name="com.ece.smartGallery.activity.LoginActivity"
+            android:name="com.ece.smartGallery.activity.fb.FBActivity"
             android:label="@string/title_activity_login" >
         </activity>
 
@@ -66,6 +71,28 @@
 
                 <data android:mimeType="application/vnd.com.example.android.beam" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.ece.smartGallery.activity.BluetoothActivity"
+            android:label="@string/title_activity_bluetooth" >
+        </activity>
+        <activity
+            android:name="com.ece.smartGallery.activity.bluetooth.BluetoothChat"
+            android:label="@string/title_activity_bluetooth_chat" >
+
+            <!--
+                 <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            -->
+        </activity>
+        <activity
+            android:name="com.ece.smartGallery.activity.bluetooth.DeviceListActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/title_activity_device_list"
+            android:theme="@android:style/Theme.Holo.Dialog" >
         </activity>
     </application>
 

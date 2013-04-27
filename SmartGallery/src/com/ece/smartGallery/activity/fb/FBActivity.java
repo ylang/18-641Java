@@ -1,4 +1,4 @@
-package com.ece.smartGallery.activity;
+package com.ece.smartGallery.activity.fb;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -6,9 +6,9 @@ import android.view.Menu;
 
 import com.ece.smartGallery.R;
 
-public class LoginActivity extends FragmentActivity {
+public class FBActivity extends FragmentActivity {
 
-	private LoginFragment loginFragment;
+	private FBFragment loginFragment;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -16,12 +16,12 @@ public class LoginActivity extends FragmentActivity {
 
 		if (savedInstanceState == null) {
 			// Add the fragment on initial activity setup
-			loginFragment = new LoginFragment();
+			loginFragment = new FBFragment();
 			getSupportFragmentManager().beginTransaction()
 					.add(android.R.id.content, loginFragment).commit();
 		} else {
 			// Or set the fragment from restored state info
-			loginFragment = (LoginFragment) getSupportFragmentManager()
+			loginFragment = (FBFragment) getSupportFragmentManager()
 					.findFragmentById(android.R.id.content);
 		}
 	}

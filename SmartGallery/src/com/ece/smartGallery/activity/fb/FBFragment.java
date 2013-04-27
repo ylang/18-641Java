@@ -1,4 +1,4 @@
-package com.ece.smartGallery.activity;
+package com.ece.smartGallery.activity.fb;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -28,7 +28,7 @@ import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
 import com.facebook.widget.LoginButton;
 
-public class LoginFragment extends Fragment {
+public class FBFragment extends Fragment {
 
 	// fragment activity context
 	private FragmentActivity activity;

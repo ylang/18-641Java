@@ -7,16 +7,20 @@
         android:title="@string/action_settings"/>
     
     <item android:id="@+id/action_share"
+        android:icon="@android:drawable/ic_menu_share"
         android:title="@string/share">
         <menu>
             <item
                 android:id="@+id/action_share_via_fb"
+                android:icon="@android:drawable/ic_menu_share"
                 android:title="@string/share_fb"/>
             <item
                 android:id="@+id/action_share_via_bluetooth"
+                android:icon="@android:drawable/ic_menu_share"
                 android:title="@string/share_bluetooth"/>
             <item
                 android:id="@+id/action_share_via_nfc"
+                android:icon="@android:drawable/ic_menu_share"
                 android:title="@string/share_nfc"/>
         </menu>
     </item>

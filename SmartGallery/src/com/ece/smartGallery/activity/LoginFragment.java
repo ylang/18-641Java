@@ -2,9 +2,11 @@ package com.ece.smartGallery.activity;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,9 +18,9 @@ import android.widget.Button;
 
 import com.ece.smartGallery.R;
 import com.ece.smartGallery.DBLayout.Photo;
-import com.facebook.HttpMethod;
+import com.ece.smartGallery.util.Utility;
 import com.facebook.Request;
-import com.facebook.RequestAsyncTask;
+import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
@@ -27,30 +29,30 @@ import com.facebook.widget.LoginButton;
 public class LoginFragment extends Fragment {
 
 	private UiLifecycleHelper uiHelper;
-	private static final String TAG = "WAT";
+	private static final String TAG = "SmartGallery.LoginFragment";
 	private Button postButton;
 
-	private static final List<String> PERMISSIONS = Arrays
-			.asList("publish_actions");
+	// permissions
+	private static final List<String> PERMISSIONS = Arrays.asList(
+			"publish_stream", "publish_actions");
 	private static final String PENDING_PUBLISH_KEY = "pendingPublishReauthorization";
 	private boolean pendingPublishReauthorization = false;
 
-	private String photoPath;
-
-	private Session.StatusCallback callback = new Session.StatusCallback() {
-		@Override
-		public void call(Session session, SessionState state,
-				Exception exception) {
-			onSessionStateChange(session, state, exception);
-		}
-	};
+	private Uri photoUri;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Intent intent = getActivity().getIntent();
-		photoPath = intent.getStringExtra(Photo.PHOTO);
-		uiHelper = new UiLifecycleHelper(getActivity(), callback);
+		photoUri = intent.getParcelableExtra(Photo.PHOTO);
+		uiHelper = new UiLifecycleHelper(getActivity(),
+				new Session.StatusCallback() {
+					@Override
+					public void call(Session session, SessionState state,
+							Exception exception) {
+						onSessionStateChange(session, state, exception);
+					}
+				});
 		uiHelper.onCreate(savedInstanceState);
 	}
 
@@ -60,15 +62,15 @@ public class LoginFragment extends Fragment {
 		View view = inflater.inflate(R.layout.activity_login, container, false);
 		LoginButton authButton = (LoginButton) view
 				.findViewById(R.id.authButton);
+		// authButton.setReadPermissions();
+		authButton.setPublishPermissions(PERMISSIONS);
 		authButton.setFragment(this);
 
 		postButton = (Button) view.findViewById(R.id.post);
 		postButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// hehe();
-				haha();
-				// publishStory();
+				postPhoto();
 			}
 		});
 
@@ -126,20 +128,57 @@ public class LoginFragment extends Fragment {
 		uiHelper.onSaveInstanceState(outState);
 	}
 
-	private void haha() {
-		Uri photoUri = Uri.parse(this.photoPath);
-		Bundle params = new Bundle();
-		Log.i("WAT", photoUri.getPath());
-		params.putString("caption", "FbAPIs Sample App photo upload");
+	private void postPhoto() {
+		Session session = Session.getActiveSession();
+		if (session == null) {
+			Log.i(TAG, "session is null");
+			return;
+		} else {
+			Log.i(TAG, "session is not null");
+		}
+
+		List<String> permissions = session.getPermissions();
+		Log.i(TAG, "da" + permissions.toString());
+		Log.i(TAG, "xiao" + PERMISSIONS.toString());
+		if (!isSubsetOf(PERMISSIONS, permissions)) {
+			Log.i(TAG, "don't have permission");
+			pendingPublishReauthorization = true;
+			Session.NewPermissionsRequest newPermissionsRequest = new Session.NewPermissionsRequest(
+					this, PERMISSIONS);
+			session.requestNewPublishPermissions(newPermissionsRequest);
+			return;
+		} else {
+			Log.i(TAG, "has permission");
+		}
+
+		Log.i(TAG, photoUri.getPath());
+		Bitmap bm = null;
 		try {
-			params.putByteArray("photo",
-					Utility.scaleImage(getActivity(), photoUri));
+			bm = Utility.scaleImage(getActivity(), photoUri);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		Request request = new Request(Session.getActiveSession(), "me/feed",
-				params, HttpMethod.POST); // TODO callback?
-		RequestAsyncTask task = new RequestAsyncTask(request);
-		task.execute();
+
+		Request request = Request.newUploadPhotoRequest(
+				Session.getActiveSession(), bm, new Request.Callback() {
+					@Override
+					public void onCompleted(Response response) {
+						Log.i(TAG, response.toString());
+					}
+				});
+		Bundle params = request.getParameters();
+		params.putString("message", "FbAPIs Sample App photo upload");
+		request.executeAsync();
+	}
+
+	private boolean isSubsetOf(Collection<String> subset,
+			Collection<String> superset) {
+		for (String string : subset) {
+			if (!superset.contains(string)) {
+				Log.i(TAG, "dont have" + string);
+				return false;
+			}
+		}
+		return true;
 	}
 }

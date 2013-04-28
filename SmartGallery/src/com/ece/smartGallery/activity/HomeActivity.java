@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import com.ece.smartGallery.R;
 import com.ece.smartGallery.DBLayout.Album;
 import com.ece.smartGallery.DBLayout.Photo;
+import com.ece.smartGallery.activity.bluetooth.BluetoothChat;
 import com.ece.smartGallery.activity.fb.FBActivity;
 import com.ece.smartGallery.adapter.HomeGridAdapter;
 import com.ece.smartGallery.entities.DatabaseHandler;
@@ -84,8 +85,7 @@ public class HomeActivity extends Activity {
 			startActivity(intent);
 			return true;
 		case R.id.action_bluetooth:
-        	//TODO: push to bluetooth
-        	//intent = new Intent(this);
+        	intent = new Intent(this, BluetoothChat.class);
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -108,6 +108,8 @@ public class HomeActivity extends Activity {
 //		intent.setAction(Intent.ACTION_INSERT);
 //		intent.putExtra(Album.ALBUM, album.getId());
 //		startActivity(intent);
+		Intent intent;
+		Intent.ACTION_INSERT.equals(intent.getAction())
 	}
 
 	public void loadPhoto() {

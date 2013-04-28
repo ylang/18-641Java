@@ -114,6 +114,9 @@ public class BeamActivity extends Activity implements CreateNdefMessageCallback 
 	public void onNewIntent(Intent intent) {
 		// onResume gets called after this to handle the intent
 		setIntent(intent);
+		if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(getIntent().getAction())) {
+			processIntent(getIntent());
+		} 
 	}
 
 	/**

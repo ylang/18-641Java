@@ -69,6 +69,12 @@ public class BluetoothChat extends Activity {
 		// Set up the window layout
 		setContentView(R.layout.main);
 
+		Intent intent = getIntent();
+		String action = intent.getAction();
+		if (Intent.ACTION_SEND.equals(action)) {
+			findViewById(R.id.button_send).setVisibility(View.VISIBLE);
+		}
+
 		// Get local Bluetooth adapter
 		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 

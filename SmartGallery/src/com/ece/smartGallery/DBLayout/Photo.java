@@ -20,6 +20,8 @@ public class Photo implements Serializable{
 	private String text;	//text comment
 	private String voice;	//voice comment
 	private String imageURI;	//the URI of the image file. (in string)
+	private String scratchURI;  //the URI of the scratch comment file. (in string)
+
 	private int commentType;
 	private String location;
 	private double lng, lat;
@@ -79,6 +81,14 @@ public class Photo implements Serializable{
 //		this.albumId = albumId;
 //	}
 
+	public Uri getScratchURI() {
+		return Uri.fromFile(new File(this.scratchURI));
+	}
+
+	public void setScratchURI(Uri uri) {
+		this.scratchURI = uri.getPath();
+	}
+	
 	public String getName() {
 		return name;
 	}

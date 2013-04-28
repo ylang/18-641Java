@@ -1,5 +1,8 @@
 package com.ece.smartGallery.activity;
 
+import java.nio.charset.Charset;
+import java.util.Locale;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.nfc.NdefMessage;

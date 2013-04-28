@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.ece.smartGallery.R;
 import com.ece.smartGallery.DBLayout.Photo;
 import com.ece.smartGallery.util.IO;
+import com.ece.smartGallery.util.TransforablePhoto;
 import com.ece.smartGallery.util.Utility;
 
 public class BeamActivity extends Activity implements CreateNdefMessageCallback {
@@ -51,16 +52,17 @@ public class BeamActivity extends Activity implements CreateNdefMessageCallback 
 	public NdefMessage createNdefMessage(NfcEvent event) {
 		Log.d(TAG, "ndef message creating");
 		NdefRecord photoRecord = createPhotoRecord();
-		NdefRecord imageRecord = createImageRecord();
+		//NdefRecord imageRecord = createImageRecord();
 		NdefMessage msg = new NdefMessage(new NdefRecord[] {
 				photoRecord
-		,imageRecord
+		//,imageRecord
 		// ,NdefRecord
 				// .createApplicationRecord("com.ece.smartGallery.activity")
 				});
 		return msg;
 	}
 
+	@Deprecated
 	public NdefRecord createImageRecord() {
 		NdefRecord record = new NdefRecord(NdefRecord.TNF_MIME_MEDIA,
 				"image/jpeg".getBytes(), new byte[0], imageBytes);
@@ -71,7 +73,7 @@ public class BeamActivity extends Activity implements CreateNdefMessageCallback 
 	public NdefRecord createPhotoRecord() {
 		byte[] payload = null;
 		try {
-			payload = IO.getByteArray(photo);
+			payload = IO.getByteArray(new TransforablePhoto(this, photo));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

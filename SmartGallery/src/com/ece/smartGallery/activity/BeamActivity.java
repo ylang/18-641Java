@@ -35,6 +35,7 @@ public class BeamActivity extends Activity implements CreateNdefMessageCallback 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_beam);
+		Log.d(TAG, "onCreate.");
 		TextView textView = (TextView) findViewById(R.id.beam_text);
 		textView.setText("on Create");
 		// Check for available NFC Adapter
@@ -87,6 +88,7 @@ public class BeamActivity extends Activity implements CreateNdefMessageCallback 
 		super.onResume();
 		// Check to see that the Activity started due to an Android Beam
 		if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(getIntent().getAction())) {
+			Log.d(TAG, "recieved NFC push");
 			processIntent(getIntent());
 		} else {
 			photo = (Photo) getIntent().getSerializableExtra(Photo.PHOTO);
@@ -112,8 +114,10 @@ public class BeamActivity extends Activity implements CreateNdefMessageCallback 
 	@Override
 	public void onNewIntent(Intent intent) {
 		// onResume gets called after this to handle the intent
+		Log.d(TAG, "in new intent");
 		setIntent(intent);
 		if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(getIntent().getAction())) {
+			Log.d(TAG, "recieved NFC push");
 			processIntent(getIntent());
 		} 
 	}

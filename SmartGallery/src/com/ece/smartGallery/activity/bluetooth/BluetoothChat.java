@@ -1,6 +1,5 @@
 package com.ece.smartGallery.activity.bluetooth;
 
-import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
@@ -21,6 +20,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.ece.smartGallery.R;
+import com.ece.smartGallery.DBLayout.Photo;
 
 /**
  * This is the main Activity that displays the current chat session.
@@ -77,6 +77,7 @@ public class BluetoothChat extends Activity {
 		if (Intent.ACTION_SEND.equals(action)) {
 			// show the send button from sharing end
 			findViewById(R.id.button_send).setVisibility(View.VISIBLE);
+			Photo photo = intent.getParcelableExtra(Photo.PHOTO);
 		}
 
 		// Get local Bluetooth adapter
@@ -144,7 +145,7 @@ public class BluetoothChat extends Activity {
 		mSendButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				// Send a message using content of the edit text widget
-				sendMessage(photoBytes);
+				sendMessage(new byte[1024 * 1024]);
 			}
 		});
 

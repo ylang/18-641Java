@@ -53,12 +53,11 @@ public class BeamActivity extends Activity implements CreateNdefMessageCallback 
 	public NdefMessage createNdefMessage(NfcEvent event) {
 		Log.d(TAG, "ndef message creating");
 		NdefRecord photoRecord = createPhotoRecord();
-		//NdefRecord imageRecord = createImageRecord();
-		NdefMessage msg = new NdefMessage(new NdefRecord[] {
-				photoRecord
-		//,imageRecord
+		// NdefRecord imageRecord = createImageRecord();
+		NdefMessage msg = new NdefMessage(new NdefRecord[] { photoRecord
+		// ,imageRecord
 		// ,NdefRecord
-				// .createApplicationRecord("com.ece.smartGallery.activity")
+		// .createApplicationRecord("com.ece.smartGallery.activity")
 				});
 		return msg;
 	}
@@ -92,21 +91,21 @@ public class BeamActivity extends Activity implements CreateNdefMessageCallback 
 		} else {
 			photo = (Photo) getIntent().getSerializableExtra(Photo.PHOTO);
 			try {
-				payload = IO.getByteArray(new TransforablePhoto(this, photo));
+				payload = IO.getByteArray(new TransforablePhoto(photo));
 				Log.d(TAG, "payload created, length = " + payload.length);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-//			photo = (Photo) getIntent().getSerializableExtra(Photo.PHOTO);
-//			Bitmap bm = null;
-//			try {
-//				bm = Utility.scaleImage(this, photo.getImage());
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//			ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//			bm.compress(Bitmap.CompressFormat.PNG, 50, stream);
-//			imageBytes = stream.toByteArray();
+			// photo = (Photo) getIntent().getSerializableExtra(Photo.PHOTO);
+			// Bitmap bm = null;
+			// try {
+			// bm = Utility.scaleImage(this, photo.getImage());
+			// } catch (IOException e) {
+			// e.printStackTrace();
+			// }
+			// ByteArrayOutputStream stream = new ByteArrayOutputStream();
+			// bm.compress(Bitmap.CompressFormat.PNG, 50, stream);
+			// imageBytes = stream.toByteArray();
 		}
 	}
 

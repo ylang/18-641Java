@@ -50,8 +50,7 @@ public class DisplayActivity extends Activity {
 		LoadAsyncTask task = new LoadAsyncTask(imageView,photo,this);
 		task.execute();
 
-        mFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
-        mFileName += "/audiorecordtest.3gp";
+        mFileName = photo.getVoice();
 		
 //        LinearLayout ll = new LinearLayout(this);
 //        mPlayButton = new PlayButton(this);

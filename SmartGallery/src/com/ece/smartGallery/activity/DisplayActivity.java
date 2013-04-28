@@ -30,61 +30,63 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ImageView;;
+import android.widget.ImageView;
+
+;
 
 public class DisplayActivity extends Activity {
-    private static final String LOG_TAG = "AudioRecordTest";
-    private final String TAG = this.getClass().getName();
-    private static String mFileName = null;
-    
-	 private Button   mPlayButton = null;
-	 private MediaPlayer   mPlayer = null;
-	 private boolean mStartPlaying = true;
-	 private Photo photo;
+	private static final String LOG_TAG = "AudioRecordTest";
+	private final String TAG = this.getClass().getName();
+	private static String mFileName = null;
 
+	private Button mPlayButton = null;
+	private MediaPlayer mPlayer = null;
+	private boolean mStartPlaying = true;
+	private Photo photo;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_display);
-		
+
 		Intent intent = getIntent();
-		
+
 		photo = (Photo) intent.getSerializableExtra(Photo.PHOTO);
 		ImageView imageView = ((ImageView) findViewById(R.id.display_image));
-		LoadAsyncTask task = new LoadAsyncTask(imageView,photo,this);
+		LoadAsyncTask task = new LoadAsyncTask(imageView, photo, this);
 		task.execute();
 
-        mFileName = photo.getVoice();
-		
-//        LinearLayout ll = new LinearLayout(this);
-//        mPlayButton = new PlayButton(this);
-//        ll.addView(mPlayButton,
-//            new LinearLayout.LayoutParams(
-//                ViewGroup.LayoutParams.WRAP_CONTENT,
-//                ViewGroup.LayoutParams.WRAP_CONTENT,
-//                0));
-//        setContentView(ll);
-        
-        mPlayButton = (Button) findViewById(R.id.play_voice_comment);
-        mPlayButton.setText("Start playing");
-        mPlayButton.setOnClickListener(new View.OnClickListener() {
-			
-            public void onClick(View v) {
-                onPlay(mStartPlaying);
-                if (mStartPlaying) {
-                	mPlayButton.setText("Stop playing");
-                } else {
-                	mPlayButton.setText("Start playing");
-                }
-                mStartPlaying = !mStartPlaying;
-            }
+		mFileName = photo.getVoice();
+
+		// LinearLayout ll = new LinearLayout(this);
+		// mPlayButton = new PlayButton(this);
+		// ll.addView(mPlayButton,
+		// new LinearLayout.LayoutParams(
+		// ViewGroup.LayoutParams.WRAP_CONTENT,
+		// ViewGroup.LayoutParams.WRAP_CONTENT,
+		// 0));
+		// setContentView(ll);
+
+		mPlayButton = (Button) findViewById(R.id.play_voice_comment);
+		mPlayButton.setText("Start playing");
+		mPlayButton.setOnClickListener(new View.OnClickListener() {
+
+			public void onClick(View v) {
+				onPlay(mStartPlaying);
+				if (mStartPlaying) {
+					mPlayButton.setText("Stop playing");
+				} else {
+					mPlayButton.setText("Start playing");
+				}
+				mStartPlaying = !mStartPlaying;
+			}
 		});
-		
-//		Intent intent = getIntent();
-//		String text_comment = intent.getStringExtra("text_comment");
-//		((TextView) findViewById(R.id.display_text_comment)).setText(String.valueOf(text_comment));
-//		
+
+		// Intent intent = getIntent();
+		// String text_comment = intent.getStringExtra("text_comment");
+		// ((TextView)
+		// findViewById(R.id.display_text_comment)).setText(String.valueOf(text_comment));
+		//
 
 	}
 
@@ -94,13 +96,13 @@ public class DisplayActivity extends Activity {
 		getMenuInflater().inflate(R.menu.display, menu);
 		return true;
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle item selection
 		Intent intent;
 		switch (item.getItemId()) {
-		//TODO: fix this later
+		// TODO: fix this later
 		case R.id.action_share_via_fb:
 			intent = new Intent(this, FBActivity.class);
 			startActivity(intent);
@@ -110,7 +112,7 @@ public class DisplayActivity extends Activity {
 			startActivity(intent);
 			return true;
 		case R.id.action_share_via_bluetooth:
-			intent = new Intent(this, BluetoothActivity.class);
+			intent = new Intent(this, BluetoothChat.class);
 			intent.putExtra(Photo.PHOTO, photo);
 			intent.setAction(Intent.ACTION_SEND);
 			startActivity(intent);
@@ -119,53 +121,53 @@ public class DisplayActivity extends Activity {
 			return super.onOptionsItemSelected(item);
 		}
 	}
-	
+
 	private void onPlay(boolean start) {
-        if (start) {
-            startPlaying();
-        } else {
-            stopPlaying();
-        }
-    }
+		if (start) {
+			startPlaying();
+		} else {
+			stopPlaying();
+		}
+	}
 
-    private void startPlaying() {
-        mPlayer = new MediaPlayer();
-        try {
-            mPlayer.setDataSource(mFileName);
-            mPlayer.prepare();
-            mPlayer.start();
-        } catch (IOException e) {
-            Log.e(LOG_TAG, "prepare() failed");
-        }
-    }
+	private void startPlaying() {
+		mPlayer = new MediaPlayer();
+		try {
+			mPlayer.setDataSource(mFileName);
+			mPlayer.prepare();
+			mPlayer.start();
+		} catch (IOException e) {
+			Log.e(LOG_TAG, "prepare() failed");
+		}
+	}
 
-    private void stopPlaying() {
-        mPlayer.release();
-        mPlayer = null;
-    }
-    
-    class PlayButton extends Button {
-        boolean mStartPlaying = true;
+	private void stopPlaying() {
+		mPlayer.release();
+		mPlayer = null;
+	}
 
-        OnClickListener clicker = new OnClickListener() {
-            public void onClick(View v) {
-                onPlay(mStartPlaying);
-                if (mStartPlaying) {
-                    setText("Stop playing");
-                } else {
-                    setText("Start playing");
-                }
-                mStartPlaying = !mStartPlaying;
-            }
-        };
+	class PlayButton extends Button {
+		boolean mStartPlaying = true;
 
-        public PlayButton(Context ctx) {
-            super(ctx);
-            setText("Start playing");
-            setOnClickListener(clicker);
-        }
-    }
-    
+		OnClickListener clicker = new OnClickListener() {
+			public void onClick(View v) {
+				onPlay(mStartPlaying);
+				if (mStartPlaying) {
+					setText("Stop playing");
+				} else {
+					setText("Start playing");
+				}
+				mStartPlaying = !mStartPlaying;
+			}
+		};
+
+		public PlayButton(Context ctx) {
+			super(ctx);
+			setText("Start playing");
+			setOnClickListener(clicker);
+		}
+	}
+
 	private Bitmap decodeFile(File f) {
 		try {
 			// Decode image size
@@ -220,17 +222,18 @@ public class DisplayActivity extends Activity {
 		}
 		return rotate;
 	}
-	
+
 	private void setImage(ImageView view, Bitmap b, final Photo photo) {
 		view.setImageBitmap(b);
 	}
-	
+
 	class LoadAsyncTask extends AsyncTask<Void, Void, Void> {
-		
+
 		private Photo photo;
 		private ImageView view;
 		private Bitmap bitmap;
 		private Context context;
+
 		LoadAsyncTask(ImageView view, Photo photo, Context context) {
 			this.photo = photo;
 			this.view = view;
@@ -242,19 +245,19 @@ public class DisplayActivity extends Activity {
 			File file = new File(photo.getImage().getPath());
 			Bitmap b = decodeFile(file);
 			Matrix mat = new Matrix();
-			mat.postRotate(getCameraPhotoOrientation(context,
-					photo.getImage(), file.getAbsolutePath()));
-			bitmap = Bitmap.createBitmap(b, 0, 0, b.getWidth(),
-					b.getHeight(), mat, true);
+			mat.postRotate(getCameraPhotoOrientation(context, photo.getImage(),
+					file.getAbsolutePath()));
+			bitmap = Bitmap.createBitmap(b, 0, 0, b.getWidth(), b.getHeight(),
+					mat, true);
 			return null;
 		}
-		
+
 		@Override
 		protected void onPostExecute(Void arg0) {
 			setImage(view, bitmap, photo);
 			Log.d(TAG, "onPostExecute");
 		}
-		
+
 	}
 
 }

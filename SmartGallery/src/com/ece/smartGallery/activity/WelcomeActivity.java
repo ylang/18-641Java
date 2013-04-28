@@ -6,7 +6,11 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
+import android.nfc.NfcAdapter;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,6 +20,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.ece.smartGallery.R;
 import com.ece.smartGallery.DBLayout.Album;
@@ -129,6 +134,40 @@ public class WelcomeActivity extends Activity {
 			}
 
 		});
+	}
+	
+	@Override
+	public void onNewIntent(Intent intent) {
+		// onResume gets called after this to handle the intent
+		Log.d(TAG, "in new intent");
+		setIntent(intent);
+		if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(getIntent().getAction())) {
+			Log.d(TAG, "recieved NFC push");
+			processIntent(getIntent());
+		} 
+	}
+
+	/**
+	 * Parses the NDEF Message from the intent and prints to the TextView
+	 */
+	void processIntent(Intent intent) {
+		Log.d(TAG, "process intent, NFC message received");
+		Parcelable[] rawMsgs = intent
+				.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
+		// only one message sent during the beam
+		NdefMessage msg = (NdefMessage) rawMsgs[0];
+		// record 0 contains the MIME type, record 1 is the AAR, if present
+
+		Log.d(TAG, "recieved NFC: has " + msg.getRecords().length + " records");
+		int cnt = 0;
+		for (NdefRecord record : msg.getRecords()) {
+			Log.d(TAG, "record " + cnt + " has length: "
+					+ record.getPayload().length);
+			Log.d(TAG,
+					"record " + cnt + "is a type of "
+							+ new String(record.getType()));
+			cnt++;
+		}
 	}
 
 }

@@ -40,7 +40,7 @@ public class DisplayActivity extends Activity {
 	private MediaPlayer mPlayer = null;
 	private boolean mStartPlaying = true;
 	private Photo photo;
-	private byte[] imageBytes;
+	private Bitmap imageBitmap;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -109,7 +109,7 @@ public class DisplayActivity extends Activity {
 		case R.id.action_share_via_nfc:
 			intent = new Intent(this, BeamActivity.class);
 			intent.putExtra(Photo.PHOTO, photo);
-			intent.putExtra(Photo.IMAGE, imageBytes);
+			intent.putExtra(Photo.IMAGE, imageBitmap);
 			startActivity(intent);
 			return true;
 		case R.id.action_share_via_bluetooth:
@@ -226,6 +226,7 @@ public class DisplayActivity extends Activity {
 
 	private void setImage(ImageView view, Bitmap b, final Photo photo) {
 		view.setImageBitmap(b);
+		this.imageBitmap = b;
 	}
 
 	class LoadAsyncTask extends AsyncTask<Void, Void, Void> {
@@ -257,11 +258,6 @@ public class DisplayActivity extends Activity {
 		protected void onPostExecute(Void arg0) {
 			setImage(view, bitmap, photo);
 			Log.d(TAG, "onPostExecute");
-			ByteArrayOutputStream stream = new ByteArrayOutputStream();
-			bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-			imageBytes = stream.toByteArray();
 		}
-
 	}
-
 }

@@ -40,7 +40,7 @@ public class DisplayActivity extends Activity {
 	private MediaPlayer mPlayer = null;
 	private boolean mStartPlaying = true;
 	private Photo photo;
-	private Bitmap imageBitmap;
+	private byte[]	imageBytes;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -99,9 +99,6 @@ public class DisplayActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle item selection
 		Intent intent;
-		ByteArrayOutputStream stream = new ByteArrayOutputStream();
-		imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-		byte[] imageBytes = stream.toByteArray();
 		switch (item.getItemId()) {
 		// TODO: fix this later
 		case R.id.action_share_via_fb:
@@ -228,7 +225,6 @@ public class DisplayActivity extends Activity {
 
 	private void setImage(ImageView view, Bitmap b, final Photo photo) {
 		view.setImageBitmap(b);
-		this.imageBitmap = b;
 	}
 
 	class LoadAsyncTask extends AsyncTask<Void, Void, Void> {
@@ -260,6 +256,9 @@ public class DisplayActivity extends Activity {
 		protected void onPostExecute(Void arg0) {
 			setImage(view, bitmap, photo);
 			Log.d(TAG, "onPostExecute");
+			ByteArrayOutputStream stream = new ByteArrayOutputStream();
+			bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+			imageBytes = stream.toByteArray();
 		}
 
 	}

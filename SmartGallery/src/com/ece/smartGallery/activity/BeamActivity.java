@@ -32,6 +32,7 @@ public class BeamActivity extends Activity implements CreateNdefMessageCallback 
 		setContentView(R.layout.activity_beam);
 		TextView textView = (TextView) findViewById(R.id.beam_text);
 		textView.setText("on Create");
+		photo = (Photo) getIntent().getSerializableExtra(Photo.PHOTO);
 		// Check for available NFC Adapter
 		mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
 		if (mNfcAdapter == null) {

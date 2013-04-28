@@ -109,6 +109,7 @@ public class DisplayActivity extends Activity {
 			return true;
 		case R.id.action_share_via_nfc:
 			intent = new Intent(this, BeamActivity.class);
+			intent.putExtra(Photo.PHOTO, photo);
 			startActivity(intent);
 			return true;
 		case R.id.action_share_via_bluetooth:

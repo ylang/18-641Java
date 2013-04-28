@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -18,6 +19,9 @@ import android.widget.ListView;
 
 import com.ece.smartGallery.R;
 import com.ece.smartGallery.DBLayout.Album;
+import com.ece.smartGallery.DBLayout.Photo;
+import com.ece.smartGallery.activity.bluetooth.BluetoothChat;
+import com.ece.smartGallery.activity.fb.FBActivity;
 import com.ece.smartGallery.adapter.WelcomeListAdapter;
 import com.ece.smartGallery.entities.DatabaseHandler;
 
@@ -50,6 +54,19 @@ public class WelcomeActivity extends Activity {
 		return true;
 	}
 
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle item selection
+		Intent intent;
+		switch (item.getItemId()) {
+		case R.id.action_bluetooth:
+        	intent = new Intent(this, BluetoothChat.class);
+        	startActivity(intent);
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
+	
 	@Override
 	public void onResume() {
 		super.onResume();

@@ -25,11 +25,6 @@
                 android:title="@string/share_nfc"/>
         </menu>
     </item>
-    <item
-        android:id="@+id/action_bluetooth"
-        android:icon="@drawable/bluetooth"
-        android:showAsAction="ifRoom"
-        android:title="@string/bluetooth_accept">
-    </item>
+    
 
 </menu>

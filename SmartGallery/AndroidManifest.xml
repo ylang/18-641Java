@@ -69,7 +69,10 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
 
-                <data android:mimeType="image/jpeg" />
+                <data
+                    android:host="ext"
+                    android:pathPrefix="/com.ece.smartGallery:photo"
+                    android:scheme="vnd.android.nfc" />
             </intent-filter>
         </activity>
         <activity

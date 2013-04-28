@@ -6,6 +6,7 @@ import java.io.IOException;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 import com.ece.smartGallery.R;
 import com.ece.smartGallery.DBLayout.Photo;
 import com.ece.smartGallery.util.IO;
+import com.ece.smartGallery.util.Utility;
 
 public class BeamActivity extends Activity implements CreateNdefMessageCallback {
 	NfcAdapter mNfcAdapter;
@@ -27,6 +29,7 @@ public class BeamActivity extends Activity implements CreateNdefMessageCallback 
 	private final String TAG = this.getClass().getName();
 	private Photo photo;
 	private byte[] imageBytes;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -34,9 +37,14 @@ public class BeamActivity extends Activity implements CreateNdefMessageCallback 
 		TextView textView = (TextView) findViewById(R.id.beam_text);
 		textView.setText("on Create");
 		photo = (Photo) getIntent().getSerializableExtra(Photo.PHOTO);
-		Bitmap imageBitmap = getIntent().getParcelableExtra(Photo.IMAGE);
+		Bitmap bm = null;
+		try {
+			bm = Utility.scaleImage(this, photo.getImage());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
-		imageBitmap.compress(Bitmap.CompressFormat.PNG, 50, stream);
+		bm.compress(Bitmap.CompressFormat.PNG, 50, stream);
 		imageBytes = stream.toByteArray();
 		// Check for available NFC Adapter
 		mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
@@ -55,21 +63,19 @@ public class BeamActivity extends Activity implements CreateNdefMessageCallback 
 		Log.d(TAG, "ndef message creating");
 		NdefRecord photoRecord = createPhotoRecord();
 		NdefRecord imageRecord = createImageRecord();
-		NdefMessage msg = new NdefMessage(
-				new NdefRecord[] {
-						photoRecord
-						//,imageRecord
-						//,NdefRecord
-					//			.createApplicationRecord("com.ece.smartGallery.activity") 
-						});
+		NdefMessage msg = new NdefMessage(new NdefRecord[] { photoRecord
+		// ,imageRecord
+		// ,NdefRecord
+				// .createApplicationRecord("com.ece.smartGallery.activity")
+				});
 		return msg;
 	}
 
 	public NdefRecord createImageRecord() {
-			NdefRecord record = new NdefRecord(NdefRecord.TNF_MIME_MEDIA,
-					"image/jpeg".getBytes(), new byte[0], imageBytes);
-			Log.d(TAG, "image record created, length = " + imageBytes.length);
-			return record;
+		NdefRecord record = new NdefRecord(NdefRecord.TNF_MIME_MEDIA,
+				"image/jpeg".getBytes(), new byte[0], imageBytes);
+		Log.d(TAG, "image record created, length = " + imageBytes.length);
+		return record;
 	}
 
 	public NdefRecord createPhotoRecord() {
@@ -81,7 +87,8 @@ public class BeamActivity extends Activity implements CreateNdefMessageCallback 
 		}
 		if (payload != null) {
 			NdefRecord record = new NdefRecord(NdefRecord.TNF_EXTERNAL_TYPE,
-					Photo.PHOTO.getBytes(), new byte[0], payload);
+					("com.ece.smartGallery:" + Photo.PHOTO).getBytes(),
+					new byte[0], payload);
 			Log.d(TAG, "photo record created, length = " + payload.length);
 			return record;
 		} else {
@@ -118,10 +125,13 @@ public class BeamActivity extends Activity implements CreateNdefMessageCallback 
 
 		Log.d(TAG, "recieved NFC: has " + msg.getRecords().length + " records");
 		int cnt = 0;
-		for(NdefRecord record : msg.getRecords()) {
-			Log.d(TAG, "record " + cnt + " has length: " + record.getPayload().length);
-			Log.d(TAG, "record "+ cnt + "is a type of " + new String(record.getType()));
-			cnt ++;
+		for (NdefRecord record : msg.getRecords()) {
+			Log.d(TAG, "record " + cnt + " has length: "
+					+ record.getPayload().length);
+			Log.d(TAG,
+					"record " + cnt + "is a type of "
+							+ new String(record.getType()));
+			cnt++;
 		}
 	}
 }

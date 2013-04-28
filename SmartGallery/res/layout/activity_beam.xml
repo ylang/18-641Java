@@ -14,4 +14,15 @@
         android:layout_height="wrap_content"
         android:text="@string/hello_world" />
 
+    <ImageView
+        android:id="@+id/beam_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/beam_text"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="182dp"
+        android:layout_marginLeft="16dp"
+        android:visibility="gone"
+        android:src="@drawable/default_image" />
+
 </RelativeLayout>

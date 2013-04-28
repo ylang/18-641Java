@@ -1,12 +1,13 @@
 package com.ece.smartGallery.activity;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
-import java.util.Locale;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
@@ -18,13 +19,13 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Parcelable;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ece.smartGallery.R;
 import com.ece.smartGallery.DBLayout.Photo;
-import com.ece.smartGallery.util.IO;
-import com.ece.smartGallery.util.TransforablePhoto;
+import com.ece.smartGallery.util.Utility;
 
 public class BeamActivity extends Activity implements
 		CreateNdefMessageCallback, OnNdefPushCompleteCallback {
@@ -72,7 +73,7 @@ public class BeamActivity extends Activity implements
 			byte[] mimeBytes = "application/com.ece.smartgallery"
 					.getBytes(Charset.forName("US-ASCII"));
 			NdefRecord mimeRecord = new NdefRecord(NdefRecord.TNF_MIME_MEDIA,
-					mimeBytes, new byte[0], "hello".getBytes());
+					mimeBytes, new byte[0], payload);
 			Log.d(TAG, "photo record created, length = " + payload.length);
 			return mimeRecord;
 		} else {
@@ -90,7 +91,11 @@ public class BeamActivity extends Activity implements
 		} else {
 			photo = (Photo) getIntent().getSerializableExtra(Photo.PHOTO);
 			try {
-				payload = IO.getByteArray(new TransforablePhoto(photo));
+				//payload = IO.getBase64ByteArray(new TransforablePhoto(photo));
+				Bitmap b = Utility.scaleImage(this, photo.getImage());
+				ByteArrayOutputStream stream = new ByteArrayOutputStream();
+				b.compress(Bitmap.CompressFormat.JPEG, 10, stream);
+				payload = stream.toByteArray();
 				Log.d(TAG, "payload created, length = " + payload.length);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -123,10 +128,13 @@ public class BeamActivity extends Activity implements
 		// record 0 contains the MIME type, record 1 is the AAR, if present
 
 		NdefRecord record = msg.getRecords()[0];
+		byte[] img = record.getPayload();
 		Log.d(TAG, "recieved NFC: has " + msg.getRecords().length + " record");
 		Log.d(TAG, "record has length: " + record.getPayload().length);
 		Log.d(TAG, "record is a type of " + new String(record.getType()));
-		Toast.makeText(this, "record recieved", Toast.LENGTH_LONG).show();
+		ImageView image = (ImageView) findViewById(R.id.beam_image);           
+		Bitmap bMap = BitmapFactory.decodeByteArray(img, 0, img.length);
+		image.setImageBitmap(bMap);
 	}
 
 	@Override

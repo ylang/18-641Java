@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
 import android.util.Base64;
 
@@ -62,5 +63,10 @@ public class IO {
  
 	    is.close();
 	    return bytes;
+	}
+	
+	public static byte[] getBase64ByteArray(Serializable s) throws IOException {
+		byte[] raw = getByteArray(s);
+		return Base64.encode(raw, Base64.DEFAULT);
 	}
 }

@@ -108,8 +108,6 @@ public class HomeActivity extends Activity {
 //		intent.setAction(Intent.ACTION_INSERT);
 //		intent.putExtra(Album.ALBUM, album.getId());
 //		startActivity(intent);
-		Intent intent;
-		Intent.ACTION_INSERT.equals(intent.getAction())
 	}
 
 	public void loadPhoto() {

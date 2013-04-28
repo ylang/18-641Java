@@ -69,8 +69,8 @@ public class BeamActivity extends Activity implements CreateNdefMessageCallback 
         data[0] = (byte) status;
         System.arraycopy(langBytes, 0, data, 1, langBytes.length);
         System.arraycopy(textBytes, 0, data, 1 + langBytes.length, textBytes.length);
-        NdefRecord record = new NdefRecord(NdefRecord.TNF_WELL_KNOWN,
-        NdefRecord.RTD_TEXT, new byte[0], data);
+        NdefRecord record = new NdefRecord(NdefRecord.TNF_UNKNOWN,
+        new byte[0], new byte[0], data);
         return record;
     }
 

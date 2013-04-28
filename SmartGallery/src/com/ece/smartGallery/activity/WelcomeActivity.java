@@ -61,6 +61,7 @@ public class WelcomeActivity extends Activity {
 		switch (item.getItemId()) {
 		case R.id.action_bluetooth:
         	intent = new Intent(this, BluetoothChat.class);
+        	intent.setAction(Intent.ACTION_ANSWER);
         	startActivity(intent);
 		default:
 			return super.onOptionsItemSelected(item);

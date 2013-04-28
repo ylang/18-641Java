@@ -69,10 +69,10 @@ public class BeamActivity extends Activity implements
 
 	public NdefRecord createPhotoRecord() {
 		if (payload != null) {
-			byte[] mimeBytes = new String("application/com.ece.smartGallery")
+			byte[] mimeBytes = "application/com.ece.smartgallery"
 					.getBytes(Charset.forName("US-ASCII"));
 			NdefRecord mimeRecord = new NdefRecord(NdefRecord.TNF_MIME_MEDIA,
-					mimeBytes, new byte[0], payload);
+					mimeBytes, new byte[0], "hello".getBytes());
 			Log.d(TAG, "photo record created, length = " + payload.length);
 			return mimeRecord;
 		} else {

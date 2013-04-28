@@ -1,5 +1,6 @@
 package com.ece.smartGallery.activity.bluetooth;
 
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;

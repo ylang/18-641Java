@@ -19,6 +19,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Parcelable;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -132,9 +133,10 @@ public class BeamActivity extends Activity implements
 		Log.d(TAG, "recieved NFC: has " + msg.getRecords().length + " record");
 		Log.d(TAG, "record has length: " + record.getPayload().length);
 		Log.d(TAG, "record is a type of " + new String(record.getType()));
-		ImageView image = (ImageView) findViewById(R.id.beam_image);           
+		ImageView imageView = (ImageView) findViewById(R.id.beam_image);       
+		imageView.setVisibility(View.VISIBLE);
 		Bitmap bMap = BitmapFactory.decodeByteArray(img, 0, img.length);
-		image.setImageBitmap(bMap);
+		imageView.setImageBitmap(bMap);
 	}
 
 	@Override

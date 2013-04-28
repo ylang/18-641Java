@@ -15,8 +15,8 @@ public class TransforablePhoto implements Serializable {
 	private static final long serialVersionUID = -6090493483762339387L;
 	private String name;
 	private long timeStamp;
-	private String text;	//text comment
-	
+	private String text; // text comment
+
 	private byte[] imageBytes;
 	private byte[] voiceBytes;
 	private byte[] scratchBytes;
@@ -24,8 +24,8 @@ public class TransforablePhoto implements Serializable {
 	private int commentType;
 	private String location;
 	private double lng, lat;
-	
-	public TransforablePhoto(Context context, Photo photo) {
+
+	public TransforablePhoto(Photo photo) {
 		this.name = photo.getName();
 		this.timeStamp = photo.getTimeStamp();
 		this.text = photo.getText();
@@ -33,20 +33,22 @@ public class TransforablePhoto implements Serializable {
 		this.lat = photo.getLat();
 		this.lng = photo.getLng();
 		try {
-			this.imageBytes = IO.loadFile(new File (photo.getImage().getPath()));
+			this.imageBytes = IO.loadFile(new File(photo.getImage().getPath()));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		if (photo.getVoice() != null && photo.getVoice().length() != 0) {
 			try {
-				this.voiceBytes = IO.loadFile(new File (photo.getVoice()));
+				this.voiceBytes = IO.loadFile(new File(photo.getVoice()));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
-		if (photo.getScratchURI() != null && photo.getScratchURI().getPath().length() != 0) {
+		if (photo.getScratchURI() != null
+				&& photo.getScratchURI().getPath().length() != 0) {
 			try {
-				this.voiceBytes = IO.loadFile(new File (photo.getScratchURI().getPath()));
+				this.voiceBytes = IO.loadFile(new File(photo.getScratchURI()
+						.getPath()));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

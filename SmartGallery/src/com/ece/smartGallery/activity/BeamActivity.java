@@ -36,16 +36,6 @@ public class BeamActivity extends Activity implements CreateNdefMessageCallback 
 		setContentView(R.layout.activity_beam);
 		TextView textView = (TextView) findViewById(R.id.beam_text);
 		textView.setText("on Create");
-		photo = (Photo) getIntent().getSerializableExtra(Photo.PHOTO);
-		Bitmap bm = null;
-		try {
-			bm = Utility.scaleImage(this, photo.getImage());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		ByteArrayOutputStream stream = new ByteArrayOutputStream();
-		bm.compress(Bitmap.CompressFormat.PNG, 50, stream);
-		imageBytes = stream.toByteArray();
 		// Check for available NFC Adapter
 		mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
 		if (mNfcAdapter == null) {
@@ -63,8 +53,9 @@ public class BeamActivity extends Activity implements CreateNdefMessageCallback 
 		Log.d(TAG, "ndef message creating");
 		NdefRecord photoRecord = createPhotoRecord();
 		NdefRecord imageRecord = createImageRecord();
-		NdefMessage msg = new NdefMessage(new NdefRecord[] { photoRecord
-		// ,imageRecord
+		NdefMessage msg = new NdefMessage(new NdefRecord[] {
+				photoRecord
+		,imageRecord
 		// ,NdefRecord
 				// .createApplicationRecord("com.ece.smartGallery.activity")
 				});
@@ -102,6 +93,17 @@ public class BeamActivity extends Activity implements CreateNdefMessageCallback 
 		// Check to see that the Activity started due to an Android Beam
 		if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(getIntent().getAction())) {
 			processIntent(getIntent());
+		} else {
+			photo = (Photo) getIntent().getSerializableExtra(Photo.PHOTO);
+			Bitmap bm = null;
+			try {
+				bm = Utility.scaleImage(this, photo.getImage());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			ByteArrayOutputStream stream = new ByteArrayOutputStream();
+			bm.compress(Bitmap.CompressFormat.PNG, 50, stream);
+			imageBytes = stream.toByteArray();
 		}
 	}
 

@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ece.smartGallery.R;
+import com.ece.smartGallery.DBLayout.Photo;
 
 
 public class BeamActivity extends Activity implements CreateNdefMessageCallback {
@@ -59,18 +60,9 @@ public class BeamActivity extends Activity implements CreateNdefMessageCallback 
         return msg;
     }
     
-    public NdefRecord createTextRecord(String payload, Locale locale, boolean encodeInUtf8) {
-        byte[] langBytes = locale.getLanguage().getBytes(Charset.forName("US-ASCII"));
-        Charset utfEncoding = encodeInUtf8 ? Charset.forName("UTF-8") : Charset.forName("UTF-16");
-        byte[] textBytes = payload.getBytes(utfEncoding);
-        int utfBit = encodeInUtf8 ? 0 : (1 << 7);
-        char status = (char) (utfBit + langBytes.length);
-        byte[] data = new byte[1 + langBytes.length + textBytes.length];
-        data[0] = (byte) status;
-        System.arraycopy(langBytes, 0, data, 1, langBytes.length);
-        System.arraycopy(textBytes, 0, data, 1 + langBytes.length, textBytes.length);
-        NdefRecord record = new NdefRecord(NdefRecord.TNF_UNKNOWN,
-        new byte[0], new byte[0], data);
+    public NdefRecord createPhotoRecord(Photo photo) {
+    	NdefRecord record = new NdefRecord(
+    		    NdefRecord.TNF_EXTERNAL_TYPE, Photo.PHOTO, new byte[0], payload);
         return record;
     }
 

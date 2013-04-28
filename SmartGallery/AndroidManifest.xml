@@ -69,7 +69,7 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
 
-                <data android:mimeType="application/vnd.com.example.android.beam" />
+                <data android:mimeType="image/jpeg" />
             </intent-filter>
         </activity>
         <activity

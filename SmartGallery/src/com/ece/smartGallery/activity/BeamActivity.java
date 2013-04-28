@@ -25,7 +25,7 @@ public class BeamActivity extends Activity implements CreateNdefMessageCallback 
 	TextView textView;
 	private final String TAG = this.getClass().getName();
 	private Photo photo;
-
+	private byte[] imageBytes;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -33,6 +33,7 @@ public class BeamActivity extends Activity implements CreateNdefMessageCallback 
 		TextView textView = (TextView) findViewById(R.id.beam_text);
 		textView.setText("on Create");
 		photo = (Photo) getIntent().getSerializableExtra(Photo.PHOTO);
+		imageBytes = getIntent().getByteArrayExtra(Photo.IMAGE);
 		// Check for available NFC Adapter
 		mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
 		if (mNfcAdapter == null) {
@@ -53,28 +54,18 @@ public class BeamActivity extends Activity implements CreateNdefMessageCallback 
 		NdefMessage msg = new NdefMessage(
 				new NdefRecord[] {
 						photoRecord,
-						imageRecord,
-						NdefRecord
-								.createApplicationRecord("com.ece.smartGallery.activity") });
+						imageRecord
+						//,NdefRecord
+					//			.createApplicationRecord("com.ece.smartGallery.activity") 
+						});
 		return msg;
 	}
 
 	public NdefRecord createImageRecord() {
-		File file = new File(photo.getImage().getPath());
-		byte[] payload = null;
-		try {
-			payload = IO.getByteArray(file);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		if (payload != null) {
 			NdefRecord record = new NdefRecord(NdefRecord.TNF_MIME_MEDIA,
-					"image/jpeg".getBytes(), new byte[0], payload);
-			Log.d(TAG, "image record created, length = " + payload.length);
+					"image/jpeg".getBytes(), new byte[0], imageBytes);
+			Log.d(TAG, "image record created, length = " + imageBytes.length);
 			return record;
-		} else {
-			return null;
-		}
 	}
 
 	public NdefRecord createPhotoRecord() {

@@ -1,36 +1,33 @@
 package com.ece.smartGallery.activity;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import com.ece.smartGallery.R;
-import com.ece.smartGallery.DBLayout.Album;
-import com.ece.smartGallery.DBLayout.Photo;
-import com.ece.smartGallery.activity.bluetooth.BluetoothChat;
-import com.ece.smartGallery.activity.fb.FBActivity;
-
-import android.media.ExifInterface;
-import android.media.MediaPlayer;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.os.Environment;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.media.ExifInterface;
+import android.media.MediaPlayer;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ImageView;
+
+import com.ece.smartGallery.R;
+import com.ece.smartGallery.DBLayout.Photo;
+import com.ece.smartGallery.activity.bluetooth.BluetoothChat;
+import com.ece.smartGallery.activity.fb.FBActivity;
 
 ;
 
@@ -43,6 +40,7 @@ public class DisplayActivity extends Activity {
 	private MediaPlayer mPlayer = null;
 	private boolean mStartPlaying = true;
 	private Photo photo;
+	private Bitmap imageBitmap;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +99,9 @@ public class DisplayActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle item selection
 		Intent intent;
+		ByteArrayOutputStream stream = new ByteArrayOutputStream();
+		imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+		byte[] imageBytes = stream.toByteArray();
 		switch (item.getItemId()) {
 		// TODO: fix this later
 		case R.id.action_share_via_fb:
@@ -110,6 +111,7 @@ public class DisplayActivity extends Activity {
 		case R.id.action_share_via_nfc:
 			intent = new Intent(this, BeamActivity.class);
 			intent.putExtra(Photo.PHOTO, photo);
+			intent.putExtra(Photo.IMAGE, imageBytes);
 			startActivity(intent);
 			return true;
 		case R.id.action_share_via_bluetooth:
@@ -226,6 +228,7 @@ public class DisplayActivity extends Activity {
 
 	private void setImage(ImageView view, Bitmap b, final Photo photo) {
 		view.setImageBitmap(b);
+		this.imageBitmap = b;
 	}
 
 	class LoadAsyncTask extends AsyncTask<Void, Void, Void> {

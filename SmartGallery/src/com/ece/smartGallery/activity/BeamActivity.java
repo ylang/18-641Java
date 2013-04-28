@@ -29,6 +29,7 @@ public class BeamActivity extends Activity implements CreateNdefMessageCallback 
 	private final String TAG = this.getClass().getName();
 	private Photo photo;
 	private byte[] imageBytes;
+	private byte[] payload = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -71,12 +72,6 @@ public class BeamActivity extends Activity implements CreateNdefMessageCallback 
 	}
 
 	public NdefRecord createPhotoRecord() {
-		byte[] payload = null;
-		try {
-			payload = IO.getByteArray(new TransforablePhoto(this, photo));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 		if (payload != null) {
 			NdefRecord record = new NdefRecord(NdefRecord.TNF_EXTERNAL_TYPE,
 					("com.ece.smartGallery:" + Photo.PHOTO).getBytes(),
@@ -96,15 +91,22 @@ public class BeamActivity extends Activity implements CreateNdefMessageCallback 
 			processIntent(getIntent());
 		} else {
 			photo = (Photo) getIntent().getSerializableExtra(Photo.PHOTO);
-			Bitmap bm = null;
 			try {
-				bm = Utility.scaleImage(this, photo.getImage());
+				payload = IO.getByteArray(new TransforablePhoto(this, photo));
+				Log.d(TAG, "payload created, length = " + payload.length);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			ByteArrayOutputStream stream = new ByteArrayOutputStream();
-			bm.compress(Bitmap.CompressFormat.PNG, 50, stream);
-			imageBytes = stream.toByteArray();
+//			photo = (Photo) getIntent().getSerializableExtra(Photo.PHOTO);
+//			Bitmap bm = null;
+//			try {
+//				bm = Utility.scaleImage(this, photo.getImage());
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//			ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//			bm.compress(Bitmap.CompressFormat.PNG, 50, stream);
+//			imageBytes = stream.toByteArray();
 		}
 	}
 

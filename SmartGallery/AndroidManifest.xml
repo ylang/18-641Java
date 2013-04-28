@@ -71,7 +71,7 @@
 
                 <data
                     android:host="ext"
-                    android:pathPrefix="/com.ece.smartGallery:photo"
+                    android:pathPrefix="/com.ece.smartGallery"
                     android:scheme="vnd.android.nfc" />
             </intent-filter>
         </activity>

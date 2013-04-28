@@ -40,7 +40,7 @@ public class DisplayActivity extends Activity {
 	private MediaPlayer mPlayer = null;
 	private boolean mStartPlaying = true;
 	private Photo photo;
-	private byte[]	imageBytes;
+	private byte[] imageBytes;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +103,7 @@ public class DisplayActivity extends Activity {
 		// TODO: fix this later
 		case R.id.action_share_via_fb:
 			intent = new Intent(this, FBActivity.class);
+			intent.putExtra(Photo.IMAGE, photo.getImage());
 			startActivity(intent);
 			return true;
 		case R.id.action_share_via_nfc:

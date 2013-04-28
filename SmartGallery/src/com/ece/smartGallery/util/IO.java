@@ -1,16 +1,14 @@
 package com.ece.smartGallery.util;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 
 public class IO {
-	public static byte[] getByteArray(java.io.Serializable s) throws IOException {
+	public static byte[] getByteArray(java.io.Serializable s)
+			throws IOException {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		ObjectOutput out = null;
+		ObjectOutputStream out = null;
 		byte[] bytes = null;
 		try {
 			out = new ObjectOutputStream(bos);

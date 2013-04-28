@@ -7,6 +7,7 @@ import android.net.Uri;
 
 public class Photo implements Serializable{
 	public static final String PHOTO = "photo";
+	public static final String IMAGE = "image";
 	public static final int VOICE_TYPE = 1;
 	public static final int TEXT_TYPE = 2;
 	public static final int TOUCHPAD_TYPE = 3;

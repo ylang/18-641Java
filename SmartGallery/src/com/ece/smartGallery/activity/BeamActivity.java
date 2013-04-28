@@ -1,6 +1,5 @@
 package com.ece.smartGallery.activity;
 
-import java.io.File;
 import java.io.IOException;
 
 import android.app.Activity;

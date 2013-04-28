@@ -31,6 +31,18 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <!-- 
+            <intent-filter>
+                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+ 
+                <data
+                    android:host="ext"
+                    android:pathPrefix="/com.ece.smartGallery:photo"
+                    android:scheme="vnd.android.nfc" />
+            </intent-filter>
+             -->
         </activity>
         <activity
             android:name="com.ece.smartGallery.activity.HomeActivity"
@@ -64,16 +76,7 @@
         <activity
             android:name="com.ece.smartGallery.activity.BeamActivity"
             android:label="@string/title_activity_beam" >
-            <intent-filter>
-                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-
-                <data
-                    android:host="ext"
-                    android:pathPrefix="/com.ece.smartGallery"
-                    android:scheme="vnd.android.nfc" />
-            </intent-filter>
+            
         </activity>
         <activity
             android:name="com.ece.smartGallery.activity.BluetoothActivity"

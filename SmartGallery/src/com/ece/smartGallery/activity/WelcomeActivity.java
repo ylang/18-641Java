@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ece.smartGallery.R;
 import com.ece.smartGallery.DBLayout.Album;
@@ -74,6 +75,12 @@ public class WelcomeActivity extends Activity {
 	@Override
 	public void onResume() {
 		super.onResume();
+		Log.d(TAG, "action = " + getIntent().getAction());
+		Toast.makeText(this, getIntent().getAction(), Toast.LENGTH_LONG).show();
+		if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(getIntent().getAction())) {
+			Log.d(TAG, "recieved NFC push");
+			processIntent(getIntent());
+		} 
 		loadAlbums();
 	}
 

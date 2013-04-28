@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.LinearLayout;
@@ -18,8 +17,6 @@ import android.widget.LinearLayout;
 import com.ece.smartGallery.R;
 import com.ece.smartGallery.DBLayout.Album;
 import com.ece.smartGallery.DBLayout.Photo;
-import com.ece.smartGallery.activity.bluetooth.BluetoothChat;
-import com.ece.smartGallery.activity.fb.FBActivity;
 import com.ece.smartGallery.adapter.HomeGridAdapter;
 import com.ece.smartGallery.entities.DatabaseHandler;
 
@@ -64,7 +61,6 @@ public class HomeActivity extends Activity {
 		return true;
 	}
 
-
 	public void addNewPhoto() {
 		Photo p = new Photo();
 		File path = this.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
@@ -78,10 +74,10 @@ public class HomeActivity extends Activity {
 			Log.d(TAG, "add new photo success!");
 		}
 		this.loadPhoto();
-//		Intent intent = new Intent(this, EditActivity.class);
-//		intent.setAction(Intent.ACTION_INSERT);
-//		intent.putExtra(Album.ALBUM, album.getId());
-//		startActivity(intent);
+		// Intent intent = new Intent(this, EditActivity.class);
+		// intent.setAction(Intent.ACTION_INSERT);
+		// intent.putExtra(Album.ALBUM, album.getId());
+		// startActivity(intent);
 	}
 
 	public void loadPhoto() {

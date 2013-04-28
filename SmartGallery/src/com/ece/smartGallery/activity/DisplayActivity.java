@@ -40,6 +40,7 @@ public class DisplayActivity extends Activity {
 	 private Button   mPlayButton = null;
 	 private MediaPlayer   mPlayer = null;
 	 private boolean mStartPlaying = true;
+	 private Photo photo;
 
 
 	@Override
@@ -49,7 +50,7 @@ public class DisplayActivity extends Activity {
 		
 		Intent intent = getIntent();
 		
-		Photo photo = (Photo) intent.getSerializableExtra(Photo.PHOTO);
+		photo = (Photo) intent.getSerializableExtra(Photo.PHOTO);
 		ImageView imageView = ((ImageView) findViewById(R.id.display_image));
 		LoadAsyncTask task = new LoadAsyncTask(imageView,photo,this);
 		task.execute();
@@ -110,6 +111,8 @@ public class DisplayActivity extends Activity {
 			return true;
 		case R.id.action_share_via_bluetooth:
 			intent = new Intent(this, BluetoothActivity.class);
+			intent.putExtra(Photo.PHOTO, photo);
+			intent.setAction(Intent.ACTION_SEND);
 			startActivity(intent);
 			return true;
 		default:

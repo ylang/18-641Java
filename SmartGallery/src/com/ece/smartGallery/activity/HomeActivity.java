@@ -64,33 +64,6 @@ public class HomeActivity extends Activity {
 		return true;
 	}
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle item selection
-		Intent intent;
-		switch (item.getItemId()) {
-		case R.id.action_share_via_fb:
-			intent = new Intent(this, FBActivity.class);
-			Album a = db.getAllAlbums().get(0);
-			Photo p = db.getPhoto(a, a.getCount() - 1);
-			intent.putExtra(Photo.PHOTO, p.getImage());
-			startActivity(intent);
-			return true;
-		case R.id.action_share_via_nfc:
-			intent = new Intent(this, BeamActivity.class);
-			startActivity(intent);
-			return true;
-		case R.id.action_share_via_bluetooth:
-			intent = new Intent(this, BluetoothActivity.class);
-			startActivity(intent);
-			return true;
-		case R.id.action_bluetooth:
-        	intent = new Intent(this, BluetoothChat.class);
-        	startActivity(intent);
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-	}
 
 	public void addNewPhoto() {
 		Photo p = new Photo();

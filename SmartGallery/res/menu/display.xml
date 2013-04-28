@@ -5,17 +5,23 @@
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="@string/action_settings"/>
-    <item android:id="@+id/action_share"
+    <item
+        android:id="@+id/action_share"
+        android:icon="@android:drawable/ic_menu_share"
+        android:showAsAction="ifRoom"
         android:title="@string/share">
         <menu>
             <item
                 android:id="@+id/action_share_via_fb"
+                android:icon="@drawable/facebook"
                 android:title="@string/share_fb"/>
             <item
                 android:id="@+id/action_share_via_bluetooth"
+                android:icon="@drawable/bluetooth"
                 android:title="@string/share_bluetooth"/>
             <item
                 android:id="@+id/action_share_via_nfc"
+                android:icon="@drawable/nfc"
                 android:title="@string/share_nfc"/>
         </menu>
     </item>

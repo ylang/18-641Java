@@ -6,7 +6,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import com.ece.smartGallery.R;
+import com.ece.smartGallery.DBLayout.Album;
 import com.ece.smartGallery.DBLayout.Photo;
+import com.ece.smartGallery.activity.bluetooth.BluetoothChat;
+import com.ece.smartGallery.activity.fb.FBActivity;
 
 import android.media.ExifInterface;
 import android.media.MediaPlayer;
@@ -22,6 +25,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -88,6 +92,29 @@ public class DisplayActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.display, menu);
 		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle item selection
+		Intent intent;
+		switch (item.getItemId()) {
+		//TODO: fix this later
+		case R.id.action_share_via_fb:
+			intent = new Intent(this, FBActivity.class);
+			startActivity(intent);
+			return true;
+		case R.id.action_share_via_nfc:
+			intent = new Intent(this, BeamActivity.class);
+			startActivity(intent);
+			return true;
+		case R.id.action_share_via_bluetooth:
+			intent = new Intent(this, BluetoothActivity.class);
+			startActivity(intent);
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
 	
 	private void onPlay(boolean start) {

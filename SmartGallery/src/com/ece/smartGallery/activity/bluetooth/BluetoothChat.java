@@ -1,7 +1,5 @@
 package com.ece.smartGallery.activity.bluetooth;
 
-import java.io.IOException;
-
 import android.app.ActionBar;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
@@ -22,8 +20,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.ece.smartGallery.R;
-import com.ece.smartGallery.DBLayout.Photo;
-import com.ece.smartGallery.util.IO;
 
 /**
  * This is the main Activity that displays the current chat session.
@@ -78,16 +74,9 @@ public class BluetoothChat extends Activity {
 		Intent intent = getIntent();
 		String action = intent.getAction();
 		if (Intent.ACTION_SEND.equals(action)) {
+			// show the send button from sharing end
 			findViewById(R.id.button_send).setVisibility(View.VISIBLE);
 		}
-
-		Photo photo = (Photo) intent.getSerializableExtra(Photo.PHOTO);
-		try {
-			photoBytes = IO.getByteArray(photo);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		Log.e("length!!!!!!!!", Integer.toString(photoBytes.length));
 
 		// Get local Bluetooth adapter
 		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();

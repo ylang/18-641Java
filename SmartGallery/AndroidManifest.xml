@@ -69,15 +69,9 @@
             android:label="@string/title_activity_beam" >
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
-
                 <category android:name="android.intent.category.DEFAULT" />
- 
-                <data
-                    android:host="ext"
-                    android:pathPrefix="/com.ece"
-                    android:scheme="vnd.android.nfc" />
+                <data android:mimeType="application/com.ece.smartGallery" />
             </intent-filter>
-            
         </activity>
         <activity
             android:name="com.ece.smartGallery.activity.BluetoothActivity"

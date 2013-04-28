@@ -1,18 +1,21 @@
 package com.ece.smartGallery.activity;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
+import java.util.Locale;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.nfc.NfcAdapter.CreateNdefMessageCallback;
+import android.nfc.NfcAdapter.OnNdefPushCompleteCallback;
 import android.nfc.NfcEvent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.os.Parcelable;
 import android.util.Log;
 import android.widget.TextView;
@@ -22,9 +25,10 @@ import com.ece.smartGallery.R;
 import com.ece.smartGallery.DBLayout.Photo;
 import com.ece.smartGallery.util.IO;
 import com.ece.smartGallery.util.TransforablePhoto;
-import com.ece.smartGallery.util.Utility;
 
-public class BeamActivity extends Activity implements CreateNdefMessageCallback {
+public class BeamActivity extends Activity implements
+		CreateNdefMessageCallback, OnNdefPushCompleteCallback {
+	private static final int MESSAGE_SENT = 1;
 	NfcAdapter mNfcAdapter;
 	TextView textView;
 	private final String TAG = this.getClass().getName();
@@ -49,6 +53,9 @@ public class BeamActivity extends Activity implements CreateNdefMessageCallback 
 		}
 		// Register callback
 		mNfcAdapter.setNdefPushMessageCallback(this, this);
+
+		mNfcAdapter.setOnNdefPushCompleteCallback(this, this);
+
 	}
 
 	@Override
@@ -56,36 +63,18 @@ public class BeamActivity extends Activity implements CreateNdefMessageCallback 
 		Log.d(TAG, "ndef message creating");
 		NdefRecord photoRecord = createPhotoRecord();
 		// NdefRecord imageRecord = createImageRecord();
-		NdefMessage msg = new NdefMessage(new NdefRecord[] { photoRecord
-		// ,imageRecord
-		// ,NdefRecord
-		// .createApplicationRecord("com.ece.smartGallery.activity")
-				});
+		NdefMessage msg = new NdefMessage(new NdefRecord[] { photoRecord });
 		return msg;
-	}
-
-	@Deprecated
-	public NdefRecord createImageRecord() {
-		NdefRecord record = new NdefRecord(NdefRecord.TNF_MIME_MEDIA,
-				"image/jpeg".getBytes(), new byte[0], imageBytes);
-		Log.d(TAG, "image record created, length = " + imageBytes.length);
-		return record;
 	}
 
 	public NdefRecord createPhotoRecord() {
 		if (payload != null) {
-			NdefRecord record;
-			try {
-				record = new NdefRecord(NdefRecord.TNF_EXTERNAL_TYPE,
-						("com.ece:photo").getBytes("US-ASCII"),
-						new byte[0], payload);
-				Log.d(TAG, "photo record created, length = " + payload.length);
-				return record;
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
-				return null;
-			}
-			
+			byte[] mimeBytes = new String("application/com.ece.smartGallery")
+					.getBytes(Charset.forName("US-ASCII"));
+			NdefRecord mimeRecord = new NdefRecord(NdefRecord.TNF_MIME_MEDIA,
+					mimeBytes, new byte[0], payload);
+			Log.d(TAG, "photo record created, length = " + payload.length);
+			return mimeRecord;
 		} else {
 			return null;
 		}
@@ -106,16 +95,6 @@ public class BeamActivity extends Activity implements CreateNdefMessageCallback 
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			// photo = (Photo) getIntent().getSerializableExtra(Photo.PHOTO);
-			// Bitmap bm = null;
-			// try {
-			// bm = Utility.scaleImage(this, photo.getImage());
-			// } catch (IOException e) {
-			// e.printStackTrace();
-			// }
-			// ByteArrayOutputStream stream = new ByteArrayOutputStream();
-			// bm.compress(Bitmap.CompressFormat.PNG, 50, stream);
-			// imageBytes = stream.toByteArray();
 		}
 	}
 
@@ -124,10 +103,11 @@ public class BeamActivity extends Activity implements CreateNdefMessageCallback 
 		// onResume gets called after this to handle the intent
 		Log.d(TAG, "in new intent");
 		setIntent(intent);
-		if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(getIntent().getAction())) {
-			Log.d(TAG, "recieved NFC push");
-			processIntent(getIntent());
-		} 
+		// if
+		// (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(getIntent().getAction())) {
+		// Log.d(TAG, "recieved NFC push");
+		// processIntent(getIntent());
+		// }
 	}
 
 	/**
@@ -142,15 +122,30 @@ public class BeamActivity extends Activity implements CreateNdefMessageCallback 
 		NdefMessage msg = (NdefMessage) rawMsgs[0];
 		// record 0 contains the MIME type, record 1 is the AAR, if present
 
-		Log.d(TAG, "recieved NFC: has " + msg.getRecords().length + " records");
-		int cnt = 0;
-		for (NdefRecord record : msg.getRecords()) {
-			Log.d(TAG, "record " + cnt + " has length: "
-					+ record.getPayload().length);
-			Log.d(TAG,
-					"record " + cnt + "is a type of "
-							+ new String(record.getType()));
-			cnt++;
-		}
+		NdefRecord record = msg.getRecords()[0];
+		Log.d(TAG, "recieved NFC: has " + msg.getRecords().length + " record");
+		Log.d(TAG, "record has length: " + record.getPayload().length);
+		Log.d(TAG, "record is a type of " + new String(record.getType()));
+		Toast.makeText(this, "record recieved", Toast.LENGTH_LONG).show();
 	}
+
+	@Override
+	public void onNdefPushComplete(NfcEvent arg0) {
+		// A handler is needed to send messages to the activity when this
+		// callback occurs, because it happens from a binder thread
+		mHandler.obtainMessage(MESSAGE_SENT).sendToTarget();
+	}
+
+	/** This handler receives a message from onNdefPushComplete */
+	private final Handler mHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			case MESSAGE_SENT:
+				Toast.makeText(getApplicationContext(), "Message sent!",
+						Toast.LENGTH_LONG).show();
+				break;
+			}
+		}
+	};
 }

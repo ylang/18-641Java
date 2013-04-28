@@ -1,9 +1,11 @@
 package com.ece.smartGallery.activity;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
@@ -32,7 +34,10 @@ public class BeamActivity extends Activity implements CreateNdefMessageCallback 
 		TextView textView = (TextView) findViewById(R.id.beam_text);
 		textView.setText("on Create");
 		photo = (Photo) getIntent().getSerializableExtra(Photo.PHOTO);
-		imageBytes = getIntent().getByteArrayExtra(Photo.IMAGE);
+		Bitmap imageBitmap = getIntent().getParcelableExtra(Photo.IMAGE);
+		ByteArrayOutputStream stream = new ByteArrayOutputStream();
+		imageBitmap.compress(Bitmap.CompressFormat.PNG, 50, stream);
+		imageBytes = stream.toByteArray();
 		// Check for available NFC Adapter
 		mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
 		if (mNfcAdapter == null) {
@@ -52,8 +57,8 @@ public class BeamActivity extends Activity implements CreateNdefMessageCallback 
 		NdefRecord imageRecord = createImageRecord();
 		NdefMessage msg = new NdefMessage(
 				new NdefRecord[] {
-						photoRecord,
-						imageRecord
+						photoRecord
+						//,imageRecord
 						//,NdefRecord
 					//			.createApplicationRecord("com.ece.smartGallery.activity") 
 						});

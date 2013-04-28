@@ -27,13 +27,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.UUID;
+
 import android.util.Log;
 
 public class EditActivity extends Activity {
 	
     private static final String LOG_TAG = "AudioRecordTest";
     private String mFileName = null;
-    private static int mFileCount = 0;
     
     private Button mRecordButton = null;
     private MediaRecorder mRecorder = null;
@@ -54,8 +55,10 @@ public class EditActivity extends Activity {
 	
 	        mFileName = photo.getVoice();
 		}else{
-		mFileName = GetVoiceCommentPath();
+			
+			mFileName = GetVoiceCommentPath();
 		}
+		
 		mRecordButton = (Button) findViewById(R.id.add_voice_button);
 		mRecordButton.setText("Start recording");
 		mRecordButton.setOnClickListener(new View.OnClickListener() {
@@ -87,6 +90,9 @@ public class EditActivity extends Activity {
 		
 		Photo photo = new Photo();
 		photo.setText(input_text_comment);
+		File path = this.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+		File sample = new File(path, "1.jpg");
+		photo.setImage(Uri.fromFile(sample));
 		photo.setVoice(mFileName);
 		
 		intent.putExtra(Photo.PHOTO, photo);
@@ -126,13 +132,21 @@ public class EditActivity extends Activity {
     
     public String GetVoiceCommentPath() {
         String path = Environment.getExternalStorageDirectory().getAbsolutePath();
-        path = path + "/VoiceComment"+Integer.toString(mFileCount)+ ".3gp";
-        mFileCount ++;
+        
+        path = path + "/"+UUID.randomUUID().toString()+ ".3gp";
         return path;
     }
     
 	public void scratch(View view){
 		Intent intent = new Intent(this,ScratchActivity.class);
+		Photo photo = new Photo();
+		//photo.setText(input_text_comment);
+		File path = this.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+		File sample = new File(path, "1.jpg");
+		photo.setImage(Uri.fromFile(sample));
+		photo.setVoice(mFileName);
+		
+		intent.putExtra(Photo.PHOTO, photo);
 		startActivity(intent);
 	}
 	

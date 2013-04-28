@@ -23,7 +23,7 @@
     <ListView
         android:id="@+id/in"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dip"
         android:layout_weight="1"
         android:stackFromBottom="true"
         android:transcriptMode="alwaysScroll" />
@@ -32,6 +32,7 @@
         android:id="@+id/button_send"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/send" />
+        android:text="@string/send"
+        android:visibility="gone" />
 
 </LinearLayout>

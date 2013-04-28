@@ -86,6 +86,7 @@ public class HomeActivity extends Activity {
 			return true;
 		case R.id.action_bluetooth:
         	intent = new Intent(this, BluetoothChat.class);
+        	startActivity(intent);
 		default:
 			return super.onOptionsItemSelected(item);
 		}

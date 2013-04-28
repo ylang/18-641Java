@@ -2,6 +2,7 @@ package com.ece.smartGallery.activity;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -73,11 +74,18 @@ public class BeamActivity extends Activity implements CreateNdefMessageCallback 
 
 	public NdefRecord createPhotoRecord() {
 		if (payload != null) {
-			NdefRecord record = new NdefRecord(NdefRecord.TNF_EXTERNAL_TYPE,
-					("com.ece.smartGallery:" + Photo.PHOTO).getBytes(),
-					new byte[0], payload);
-			Log.d(TAG, "photo record created, length = " + payload.length);
-			return record;
+			NdefRecord record;
+			try {
+				record = new NdefRecord(NdefRecord.TNF_EXTERNAL_TYPE,
+						("com.ece:photo").getBytes("US-ASCII"),
+						new byte[0], payload);
+				Log.d(TAG, "photo record created, length = " + payload.length);
+				return record;
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+				return null;
+			}
+			
 		} else {
 			return null;
 		}

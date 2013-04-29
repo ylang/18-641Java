@@ -85,17 +85,11 @@ public class Photo implements Serializable {
 	// }
 
 	public Uri getScratchURI() {
-<<<<<<< HEAD
-		if(this.scratchURI!= null)
-			return Uri.fromFile(new File(this.scratchURI));
-		return null;
-=======
 		if (this.hasSractch) {
 			return Uri.fromFile(new File(this.scratchURI));
 		} else {
 			return null;
 		}
->>>>>>> b820104ca1e3cfd0c3d62999ebdb44dcc06459a0
 	}
 
 	public void setScratchURI(Uri uri) {

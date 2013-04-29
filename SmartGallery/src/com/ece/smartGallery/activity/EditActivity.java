@@ -29,6 +29,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.ece.smartGallery.R;
 import com.ece.smartGallery.DBLayout.Photo;
@@ -282,6 +283,14 @@ public class EditActivity extends Activity {
 			Log.d(LOG_TAG, "onPostExecute");
 		}
 
+	}
+	
+	public void update(double lat, double lng) {
+
+		String text = "Your geolocation is lat: " + lat + " long: " + lng; 
+
+		TextView tv = (TextView) findViewById(R.id.display_geolocation);
+		tv.setText(text);
 	}
 
 }

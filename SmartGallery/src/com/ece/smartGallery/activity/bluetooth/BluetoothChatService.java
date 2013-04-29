@@ -18,6 +18,7 @@ package com.ece.smartGallery.activity.bluetooth;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.io.OutputStream;
 import java.util.UUID;
 
@@ -500,6 +501,9 @@ public class BluetoothChatService {
 			// Keep listening to the InputStream while connected
 			while (true) {
 				try {
+					ObjectInputStream objIn = new ObjectInputStream(mmInStream);
+					objIn.read();
+					// TODO ??
 					// Read from the InputStream
 					bytes = mmInStream.read(buffer);
 					// Send the obtained bytes to the UI Activity

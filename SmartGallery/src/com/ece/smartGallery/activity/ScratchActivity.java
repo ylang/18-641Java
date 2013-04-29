@@ -63,6 +63,7 @@ public class ScratchActivity extends Activity {
 		String path = Environment.getExternalStorageDirectory().getAbsolutePath();
         String name = UUID.randomUUID().toString();
         String path2 = path + "/"+name+ ".png";
+        
 		try {
 
 		fos = new FileOutputStream(path2);

@@ -79,7 +79,8 @@ public class DisplayActivity extends Activity {
 		mPlayButton.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
-				onPlay(mStartPlaying);
+				if(mFileName!= null && !mFileName.isEmpty())
+					onPlay(mStartPlaying);
 				if (mStartPlaying) {
 					mPlayButton.setText("Stop playing");
 				} else {

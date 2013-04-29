@@ -65,7 +65,7 @@ public class EditActivity extends Activity {
 			photo.setLocation("Pittsburgh");
 			photo.setTimeStamp(System.currentTimeMillis());
 			
-			voiceCommentFileName = GetVoiceCommentPath();
+			//voiceCommentFileName = GetVoiceCommentPath();
 			
 		}
 		// from display or scratch, edit an existing picture
@@ -173,21 +173,14 @@ public class EditActivity extends Activity {
         return path;
     }
     
-    public String GetScratchCommentPath() {
-        String path = Environment.getExternalStorageDirectory().getAbsolutePath();
-        
-        path = path + "/"+UUID.randomUUID().toString()+ ".3gp";
-        return path;
-    }
-    
 	public void scratch(View view){
 		Intent intent = new Intent(this,ScratchActivity.class);
-		Photo photo = new Photo();
-		// photo.setText(input_text_comment);
-		File path = this.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-		File sample = new File(path, "1.jpg");
-		photo.setImage(Uri.fromFile(sample));
-		photo.setVoice(voiceCommentFileName);
+//		Photo photo = new Photo();
+//		// photo.setText(input_text_comment);
+//		File path = this.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+//		File sample = new File(path, "1.jpg");
+//		photo.setImage(Uri.fromFile(sample));
+//		photo.setVoice(voiceCommentFileName);
 
 		intent.putExtra(Photo.PHOTO, photo);
 		startActivity(intent);

@@ -66,22 +66,22 @@ public class HomeActivity extends Activity {
 
 
 	public void addNewPhoto() {
-		Photo p = new Photo();
-		File path = this.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-		File sample = new File(path, "1.jpg");
-		p.setImage(Uri.fromFile(sample));
-		p.setLocation("Pittsburgh");
-		p.setTimeStamp(System.currentTimeMillis());
+//		Photo p = new Photo();
+//		File path = this.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+//		File sample = new File(path, "1.jpg");
+//		p.setImage(Uri.fromFile(sample));
+//		p.setLocation("Pittsburgh");
+//		p.setTimeStamp(System.currentTimeMillis());
 		Album album = db.getAlbum(albumId);
-		boolean success = db.addPhoto(album, p);
-		if (success) {
-			Log.d(TAG, "add new photo success!");
-		}
-		this.loadPhoto();
-//		Intent intent = new Intent(this, EditActivity.class);
-//		intent.setAction(Intent.ACTION_INSERT);
-//		intent.putExtra(Album.ALBUM, album.getId());
-//		startActivity(intent);
+//		boolean success = db.addPhoto(album, p);
+//		if (success) {
+//			Log.d(TAG, "add new photo success!");
+//		}
+//		this.loadPhoto();
+		Intent intent = new Intent(this, EditActivity.class);
+		intent.setAction(Intent.ACTION_INSERT);
+		intent.putExtra(Album.ALBUM, album.getId());
+		startActivity(intent);
 	}
 
 	public void loadPhoto() {

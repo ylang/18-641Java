@@ -20,6 +20,8 @@
     <string name="scratch_comment">Scratch Comment: </string>
     <string name="option">Option</string>
     <string name="back">Back</string>
+    <string name="edit">Edit</string>
+    <string name="home">Home</string>
     <string name="add_comment_here">Add text comment here</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>

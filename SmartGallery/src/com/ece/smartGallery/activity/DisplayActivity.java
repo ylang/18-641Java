@@ -22,7 +22,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.ece.smartGallery.R;
 import com.ece.smartGallery.DBLayout.Photo;
@@ -53,8 +55,20 @@ public class DisplayActivity extends Activity {
 		ImageView imageView = ((ImageView) findViewById(R.id.display_image));
 		LoadAsyncTask task = new LoadAsyncTask(imageView, photo, this);
 		task.execute();
+		
+		if(photo.getScratchURI()!=null){
+			ImageView scratchView = ((ImageView) findViewById(R.id.display_scratch));
+			LoadAsyncTaskScratch taskS = new LoadAsyncTaskScratch(scratchView, photo, this);
+			taskS.execute();
+		}
 
 		mFileName = photo.getVoice();
+		
+		String t = photo.getText();
+		if(t!=null && !t.isEmpty()){
+		TextView text_comment = (TextView) findViewById(R.id.display_text_comment);
+		text_comment.setText(photo.getText());
+		}
 
 		// LinearLayout ll = new LinearLayout(this);
 		// mPlayButton = new PlayButton(this);
@@ -263,5 +277,51 @@ public class DisplayActivity extends Activity {
 		}
 
 	}
+	
+	class LoadAsyncTaskScratch extends AsyncTask<Void, Void, Void> {
 
+		private Photo photo;
+		private ImageView view;
+		private Bitmap bitmap;
+		private Context context;
+
+		LoadAsyncTaskScratch(ImageView view, Photo photo, Context context) {
+			this.photo = photo;
+			this.view = view;
+			this.context = context;
+		}
+
+		@Override
+		protected Void doInBackground(Void... arg0) {
+			File file = new File(photo.getScratchURI().getPath());
+			Bitmap b = decodeFile(file);
+			Matrix mat = new Matrix();
+			mat.postRotate(getCameraPhotoOrientation(context, photo.getImage(),
+					file.getAbsolutePath()));
+			bitmap = Bitmap.createBitmap(b, 0, 0, b.getWidth(), b.getHeight(),
+					mat, true);
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Void arg0) {
+			setImage(view, bitmap, photo);
+			Log.d(TAG, "onPostExecute");
+		}
+
+	}
+	
+	public void to_edit_page(View view){
+		Intent intent = new Intent(this,EditActivity.class);
+		if(this.photo!=null){
+			intent.putExtra(Photo.PHOTO, this.photo);
+			startActivity(intent);
+		}
+	}
+
+	public void to_home_page(View view){
+		Intent intent = new Intent(this,WelcomeActivity.class);
+		
+		startActivity(intent);
+	}
 }

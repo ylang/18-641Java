@@ -88,7 +88,7 @@
 	            android:text="@string/scratch_comment" />
 	
 	        <ImageView
-	            android:id="@+id/display_image2"
+	            android:id="@+id/display_scratch"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:contentDescription="@string/default_picture"
@@ -96,10 +96,7 @@
 	            android:src="@drawable/ic_launcher" />
 	        
         </LinearLayout>
-    </LinearLayout>
-    </ScrollView>
-    
-    <RelativeLayout
+            <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
     <LinearLayout
@@ -113,16 +110,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/option" />
+            android:onClick="to_edit_page"
+            android:text="@string/edit" />
 
         <Button
             android:id="@+id/imageButton2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/back" />
+            android:onClick="to_home_page"
+            android:text="@string/home" />
     </LinearLayout>
     </RelativeLayout>
-
+        
+    </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

@@ -72,7 +72,7 @@ public class ScratchActivity extends Activity {
 
 		b.compress(CompressFormat.PNG, 95, fos);
 		
-		Intent intent = new Intent(this, DisplayActivity.class);
+		Intent intent = new Intent(this, EditActivity.class);
 		File f = new File(path, name+".png");
 		photo.setScratchURI(Uri.fromFile(f));
 		intent.putExtra(Photo.PHOTO,photo);

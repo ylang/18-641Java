@@ -9,7 +9,10 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".EditActivity" >
 
-    <LinearLayout
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"  >
+    	<LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
@@ -17,10 +20,9 @@
 
         <ImageView
             android:id="@+id/edit_image"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:contentDescription="@string/default_picture"
-            android:minWidth="300dp"
             android:src="@drawable/ic_launcher" />
 
         <TextView
@@ -91,11 +93,7 @@
         		android:text="Start drawing" />
 	        
         </LinearLayout>
-        
-
-    </LinearLayout>
-
-    <RelativeLayout
+        <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
@@ -121,5 +119,9 @@
                 android:text="@string/cancel" />
         </LinearLayout>
     </RelativeLayout>
+    	</LinearLayout>
+    </ScrollView>
+
+    
 
 </LinearLayout>

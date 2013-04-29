@@ -1,6 +1,7 @@
 package com.ece.smartGallery.activity;
 
 import com.ece.smartGallery.R;
+import com.ece.smartGallery.DBLayout.Album;
 import com.ece.smartGallery.DBLayout.Photo;
 import com.ece.smartGallery.activity.DisplayActivity.LoadAsyncTask;
 import com.ece.smartGallery.util.DrawView;
@@ -34,11 +35,14 @@ import android.util.Log;
 public class EditActivity extends Activity {
 	
     private static final String LOG_TAG = "AudioRecordTest";
-    private String mFileName = null;
+    private String voiceCommentFileName = null;
+    private String scratchCommentFileName = null;
     
     private Button mRecordButton = null;
     private MediaRecorder mRecorder = null;
     private boolean mStartRecording = true;
+    private int albumid;
+    private Photo photo = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,24 +51,45 @@ public class EditActivity extends Activity {
 		
 		Intent intent = getIntent();
 		
-		Photo photo = (Photo) intent.getSerializableExtra(Photo.PHOTO);
-		if(photo != null){
-			ImageView imageView = ((ImageView) findViewById(R.id.display_image));
+		// from home, add a new picture
+		if(intent.getAction()==Intent.ACTION_INSERT){
+			albumid = (int) intent.getIntExtra(Album.ALBUM, -1);
+			//start camera and then come back to add comments
+			photo = new Photo();
+			File path = this.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+			File sample = new File(path, "1.jpg");
+			photo.setImage(Uri.fromFile(sample));
+			photo.setLocation("Pittsburgh");
+			photo.setTimeStamp(System.currentTimeMillis());
+			
+			voiceCommentFileName = GetVoiceCommentPath();
+			
+		}
+		// from display or scratch, edit an existing picture
+		else{
+			photo = (Photo) intent.getSerializableExtra(Photo.PHOTO);
+			ImageView imageView = ((ImageView) findViewById(R.id.edit_image));
 			LoadAsyncTask task = new LoadAsyncTask(imageView,photo,this);
 			task.execute();
-	
-	        mFileName = photo.getVoice();
-		}else{
 			
-			mFileName = GetVoiceCommentPath();
+			// there exists voice comment
+			if(photo.getVoice()!= null && !photo.getVoice().isEmpty()){
+				voiceCommentFileName = photo.getVoice();
+			}
+			
+			// there exists scratch comment
+			if(photo.getScratchURI()!=null){
+				scratchCommentFileName = photo.getScratchURI().getPath();
+			}
+			
 		}
 		
+		// voice comment button
 		mRecordButton = (Button) findViewById(R.id.add_voice_button);
 		mRecordButton.setText("Start recording");
 		mRecordButton.setOnClickListener(new View.OnClickListener() {
-			
             public void onClick(View v) {
-                onRecord(mStartRecording, mFileName);
+                onRecord(mStartRecording, voiceCommentFileName);
                 if (mStartRecording) {
                     mRecordButton.setText("Stop recording");
                 } else {
@@ -88,31 +113,40 @@ public class EditActivity extends Activity {
 		// retrieve user input
 		String input_text_comment = ((EditText) findViewById(R.id.edit_comment_input)).getText().toString();
 		
-		Photo photo = new Photo();
-		photo.setText(input_text_comment);
-		File path = this.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-		File sample = new File(path, "1.jpg");
-		photo.setImage(Uri.fromFile(sample));
-		photo.setVoice(mFileName);
+		//Photo photo = new Photo();
+		if(input_text_comment != null && !input_text_comment.isEmpty())
+			photo.setText(input_text_comment);
+		if(voiceCommentFileName != null && !voiceCommentFileName.isEmpty())
+			photo.setVoice(voiceCommentFileName);
+		if(scratchCommentFileName != null && !scratchCommentFileName.isEmpty())
+			photo.setVoice(scratchCommentFileName);
+//		File path = this.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+//		File sample = new File(path, "1.jpg");
+//		photo.setImage(Uri.fromFile(sample));
+		
 		
 		intent.putExtra(Photo.PHOTO, photo);
 		
 		startActivity(intent);
 	}
 	
-    private void onRecord(boolean start,String mFileName) {
+    private void onRecord(boolean start,String voiceCommentFileName) {
         if (start) {
-            startRecording(mFileName);
+        	if(voiceCommentFileName==null || voiceCommentFileName.isEmpty()){
+        		voiceCommentFileName = GetVoiceCommentPath();
+        		this.photo.setVoice(voiceCommentFileName);
+        	}
+            startRecording(voiceCommentFileName);
         } else {
             stopRecording();
         }
     }
 	
-    private void startRecording(String mFileName) {
+    private void startRecording(String voiceCommentFileName) {
         mRecorder = new MediaRecorder();
         mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        mRecorder.setOutputFile(mFileName);
+        mRecorder.setOutputFile(voiceCommentFileName);
         mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
 
         try {
@@ -137,6 +171,13 @@ public class EditActivity extends Activity {
         return path;
     }
     
+    public String GetScratchCommentPath() {
+        String path = Environment.getExternalStorageDirectory().getAbsolutePath();
+        
+        path = path + "/"+UUID.randomUUID().toString()+ ".3gp";
+        return path;
+    }
+    
 	public void scratch(View view){
 		Intent intent = new Intent(this,ScratchActivity.class);
 		Photo photo = new Photo();
@@ -144,7 +185,7 @@ public class EditActivity extends Activity {
 		File path = this.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 		File sample = new File(path, "1.jpg");
 		photo.setImage(Uri.fromFile(sample));
-		photo.setVoice(mFileName);
+		photo.setVoice(voiceCommentFileName);
 		
 		intent.putExtra(Photo.PHOTO, photo);
 		startActivity(intent);

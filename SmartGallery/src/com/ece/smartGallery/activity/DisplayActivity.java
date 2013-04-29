@@ -306,6 +306,7 @@ public class DisplayActivity extends Activity {
 		Intent intent = new Intent(this,EditActivity.class);
 		if(this.photo!=null){
 			intent.putExtra(Photo.PHOTO, this.photo);
+			intent.setAction(Intent.ACTION_EDIT);
 			startActivity(intent);
 		}
 	}

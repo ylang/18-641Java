@@ -1,13 +1,10 @@
 package com.ece.smartGallery.activity;
 
-import java.io.File;
 import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -62,18 +59,7 @@ public class HomeActivity extends Activity {
 	}
 
 	public void addNewPhoto() {
-//		Photo p = new Photo();
-//		File path = this.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-//		File sample = new File(path, "1.jpg");
-//		p.setImage(Uri.fromFile(sample));
-//		p.setLocation("Pittsburgh");
-//		p.setTimeStamp(System.currentTimeMillis());
 		Album album = db.getAlbum(albumId);
-//		boolean success = db.addPhoto(album, p);
-//		if (success) {
-//			Log.d(TAG, "add new photo success!");
-//		}
-//		this.loadPhoto();
 		Intent intent = new Intent(this, EditActivity.class);
 		intent.setAction(Intent.ACTION_INSERT);
 		intent.putExtra(Album.ALBUM, album.getId());
@@ -88,12 +74,4 @@ public class HomeActivity extends Activity {
 		gridView.setAdapter(adapter);
 		Log.d(TAG, "grid view adapter set");
 	}
-
-	// this method is used to go to edit page directly to test more easily
-	// will be removed once integrate all parts together.
-	public void test_edit(View view) {
-		Intent intent = new Intent(this, EditActivity.class);
-		startActivity(intent);
-	}
-
 }

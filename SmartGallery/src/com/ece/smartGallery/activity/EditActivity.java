@@ -26,10 +26,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ece.smartGallery.R;
 import com.ece.smartGallery.DBLayout.Album;
 import com.ece.smartGallery.DBLayout.Photo;
+import com.ece.smartGallery.entities.DatabaseHandler;
 
 public class EditActivity extends Activity {
 
@@ -40,7 +42,7 @@ public class EditActivity extends Activity {
 	private Button mRecordButton = null;
 	private MediaRecorder mRecorder = null;
 	private boolean mStartRecording = true;
-	private int albumid;
+	private int albumid = -1;
 	private Photo photo = null;
 	private Intent intent;
 	private final String TAG = this.getClass().getName();
@@ -48,12 +50,14 @@ public class EditActivity extends Activity {
 	private Uri cameraUri;
 	private ImageView imageView;
 	private boolean alreadyCapture = false;
+	private DatabaseHandler db;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_edit);
 		imageView = (ImageView) findViewById(R.id.edit_image);
+		db = new DatabaseHandler(this);
 	}
 
 	@Override
@@ -115,9 +119,7 @@ public class EditActivity extends Activity {
 		cameraUri = Uri.fromFile(file);
 		Log.d(TAG, "Request uri = " + cameraUri);
 		cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, cameraUri);
-		startActivityForResult(cameraIntent, this.CAMERA_REQ); // 1337 is the
-															// cemra request
-															// code.
+		startActivityForResult(cameraIntent, this.CAMERA_REQ);
 	}
 
 	@Override
@@ -146,7 +148,7 @@ public class EditActivity extends Activity {
 	}
 
 	public void save(View view) {
-		Intent saveIntent = new Intent(this, DisplayActivity.class);
+		Intent displayIntent = new Intent(this, DisplayActivity.class);
 
 		// retrieve user input
 		String input_text_comment = ((EditText) findViewById(R.id.edit_comment_input))
@@ -162,9 +164,20 @@ public class EditActivity extends Activity {
 		// File path = this.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 		// File sample = new File(path, "1.jpg");
 		// photo.setImage(Uri.fromFile(sample));
-		saveIntent.putExtra(Photo.PHOTO, photo);
-
-		startActivity(saveIntent);
+		Album album;
+		if (albumid != -1) {
+			album = db.getAlbum(albumid);
+		} else {
+			album = db.getAlbum(0);
+		}
+		boolean success =db.addPhoto(album, photo);
+		if (success) {
+			displayIntent.putExtra(Photo.PHOTO, photo);
+			startActivity(displayIntent);
+		} else {
+			Toast.makeText(this, "fail to save photo", Toast.LENGTH_SHORT).show();
+		}
+		
 	}
 
 	private void onRecord(boolean start, String voiceCommentFileName) {

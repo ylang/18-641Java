@@ -2,12 +2,14 @@ package com.ece.smartGallery.activity;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.Charset;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
@@ -19,6 +21,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Parcelable;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,6 +29,8 @@ import android.widget.Toast;
 
 import com.ece.smartGallery.R;
 import com.ece.smartGallery.DBLayout.Photo;
+import com.ece.smartGallery.activity.bluetooth.BluetoothChat;
+import com.ece.smartGallery.activity.fb.FBActivity;
 import com.ece.smartGallery.util.Utility;
 
 public class BeamActivity extends Activity implements
@@ -37,14 +42,16 @@ public class BeamActivity extends Activity implements
 	private Photo photo;
 	private byte[] imageBytes;
 	private byte[] payload = null;
+	private ImageView imageView;
+	private Bitmap bMap;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_beam);
 		Log.d(TAG, "onCreate.");
-		TextView textView = (TextView) findViewById(R.id.beam_text);
-		textView.setText("on Create");
+		textView = (TextView) findViewById(R.id.beam_text);
+		imageView = (ImageView) findViewById(R.id.beam_image);
 		// Check for available NFC Adapter
 		mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
 		if (mNfcAdapter == null) {
@@ -88,16 +95,30 @@ public class BeamActivity extends Activity implements
 		// Check to see that the Activity started due to an Android Beam
 		if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(getIntent().getAction())) {
 			Log.d(TAG, "recieved NFC push");
+			textView.setText("Photo received");
 			processIntent(getIntent());
 		} else {
 			photo = (Photo) getIntent().getSerializableExtra(Photo.PHOTO);
 			try {
-				//payload = IO.getBase64ByteArray(new TransforablePhoto(photo));
+				// payload = IO.getBase64ByteArray(new
+				// TransforablePhoto(photo));
 				Bitmap b = Utility.scaleImage(this, photo.getImage());
 				ByteArrayOutputStream stream = new ByteArrayOutputStream();
-				b.compress(Bitmap.CompressFormat.JPEG, 10, stream);
+				int quality = 200 * 100 / b.getByteCount();
+				if (quality < 10 || quality > 100) {
+					quality = 10;
+				}
+				b.compress(Bitmap.CompressFormat.JPEG, quality, stream);
 				payload = stream.toByteArray();
 				Log.d(TAG, "payload created, length = " + payload.length);
+				// get input stream
+				InputStream ims = getAssets().open("pair.jpg");
+				// load image as Drawable
+				Drawable d = Drawable.createFromStream(ims, null);
+				// set image to ImageView
+				imageView.setVisibility(View.VISIBLE);
+				imageView.setImageDrawable(d);
+				textView.setText("Ready to push via NFC");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -109,11 +130,24 @@ public class BeamActivity extends Activity implements
 		// onResume gets called after this to handle the intent
 		Log.d(TAG, "in new intent");
 		setIntent(intent);
-		// if
-		// (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(getIntent().getAction())) {
-		// Log.d(TAG, "recieved NFC push");
-		// processIntent(getIntent());
-		// }
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle item selection
+		Intent intent;
+		switch (item.getItemId()) {
+		case R.id.action_nfc_save:
+			if (this.bMap != null) {
+				intent = new Intent(this, EditActivity.class);
+				intent.setAction(Intent.ACTION_SEND);
+				intent.putExtra(Photo.IMAGE, bMap);
+				startActivity(intent);
+				finish();
+			}
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
 
 	/**
@@ -133,9 +167,8 @@ public class BeamActivity extends Activity implements
 		Log.d(TAG, "recieved NFC: has " + msg.getRecords().length + " record");
 		Log.d(TAG, "record has length: " + record.getPayload().length);
 		Log.d(TAG, "record is a type of " + new String(record.getType()));
-		ImageView imageView = (ImageView) findViewById(R.id.beam_image);       
 		imageView.setVisibility(View.VISIBLE);
-		Bitmap bMap = BitmapFactory.decodeByteArray(img, 0, img.length);
+		bMap = BitmapFactory.decodeByteArray(img, 0, img.length);
 		imageView.setImageBitmap(bMap);
 	}
 
@@ -154,6 +187,7 @@ public class BeamActivity extends Activity implements
 			case MESSAGE_SENT:
 				Toast.makeText(getApplicationContext(), "Message sent!",
 						Toast.LENGTH_LONG).show();
+				finish();
 				break;
 			}
 		}

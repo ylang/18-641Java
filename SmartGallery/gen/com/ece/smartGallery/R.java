@@ -220,12 +220,13 @@ containing a value of this type.
         public static final int nfc=0x7f020025;
     }
     public static final class id {
-        public static final int action_bluetooth=0x7f040047;
+        public static final int action_bluetooth=0x7f040048;
+        public static final int action_nfc_save=0x7f040040;
         public static final int action_settings=0x7f04003f;
-        public static final int action_share=0x7f040040;
-        public static final int action_share_via_bluetooth=0x7f040042;
-        public static final int action_share_via_fb=0x7f040041;
-        public static final int action_share_via_nfc=0x7f040043;
+        public static final int action_share=0x7f040041;
+        public static final int action_share_via_bluetooth=0x7f040043;
+        public static final int action_share_via_fb=0x7f040042;
+        public static final int action_share_via_nfc=0x7f040044;
         public static final int add_new_album=0x7f04001a;
         public static final int add_new_photo=0x7f040013;
         public static final int add_scratch_button=0x7f04000f;
@@ -255,7 +256,7 @@ containing a value of this type.
         public static final int com_facebook_usersettingsfragment_login_button=0x7f040030;
         public static final int com_facebook_usersettingsfragment_logo_image=0x7f04002e;
         public static final int com_facebook_usersettingsfragment_profile_name=0x7f04002f;
-        public static final int discoverable=0x7f040046;
+        public static final int discoverable=0x7f040047;
         public static final int display_geolocation=0x7f040006;
         public static final int display_image=0x7f040005;
         public static final int display_image2=0x7f040009;
@@ -272,7 +273,7 @@ containing a value of this type.
         public static final int imageButton1=0x7f04000a;
         public static final int imageButton2=0x7f04000b;
         public static final int in=0x7f04003b;
-        public static final int insecure_connect_scan=0x7f040045;
+        public static final int insecure_connect_scan=0x7f040046;
         public static final int large=0x7f040002;
         public static final int list_item_count=0x7f04003e;
         public static final int list_item_name=0x7f04003d;
@@ -286,7 +287,7 @@ containing a value of this type.
         public static final int scratch_clear=0x7f040018;
         public static final int scratch_save=0x7f040017;
         public static final int search_box=0x7f04002c;
-        public static final int secure_connect_scan=0x7f040044;
+        public static final int secure_connect_scan=0x7f040045;
         public static final int small=0x7f040000;
         public static final int title_left_text=0x7f040031;
         public static final int title_new_devices=0x7f040035;

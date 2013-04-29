@@ -54,7 +54,7 @@ public class FBFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 		this.activity = getActivity();
 		Intent intent = this.activity.getIntent();
-		photoUri = intent.getParcelableExtra(Photo.PHOTO);
+		photoUri = intent.getParcelableExtra(Photo.IMAGE);
 		uiHelper = new UiLifecycleHelper(this.activity,
 				new Session.StatusCallback() {
 					@Override
@@ -157,7 +157,6 @@ public class FBFragment extends Fragment {
 			return;
 		}
 
-		Log.i(TAG, photoUri.getPath());
 		Bitmap bm = null;
 		try {
 			bm = Utility.scaleImage(this.activity, photoUri);

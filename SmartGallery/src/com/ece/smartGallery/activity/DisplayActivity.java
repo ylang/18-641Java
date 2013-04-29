@@ -1,6 +1,5 @@
 package com.ece.smartGallery.activity;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -31,8 +30,6 @@ import com.ece.smartGallery.DBLayout.Photo;
 import com.ece.smartGallery.activity.bluetooth.BluetoothChat;
 import com.ece.smartGallery.activity.fb.FBActivity;
 
-;
-
 public class DisplayActivity extends Activity {
 	private static final String LOG_TAG = "AudioRecordTest";
 	private final String TAG = this.getClass().getName();
@@ -42,8 +39,6 @@ public class DisplayActivity extends Activity {
 	private MediaPlayer mPlayer = null;
 	private boolean mStartPlaying = true;
 	private Photo photo;
-	private Bitmap imageBitmap;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -113,19 +108,16 @@ public class DisplayActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle item selection
 		Intent intent;
-		ByteArrayOutputStream stream = new ByteArrayOutputStream();
-		imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-		byte[] imageBytes = stream.toByteArray();
 		switch (item.getItemId()) {
 		// TODO: fix this later
 		case R.id.action_share_via_fb:
 			intent = new Intent(this, FBActivity.class);
+			intent.putExtra(Photo.IMAGE, photo.getImage());
 			startActivity(intent);
 			return true;
 		case R.id.action_share_via_nfc:
 			intent = new Intent(this, BeamActivity.class);
 			intent.putExtra(Photo.PHOTO, photo);
-			intent.putExtra(Photo.IMAGE, imageBytes);
 			startActivity(intent);
 			return true;
 		case R.id.action_share_via_bluetooth:
@@ -242,7 +234,6 @@ public class DisplayActivity extends Activity {
 
 	private void setImage(ImageView view, Bitmap b, final Photo photo) {
 		view.setImageBitmap(b);
-		this.imageBitmap = b;
 	}
 
 	class LoadAsyncTask extends AsyncTask<Void, Void, Void> {
@@ -275,7 +266,6 @@ public class DisplayActivity extends Activity {
 			setImage(view, bitmap, photo);
 			Log.d(TAG, "onPostExecute");
 		}
-
 	}
 	
 	class LoadAsyncTaskScratch extends AsyncTask<Void, Void, Void> {
@@ -324,4 +314,5 @@ public class DisplayActivity extends Activity {
 		
 		startActivity(intent);
 	}
+
 }

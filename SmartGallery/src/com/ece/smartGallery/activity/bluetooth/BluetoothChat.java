@@ -1,5 +1,7 @@
 package com.ece.smartGallery.activity.bluetooth;
 
+import java.io.IOException;
+
 import android.app.ActionBar;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
@@ -20,6 +22,11 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.ece.smartGallery.R;
+import com.ece.smartGallery.DBLayout.Photo;
+import com.ece.smartGallery.util.IO;
+import com.ece.smartGallery.util.TransforablePhoto;
+
+;
 
 /**
  * This is the main Activity that displays the current chat session.
@@ -60,6 +67,8 @@ public class BluetoothChat extends Activity {
 	// Member object for the chat services
 	private BluetoothChatService mChatService = null;
 
+	private byte[] photoBytes;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -72,7 +81,14 @@ public class BluetoothChat extends Activity {
 		Intent intent = getIntent();
 		String action = intent.getAction();
 		if (Intent.ACTION_SEND.equals(action)) {
+			// show the send button from sharing end
 			findViewById(R.id.button_send).setVisibility(View.VISIBLE);
+			Photo photo = intent.getParcelableExtra(Photo.PHOTO);
+			try {
+				photoBytes = IO.getByteArray(new TransforablePhoto(photo));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 
 		// Get local Bluetooth adapter
@@ -140,8 +156,7 @@ public class BluetoothChat extends Activity {
 		mSendButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				// Send a message using content of the edit text widget
-				String message = "hehe";
-				sendMessage(message);
+				sendMessage(new byte[1024 * 1024]);
 			}
 		});
 
@@ -194,7 +209,7 @@ public class BluetoothChat extends Activity {
 	 * @param message
 	 *            A string of text to send.
 	 */
-	private void sendMessage(String message) {
+	private void sendMessage(byte[] message) {
 		// Check that we're actually connected before trying anything
 		if (mChatService.getState() != BluetoothChatService.STATE_CONNECTED) {
 			Toast.makeText(this, R.string.not_connected, Toast.LENGTH_SHORT)
@@ -203,11 +218,9 @@ public class BluetoothChat extends Activity {
 		}
 
 		// Check that there's actually something to send
-		if (message.length() > 0) {
+		if (message.length > 0) {
 			// Get the message bytes and tell the BluetoothChatService to write
-			byte[] send = message.getBytes();
-			mChatService.write(send);
-
+			mChatService.write(message);
 			// Reset out string buffer to zero and clear the edit text field
 			mOutStringBuffer.setLength(0);
 		}
@@ -261,7 +274,7 @@ public class BluetoothChat extends Activity {
 				// construct a string from the valid bytes in the buffer
 				String readMessage = new String(readBuf, 0, msg.arg1);
 				mConversationArrayAdapter.add(mConnectedDeviceName + ":  "
-						+ readMessage);
+						+ readBuf.length);
 				break;
 			case MESSAGE_DEVICE_NAME:
 				// save the connected device's name

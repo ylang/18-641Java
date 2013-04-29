@@ -31,6 +31,9 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <!-- 
+            
+             -->
         </activity>
         <activity
             android:name="com.ece.smartGallery.activity.HomeActivity"
@@ -66,10 +69,8 @@
             android:label="@string/title_activity_beam" >
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
-
                 <category android:name="android.intent.category.DEFAULT" />
-
-                <data android:mimeType="image/jpeg" />
+                <data android:mimeType="application/com.ece.smartgallery" />
             </intent-filter>
         </activity>
         <activity

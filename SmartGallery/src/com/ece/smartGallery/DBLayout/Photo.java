@@ -5,63 +5,65 @@ import java.io.Serializable;
 
 import android.net.Uri;
 
-public class Photo implements Serializable{
+public class Photo implements Serializable {
 	public static final String PHOTO = "photo";
 	public static final String IMAGE = "image";
 	public static final int VOICE_TYPE = 1;
 	public static final int TEXT_TYPE = 2;
 	public static final int TOUCHPAD_TYPE = 3;
-	
-	
+
 	private static final long serialVersionUID = -4783890754000515921L;
 	private int id;
-//	private int albumId;
+	// private int albumId;
 	private String name;
 	private long timeStamp;
-	private String text;	//text comment
-	private String voice;	//voice comment
-	private String imageURI;	//the URI of the image file. (in string)
-	private String scratchURI;  //the URI of the scratch comment file. (in string)
+	private String text; // text comment
+	private String voice; // voice comment
+	private String imageURI; // the URI of the image file. (in string)
+	private String scratchURI; // the URI of the scratch comment file. (in
+								// string)
 
 	private int commentType;
 	private String location;
 	private double lng, lat;
-	
+	private boolean hasSractch = false;
+	private boolean hasVoice = false;
+
 	public Photo() {
-		
+
 	}
-	
+
 	public int getCommentType() {
 		return this.commentType;
 	}
-	
+
 	public void setCommentType(int commentType) {
 		if (commentType < 4 && commentType > 0) {
 			this.commentType = commentType;
 		}
 	}
-	
+
 	public Uri getImage() {
-		
+
 		return Uri.fromFile(new File(this.imageURI));
 	}
-	
+
 	public void setImage(Uri img) {
 		this.imageURI = img.getPath();
 	}
-	
+
 	public double getLng() {
 		return lng;
 	}
-	
+
 	public void setLng(double lng) {
 		this.lng = lng;
 	}
-	
+
 	public double getLat() {
 		return lat;
 	}
-	
+
 	public void setLat(double lat) {
 		this.lat = lat;
 	}
@@ -74,24 +76,35 @@ public class Photo implements Serializable{
 		this.id = id;
 	}
 
-//	public int getAlbumId() {
-//		return albumId;
-//	}
-//
-//	public void setAlbumId(int albumId) {
-//		this.albumId = albumId;
-//	}
+	// public int getAlbumId() {
+	// return albumId;
+	// }
+	//
+	// public void setAlbumId(int albumId) {
+	// this.albumId = albumId;
+	// }
 
 	public Uri getScratchURI() {
+<<<<<<< HEAD
 		if(this.scratchURI!= null)
 			return Uri.fromFile(new File(this.scratchURI));
 		return null;
+=======
+		if (this.hasSractch) {
+			return Uri.fromFile(new File(this.scratchURI));
+		} else {
+			return null;
+		}
+>>>>>>> b820104ca1e3cfd0c3d62999ebdb44dcc06459a0
 	}
 
 	public void setScratchURI(Uri uri) {
-		this.scratchURI = uri.getPath();
+		if (uri != null) {
+			this.scratchURI = uri.getPath();
+			this.hasSractch = true;
+		}
 	}
-	
+
 	public String getName() {
 		return name;
 	}
@@ -117,11 +130,16 @@ public class Photo implements Serializable{
 	}
 
 	public String getVoice() {
-		return voice;
+		if (this.hasVoice) {
+			return voice;
+		} else {
+			return null;
+		}
 	}
 
 	public void setVoice(String voice) {
 		this.voice = voice;
+		this.hasVoice = true;
 	}
 
 	public String getLocation() {

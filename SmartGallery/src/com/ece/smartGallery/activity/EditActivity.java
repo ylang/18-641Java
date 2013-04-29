@@ -5,6 +5,11 @@ import com.ece.smartGallery.DBLayout.Album;
 import com.ece.smartGallery.DBLayout.Photo;
 import com.ece.smartGallery.activity.DisplayActivity.LoadAsyncTask;
 import com.ece.smartGallery.util.DrawView;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.UUID;
 
 import android.app.Activity;
 import android.content.Context;
@@ -18,19 +23,15 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.UUID;
-
-import android.util.Log;
+import com.ece.smartGallery.R;
+import com.ece.smartGallery.DBLayout.Photo;
 
 public class EditActivity extends Activity {
 	
@@ -44,11 +45,12 @@ public class EditActivity extends Activity {
     private int albumid;
     private Photo photo = null;
 
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_edit);
-		
+
 		Intent intent = getIntent();
 		
 		// from home, add a new picture
@@ -97,6 +99,7 @@ public class EditActivity extends Activity {
                 }
                 mStartRecording = !mStartRecording;
             }
+
 		});
 	}
 
@@ -106,10 +109,10 @@ public class EditActivity extends Activity {
 		getMenuInflater().inflate(R.menu.edit, menu);
 		return true;
 	}
-	
-	public void save(View view){
-		Intent intent = new Intent(this,DisplayActivity.class);
-		
+
+	public void save(View view) {
+		Intent intent = new Intent(this, DisplayActivity.class);
+
 		// retrieve user input
 		String input_text_comment = ((EditText) findViewById(R.id.edit_comment_input)).getText().toString();
 		
@@ -123,10 +126,8 @@ public class EditActivity extends Activity {
 //		File path = this.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 //		File sample = new File(path, "1.jpg");
 //		photo.setImage(Uri.fromFile(sample));
-		
-		
 		intent.putExtra(Photo.PHOTO, photo);
-		
+
 		startActivity(intent);
 	}
 	
@@ -181,16 +182,16 @@ public class EditActivity extends Activity {
 	public void scratch(View view){
 		Intent intent = new Intent(this,ScratchActivity.class);
 		Photo photo = new Photo();
-		//photo.setText(input_text_comment);
+		// photo.setText(input_text_comment);
 		File path = this.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 		File sample = new File(path, "1.jpg");
 		photo.setImage(Uri.fromFile(sample));
 		photo.setVoice(voiceCommentFileName);
-		
+
 		intent.putExtra(Photo.PHOTO, photo);
 		startActivity(intent);
 	}
-	
+
 	private Bitmap decodeFile(File f) {
 		try {
 			// Decode image size
@@ -245,17 +246,18 @@ public class EditActivity extends Activity {
 		}
 		return rotate;
 	}
-	
+
 	private void setImage(ImageView view, Bitmap b, final Photo photo) {
 		view.setImageBitmap(b);
 	}
-	
+
 	class LoadAsyncTask extends AsyncTask<Void, Void, Void> {
-		
+
 		private Photo photo;
 		private ImageView view;
 		private Bitmap bitmap;
 		private Context context;
+
 		LoadAsyncTask(ImageView view, Photo photo, Context context) {
 			this.photo = photo;
 			this.view = view;
@@ -267,20 +269,19 @@ public class EditActivity extends Activity {
 			File file = new File(photo.getImage().getPath());
 			Bitmap b = decodeFile(file);
 			Matrix mat = new Matrix();
-			mat.postRotate(getCameraPhotoOrientation(context,
-					photo.getImage(), file.getAbsolutePath()));
-			bitmap = Bitmap.createBitmap(b, 0, 0, b.getWidth(),
-					b.getHeight(), mat, true);
+			mat.postRotate(getCameraPhotoOrientation(context, photo.getImage(),
+					file.getAbsolutePath()));
+			bitmap = Bitmap.createBitmap(b, 0, 0, b.getWidth(), b.getHeight(),
+					mat, true);
 			return null;
 		}
-		
+
 		@Override
 		protected void onPostExecute(Void arg0) {
 			setImage(view, bitmap, photo);
 			Log.d(LOG_TAG, "onPostExecute");
 		}
-		
-	}
 
+	}
 
 }

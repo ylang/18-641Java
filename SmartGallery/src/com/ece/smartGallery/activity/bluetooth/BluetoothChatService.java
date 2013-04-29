@@ -18,6 +18,7 @@ package com.ece.smartGallery.activity.bluetooth;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.io.OutputStream;
 import java.util.UUID;
 
@@ -494,12 +495,15 @@ public class BluetoothChatService {
 
 		public void run() {
 			Log.i(TAG, "BEGIN mConnectedThread");
-			byte[] buffer = new byte[1024];
+			byte[] buffer = new byte[1024 * 1024];
 			int bytes;
 
 			// Keep listening to the InputStream while connected
 			while (true) {
 				try {
+					ObjectInputStream objIn = new ObjectInputStream(mmInStream);
+					objIn.read();
+					// TODO ??
 					// Read from the InputStream
 					bytes = mmInStream.read(buffer);
 					// Send the obtained bytes to the UI Activity
@@ -524,7 +528,6 @@ public class BluetoothChatService {
 		public void write(byte[] buffer) {
 			try {
 				mmOutStream.write(buffer);
-
 				// Share the sent message back to the UI Activity
 				mHandler.obtainMessage(BluetoothChat.MESSAGE_WRITE, -1, -1,
 						buffer).sendToTarget();

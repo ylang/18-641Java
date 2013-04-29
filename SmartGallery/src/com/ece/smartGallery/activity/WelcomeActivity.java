@@ -6,7 +6,11 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
+import android.nfc.NfcAdapter;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,12 +20,12 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ece.smartGallery.R;
 import com.ece.smartGallery.DBLayout.Album;
-import com.ece.smartGallery.DBLayout.Photo;
 import com.ece.smartGallery.activity.bluetooth.BluetoothChat;
-import com.ece.smartGallery.activity.fb.FBActivity;
 import com.ece.smartGallery.adapter.WelcomeListAdapter;
 import com.ece.smartGallery.entities.DatabaseHandler;
 
@@ -36,7 +40,7 @@ public class WelcomeActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_welcome);
-		db= new DatabaseHandler(this);
+		db = new DatabaseHandler(this);
 		addAlbum = (LinearLayout) findViewById(R.id.add_new_album);
 		addAlbum.setOnClickListener(new View.OnClickListener() {
 
@@ -60,14 +64,14 @@ public class WelcomeActivity extends Activity {
 		Intent intent;
 		switch (item.getItemId()) {
 		case R.id.action_bluetooth:
-        	intent = new Intent(this, BluetoothChat.class);
-        	intent.setAction(Intent.ACTION_ANSWER);
-        	startActivity(intent);
+			intent = new Intent(this, BluetoothChat.class);
+			intent.setAction(Intent.ACTION_ANSWER);
+			startActivity(intent);
 		default:
 			return super.onOptionsItemSelected(item);
 		}
 	}
-	
+
 	@Override
 	public void onResume() {
 		super.onResume();

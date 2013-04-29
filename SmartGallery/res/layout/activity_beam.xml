@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -6,6 +6,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
     tools:context=".BeamActivity" >
 
     <TextView
@@ -14,4 +15,13 @@
         android:layout_height="wrap_content"
         android:text="@string/hello_world" />
 
-</RelativeLayout>
+    <ImageView
+        android:id="@+id/beam_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="182dp"
+        android:layout_marginLeft="16dp"
+        android:visibility="gone"
+        android:src="@drawable/default_image" />
+
+</LinearLayout>

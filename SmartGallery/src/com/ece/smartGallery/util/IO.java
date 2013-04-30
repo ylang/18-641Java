@@ -76,6 +76,6 @@ public class IO {
 	}
 	
 	public static Photo convertToPhoto(TransforablePhoto p) {
-		
+		return null;
 	}
 }

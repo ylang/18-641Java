@@ -66,6 +66,6 @@
     <string name="none_paired">No devices have been paired</string>
     <string name="none_found">No devices found</string>
     <string name="save">save</string>
-    <string name="back">back</string>
+    <string name="back">album</string>
 
 </resources>

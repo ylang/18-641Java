@@ -81,6 +81,8 @@ public class ScratchActivity extends Activity {
 		intent.setAction(Intent.ACTION_EDIT);
 		
 		startActivity(intent);
+		finish();
 	}
+	
 
 }

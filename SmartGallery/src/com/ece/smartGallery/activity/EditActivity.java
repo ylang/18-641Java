@@ -179,6 +179,7 @@ public class EditActivity extends Activity {
 		if (success) {
 			displayIntent.putExtra(Photo.PHOTO, photo);
 			startActivity(displayIntent);
+			finish();
 		} else {
 			Toast.makeText(this, "fail to save photo", Toast.LENGTH_SHORT)
 					.show();
@@ -244,6 +245,7 @@ public class EditActivity extends Activity {
 		intent.putExtra(Photo.PHOTO, photo);
 		// intent.putExtra(EditActivity.class.getName(), this);
 		startActivity(intent);
+		finish();
 	}
 
 	private Bitmap decodeFile(File f) {

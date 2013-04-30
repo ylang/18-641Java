@@ -309,13 +309,12 @@ public class DisplayActivity extends Activity {
 			intent.putExtra(Photo.PHOTO, this.photo);
 			intent.setAction(Intent.ACTION_EDIT);
 			startActivity(intent);
+			finish();
 		}
 	}
 
 	public void to_home_page(View view){
-		Intent intent = new Intent(this,WelcomeActivity.class);
-		
-		startActivity(intent);
+		finish();
 	}
 
 }

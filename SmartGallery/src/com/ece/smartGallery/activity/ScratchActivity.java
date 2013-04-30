@@ -75,8 +75,10 @@ public class ScratchActivity extends Activity {
 		
 		Intent intent = new Intent(this, EditActivity.class);
 		File f = new File(path, name+".png");
+		
 		photo.setScratchURI(Uri.fromFile(f));
 		intent.putExtra(Photo.PHOTO,photo);
+		intent.setAction(Intent.ACTION_EDIT);
 		
 		startActivity(intent);
 	}

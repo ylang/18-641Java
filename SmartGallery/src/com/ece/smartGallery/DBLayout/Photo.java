@@ -13,7 +13,7 @@ public class Photo implements Serializable {
 	public static final int TOUCHPAD_TYPE = 3;
 
 	private static final long serialVersionUID = -4783890754000515921L;
-	private int id;
+	private int id = -1;
 	// private int albumId;
 	private String name;
 	private long timeStamp;

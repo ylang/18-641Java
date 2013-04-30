@@ -37,7 +37,6 @@ public class EditActivity extends Activity {
 
 	private static final String LOG_TAG = "AudioRecordTest";
 	private String voiceCommentFileName = null;
-	private String scratchCommentFileName = null;
 
 	private Button mRecordButton = null;
 	private MediaRecorder mRecorder = null;
@@ -83,11 +82,6 @@ public class EditActivity extends Activity {
 			if (photo.getVoice() != null && !photo.getVoice().isEmpty()) {
 				voiceCommentFileName = photo.getVoice();
 			}
-
-			// there exists scratch comment
-			if (photo.getScratchURI() != null) {
-				scratchCommentFileName = photo.getScratchURI().getPath();
-			}
 		}
 		// voice comment button
 		mRecordButton = (Button) findViewById(R.id.add_voice_button);
@@ -102,7 +96,6 @@ public class EditActivity extends Activity {
 				}
 				mStartRecording = !mStartRecording;
 			}
-
 		});
 	}
 	
@@ -159,8 +152,6 @@ public class EditActivity extends Activity {
 			photo.setText(input_text_comment);
 		if (voiceCommentFileName != null && !voiceCommentFileName.isEmpty())
 			photo.setVoice(voiceCommentFileName);
-		if (scratchCommentFileName != null && !scratchCommentFileName.isEmpty())
-			photo.setVoice(scratchCommentFileName);
 		// File path = this.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 		// File sample = new File(path, "1.jpg");
 		// photo.setImage(Uri.fromFile(sample));
@@ -168,11 +159,11 @@ public class EditActivity extends Activity {
 		if (albumid != -1) {
 			album = db.getAlbum(albumid);
 		} else {
-			album = db.getAlbum(0);
+			album = db.getAlbum(1);
 		}
 		
 		boolean success = false;
-		if(photo.getId()>0){
+		if(photo.getId() > 0){
 			success = db.updatePhoto(album, photo);
 		}
 		else{
@@ -229,6 +220,10 @@ public class EditActivity extends Activity {
 		path = path + "/" + UUID.randomUUID().toString() + ".3gp";
 		return path;
 	}
+	
+	public void set_scratch(Uri uri){
+		this.photo.setScratchURI(uri);
+	}
 
 	public void scratch(View view) {
 		Intent intent = new Intent(this, ScratchActivity.class);
@@ -240,6 +235,7 @@ public class EditActivity extends Activity {
 		// photo.setVoice(voiceCommentFileName);
 
 		intent.putExtra(Photo.PHOTO, photo);
+		//intent.putExtra(EditActivity.class.getName(), this);
 		startActivity(intent);
 	}
 

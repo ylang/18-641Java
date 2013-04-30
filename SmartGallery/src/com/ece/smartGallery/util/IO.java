@@ -8,12 +8,12 @@ import java.io.InputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
-import com.ece.smartGallery.DBLayout.Photo;
-
 import android.util.Base64;
 
+import com.ece.smartGallery.DBLayout.Photo;
+
 public class IO {
-	
+
 	@Deprecated
 	public static byte[] getByteArray(java.io.Serializable s)
 			throws IOException {
@@ -32,41 +32,42 @@ public class IO {
 		}
 		return bytes;
 	}
-	
-//	private String encodeFileToBase64Binary(String fileName)
-//			throws IOException {
-// 
-//		File file = new File(fileName);
-//		byte[] bytes = loadFile(file);
-//		byte[] encoded = Base64.encodeBase64(bytes);
-//		String encodedString = new String(encoded);
-// 
-//		return encodedString;
-//	}
- 
+
+	// private String encodeFileToBase64Binary(String fileName)
+	// throws IOException {
+	//
+	// File file = new File(fileName);
+	// byte[] bytes = loadFile(file);
+	// byte[] encoded = Base64.encodeBase64(bytes);
+	// String encodedString = new String(encoded);
+	//
+	// return encodedString;
+	// }
+
 	public static byte[] loadFile(File file) throws IOException {
-	    InputStream is = new FileInputStream(file);
- 
-	    long length = file.length();
-	    if (length > Integer.MAX_VALUE) {
-	        // File is too large
-	    }
-	    byte[] bytes = new byte[(int)length];
-	    
-	    int offset = 0;
-	    int numRead = 0;
-	    while (offset < bytes.length
-	           && (numRead=is.read(bytes, offset, bytes.length-offset)) >= 0) {
-	        offset += numRead;
-	    }
- 
-	    if (offset < bytes.length) {
-	    	is.close();
-	        throw new IOException("Could not completely read file "+file.getName());
-	    }
- 
-	    is.close();
-	    return bytes;
+		InputStream is = new FileInputStream(file);
+
+		long length = file.length();
+		if (length > Integer.MAX_VALUE) {
+			// File is too large
+		}
+		byte[] bytes = new byte[(int) length];
+
+		int offset = 0;
+		int numRead = 0;
+		while (offset < bytes.length
+				&& (numRead = is.read(bytes, offset, bytes.length - offset)) >= 0) {
+			offset += numRead;
+		}
+
+		if (offset < bytes.length) {
+			is.close();
+			throw new IOException("Could not completely read file "
+					+ file.getName());
+		}
+
+		is.close();
+		return bytes;
 	}
 
 	@Deprecated
@@ -74,8 +75,8 @@ public class IO {
 		byte[] raw = getByteArray(s);
 		return Base64.encode(raw, Base64.DEFAULT);
 	}
-	
-	public static Photo convertToPhoto(TransforablePhoto p) {
+
+	public static Photo convertToPhoto(TransferablePhoto p) {
 		return null;
 	}
 }

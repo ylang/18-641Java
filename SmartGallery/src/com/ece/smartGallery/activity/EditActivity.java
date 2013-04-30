@@ -33,6 +33,7 @@ import com.ece.smartGallery.R;
 import com.ece.smartGallery.DBLayout.Album;
 import com.ece.smartGallery.DBLayout.Photo;
 import com.ece.smartGallery.entities.DatabaseHandler;
+import com.ece.smartGallery.util.LocationService;
 
 public class EditActivity extends Activity {
 
@@ -147,6 +148,13 @@ public class EditActivity extends Activity {
 				photo.setTimeStamp(System.currentTimeMillis());
 				Log.d(TAG, "album id = " + albumid);
 				photo.setAlbumId(albumid);
+				
+				LocationService service = new LocationService(EditActivity.this);
+				if (service.canGetLocation()) {
+					photo.setLocation(service.getLocationName());
+				}
+				update(service.getLocationName());
+				
 			} else {
 				finish();
 			}
@@ -359,8 +367,8 @@ public class EditActivity extends Activity {
 
 	}
 
-	public void update(double lat, double lng) {
-		String text = "Your geolocation is lat: " + lat + " long: " + lng;
+	public void update(String location) {
+		String text = "Picture taken in: "+location ;
 		TextView tv = (TextView) findViewById(R.id.display_geolocation);
 		tv.setText(text);
 	}

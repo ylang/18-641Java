@@ -21,6 +21,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Parcelable;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -44,6 +45,7 @@ public class BeamActivity extends Activity implements
 	private byte[] payload = null;
 	private ImageView imageView;
 	private Bitmap bMap;
+	private MenuItem saveSetting;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -111,13 +113,6 @@ public class BeamActivity extends Activity implements
 				b.compress(Bitmap.CompressFormat.JPEG, quality, stream);
 				payload = stream.toByteArray();
 				Log.d(TAG, "payload created, length = " + payload.length);
-				// get input stream
-				InputStream ims = getAssets().open("pair.jpg");
-				// load image as Drawable
-				Drawable d = Drawable.createFromStream(ims, null);
-				// set image to ImageView
-				imageView.setVisibility(View.VISIBLE);
-				imageView.setImageDrawable(d);
 				textView.setText("Ready to push via NFC");
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -130,6 +125,15 @@ public class BeamActivity extends Activity implements
 		// onResume gets called after this to handle the intent
 		Log.d(TAG, "in new intent");
 		setIntent(intent);
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.beam, menu);
+		saveSetting = menu.getItem(1);
+		saveSetting.setEnabled(false);
+		return true;
 	}
 
 	@Override
@@ -170,6 +174,7 @@ public class BeamActivity extends Activity implements
 		imageView.setVisibility(View.VISIBLE);
 		bMap = BitmapFactory.decodeByteArray(img, 0, img.length);
 		imageView.setImageBitmap(bMap);
+		saveSetting.setEnabled(true);
 	}
 
 	@Override

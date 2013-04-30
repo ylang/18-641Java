@@ -346,9 +346,7 @@ public class EditActivity extends Activity {
 	}
 
 	public void update(double lat, double lng) {
-
 		String text = "Your geolocation is lat: " + lat + " long: " + lng;
-
 		TextView tv = (TextView) findViewById(R.id.display_geolocation);
 		tv.setText(text);
 	}

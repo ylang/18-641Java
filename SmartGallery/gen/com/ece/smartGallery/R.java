@@ -218,6 +218,7 @@ containing a value of this type.
         public static final int gallery=0x7f020023;
         public static final int ic_launcher=0x7f020024;
         public static final int nfc=0x7f020025;
+        public static final int pair=0x7f020026;
     }
     public static final class id {
         public static final int action_bluetooth=0x7f040047;

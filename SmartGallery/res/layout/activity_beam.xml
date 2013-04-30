@@ -17,11 +17,10 @@
 
     <ImageView
         android:id="@+id/beam_image"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="182dp"
         android:layout_marginLeft="16dp"
-        android:visibility="gone"
-        android:src="@drawable/default_image" />
+        android:src="@drawable/pair" />
 
 </LinearLayout>

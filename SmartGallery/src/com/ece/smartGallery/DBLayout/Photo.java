@@ -14,7 +14,7 @@ public class Photo implements Serializable {
 
 	private static final long serialVersionUID = -4783890754000515921L;
 	private int id;
-	// private int albumId;
+	private int albumId;
 	private String name;
 	private long timeStamp;
 	private String text; // text comment

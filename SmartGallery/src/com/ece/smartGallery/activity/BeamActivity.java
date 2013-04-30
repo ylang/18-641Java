@@ -132,7 +132,6 @@ public class BeamActivity extends Activity implements
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.beam, menu);
 		saveSetting = menu.getItem(1);
-		saveSetting.setEnabled(false);
 		return true;
 	}
 
@@ -175,7 +174,6 @@ public class BeamActivity extends Activity implements
 		bMap = BitmapFactory.decodeByteArray(img, 0, img.length);
 		imageView.setImageBitmap(bMap);
 		imageBytes = img;
-		saveSetting.setEnabled(true);
 	}
 
 	@Override

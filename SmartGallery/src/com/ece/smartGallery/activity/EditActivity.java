@@ -131,6 +131,7 @@ public class EditActivity extends Activity {
 				photo.setImage(cameraUri);
 				photo.setLocation("Pittsburgh");
 				photo.setTimeStamp(System.currentTimeMillis());
+				photo.setAlbumId(albumid);
 			} else {
 				finish();
 			}

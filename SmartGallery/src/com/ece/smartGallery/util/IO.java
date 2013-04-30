@@ -8,9 +8,13 @@ import java.io.InputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
+import com.ece.smartGallery.DBLayout.Photo;
+
 import android.util.Base64;
 
 public class IO {
+	
+	@Deprecated
 	public static byte[] getByteArray(java.io.Serializable s)
 			throws IOException {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -64,9 +68,14 @@ public class IO {
 	    is.close();
 	    return bytes;
 	}
-	
+
+	@Deprecated
 	public static byte[] getBase64ByteArray(Serializable s) throws IOException {
 		byte[] raw = getByteArray(s);
 		return Base64.encode(raw, Base64.DEFAULT);
+	}
+	
+	public static Photo convertToPhoto(TransforablePhoto p) {
+		
 	}
 }

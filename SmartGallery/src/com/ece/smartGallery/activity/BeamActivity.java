@@ -145,7 +145,7 @@ public class BeamActivity extends Activity implements
 			if (this.bMap != null) {
 				intent = new Intent(this, EditActivity.class);
 				intent.setAction(Intent.ACTION_SEND);
-				intent.putExtra(Photo.IMAGE, bMap);
+				intent.putExtra(Photo.IMAGE, imageBytes);
 				startActivity(intent);
 				finish();
 			}
@@ -174,6 +174,7 @@ public class BeamActivity extends Activity implements
 		imageView.setVisibility(View.VISIBLE);
 		bMap = BitmapFactory.decodeByteArray(img, 0, img.length);
 		imageView.setImageBitmap(bMap);
+		imageBytes = img;
 		saveSetting.setEnabled(true);
 	}
 

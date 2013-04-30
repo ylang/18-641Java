@@ -3,6 +3,7 @@ package com.ece.smartGallery.activity;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
@@ -85,8 +86,20 @@ public class EditActivity extends Activity {
 			}
 		} else if (Intent.ACTION_SEND.equals(intent.getAction())) {
 			// send from share
-			Bitmap b = intent.getParcelableExtra(Photo.IMAGE);
+			byte[] imageBytes = intent.getByteArrayExtra(Photo.IMAGE);
+			Bitmap b = BitmapFactory.decodeByteArray(imageBytes, 0,
+					imageBytes.length);
 			this.setImage(imageView, b);
+			photo = new Photo();
+			photo.setAlbumId(1); // default
+			String imageName = UUID.randomUUID().toString() + ".jpg";
+			SavePhotoTask task = new SavePhotoTask(this, imageBytes, imageName);
+			task.execute();
+			photo.setImage(Uri.fromFile(new File(this
+					.getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+					imageName)));
+			photo.setLocation("Pittsburgh");
+			photo.setTimeStamp(System.currentTimeMillis());
 		}
 		// voice comment button
 		mRecordButton = (Button) findViewById(R.id.add_voice_button);
@@ -350,6 +363,40 @@ public class EditActivity extends Activity {
 		String text = "Your geolocation is lat: " + lat + " long: " + lng;
 		TextView tv = (TextView) findViewById(R.id.display_geolocation);
 		tv.setText(text);
+	}
+
+	class SavePhotoTask extends AsyncTask<Void, Void, Void> {
+		private byte[] bytes;
+		private String fileName;
+		private Context context;
+
+		SavePhotoTask(Context context, byte[] bytes, String fileName) {
+			this.context = context;
+			this.bytes = bytes;
+			this.fileName = fileName;
+		}
+
+		@Override
+		protected Void doInBackground(Void... arg0) {
+			File photo = new File(
+					context.getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+					fileName);
+
+			if (photo.exists()) {
+				photo.delete();
+			}
+
+			try {
+				FileOutputStream fos = new FileOutputStream(photo.getPath());
+
+				fos.write(bytes);
+				fos.close();
+			} catch (java.io.IOException e) {
+				Log.e("save picture", "Exception in photoCallback", e);
+			}
+
+			return (null);
+		}
 	}
 
 }

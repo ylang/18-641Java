@@ -8,7 +8,7 @@ import android.content.Context;
 
 import com.ece.smartGallery.DBLayout.Photo;
 
-public class TransforablePhoto implements Serializable {
+public class TransferablePhoto implements Serializable {
 	/**
 	 * 
 	 */
@@ -25,7 +25,7 @@ public class TransforablePhoto implements Serializable {
 	private String location;
 	private double lng, lat;
 
-	public TransforablePhoto(Photo photo) {
+	public TransferablePhoto(Photo photo) {
 		this.name = photo.getName();
 		this.timeStamp = photo.getTimeStamp();
 		this.text = photo.getText();

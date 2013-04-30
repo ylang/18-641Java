@@ -1,5 +1,9 @@
 package com.ece.smartGallery.util;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+
 import com.ece.smartGallery.activity.EditActivity;
 
 import android.app.AlertDialog;
@@ -7,6 +11,8 @@ import android.app.Service;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -31,6 +37,7 @@ public class LocationService extends Service implements LocationListener {
 	Location location; // location
 	double latitude; // latitude
 	double longitude; // longitude
+	String locationname;
 
 	// The minimum distance to change Updates in meters
 	private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; // 10 meters
@@ -101,7 +108,17 @@ public class LocationService extends Service implements LocationListener {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		((EditActivity) mContext).update(latitude, longitude);
+		Geocoder geocoder = new Geocoder(mContext, Locale.getDefault());          
+		locationname = "default";
+		try {
+		    List<Address> listAddresses = geocoder.getFromLocation(latitude, longitude, 1);
+		    if(null!=listAddresses&&listAddresses.size()>0){
+		        locationname = listAddresses.get(0).getAddressLine(1);
+		    }
+		} catch (IOException e) {
+		    e.printStackTrace();
+		}
+		//((EditActivity) mContext).update(latitude, longitude, locationname );
 		return location;
 	}
 
@@ -128,6 +145,11 @@ public class LocationService extends Service implements LocationListener {
 
 		// return longitude
 		return longitude;
+	}
+	
+	public String getLocationName() {
+		
+		return locationname;
 	}
 
 	/**

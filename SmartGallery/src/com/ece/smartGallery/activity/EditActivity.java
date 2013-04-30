@@ -88,6 +88,10 @@ public class EditActivity extends Activity {
 			if (photo.getScratchURI() != null) {
 				scratchCommentFileName = photo.getScratchURI().getPath();
 			}
+		} else if (Intent.ACTION_SEND.equals(intent.getAction())) {
+			// send from share
+			Bitmap b = intent.getParcelableExtra(Photo.IMAGE);
+			this.setImage(imageView, b);
 		}
 		// voice comment button
 		mRecordButton = (Button) findViewById(R.id.add_voice_button);

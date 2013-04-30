@@ -91,6 +91,14 @@ public class TransferablePhoto implements Serializable {
 	public void setVoiceBytes(byte[] voiceBytes) {
 		this.voiceBytes = voiceBytes;
 	}
+	
+	public void setScratchBytes(byte[] sBytes) {
+		this.scratchBytes = sBytes;
+	}
+	
+	public byte[] getScratchBytes() {
+		return this.scratchBytes;
+	}
 
 	public String getLocation() {
 		return location;

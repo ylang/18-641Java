@@ -3,12 +3,19 @@ package com.ece.smartGallery.util;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.UUID;
 
+import android.content.Context;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Environment;
 import android.util.Base64;
+import android.util.Log;
 
 import com.ece.smartGallery.DBLayout.Photo;
 
@@ -76,7 +83,70 @@ public class IO {
 		return Base64.encode(raw, Base64.DEFAULT);
 	}
 
-	public static Photo convertToPhoto(TransferablePhoto p) {
-		return null;
+	public static Photo convertToPhoto(Context context, TransferablePhoto p) {
+		Photo photo = new Photo();
+		photo.setAlbumId(1);
+		photo.setLat(p.getLat());
+		photo.setLng(p.getLng());
+		photo.setLocation(p.getLocation());
+		photo.setName(p.getName());
+		photo.setText(p.getText());
+		photo.setTimeStamp(p.getTimeStamp());
+		String fileName = UUID.randomUUID() + ".jpg";
+		photo.setImage(Uri.fromFile(new File(context
+				.getExternalFilesDir(Environment.DIRECTORY_PICTURES), fileName)));
+		((new IO()).new SaveFileTask(context, p.getImageBytes(), fileName))
+				.execute();
+
+		if (p.getVoiceBytes() != null) {
+			String vName = UUID.randomUUID() + ".3pg";
+			photo.setImage(Uri.fromFile(new File(Environment
+					.getExternalStorageDirectory().getAbsoluteFile(), vName)));
+			((new IO()).new SaveFileTask(context, p.getVoiceBytes(), vName))
+					.execute();
+		}
+
+		if (p.getScratchBytes() != null) {
+			String sName = UUID.randomUUID() + ".png";
+			photo.setImage(Uri.fromFile(new File(Environment
+					.getExternalStorageDirectory().getAbsoluteFile(), sName)));
+			((new IO()).new SaveFileTask(context, p.getScratchBytes(), sName))
+					.execute();
+		}
+		return photo;
+	}
+
+	class SaveFileTask extends AsyncTask<Void, Void, Void> {
+		private byte[] bytes;
+		private String fileName;
+		private Context context;
+
+		SaveFileTask(Context context, byte[] bytes, String fileName) {
+			this.context = context;
+			this.bytes = bytes;
+			this.fileName = fileName;
+		}
+
+		@Override
+		protected Void doInBackground(Void... arg0) {
+			File photo = new File(
+					context.getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+					fileName);
+
+			if (photo.exists()) {
+				photo.delete();
+			}
+
+			try {
+				FileOutputStream fos = new FileOutputStream(photo.getPath());
+
+				fos.write(bytes);
+				fos.close();
+			} catch (java.io.IOException e) {
+				Log.e("save picture", "Exception in photoCallback", e);
+			}
+
+			return (null);
+		}
 	}
 }

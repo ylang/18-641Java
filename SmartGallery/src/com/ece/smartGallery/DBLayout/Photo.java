@@ -38,7 +38,7 @@ public class Photo implements Serializable {
 	}
 	
 	public int getAlbumId() {
-		return this.getAlbumId();
+		return this.albumId;
 	}
 
 	public int getCommentType() {

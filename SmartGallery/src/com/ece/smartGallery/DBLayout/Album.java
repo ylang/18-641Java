@@ -85,7 +85,6 @@ public class Album {
 	 * @return id of the new photo, or -1 if failed to save.
 	 */
 	public String addNewPhoto(Context context, Photo photo) {
-		photo.setAlbumId(this.id);
 		String fileName = "photo_" + this.id + "_" + this.count + ".dat";
 		try {
 			Datastorage.savePhoto(context, fileName, photo);

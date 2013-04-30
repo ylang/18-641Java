@@ -19,6 +19,7 @@ package com.ece.smartGallery.activity.bluetooth;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.UUID;
 
@@ -31,6 +32,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+
+import com.ece.smartGallery.util.TransferablePhoto;
 
 /**
  * This class does all the work for setting up and managing Bluetooth
@@ -259,7 +262,7 @@ public class BluetoothChatService {
 	 *            The bytes to write
 	 * @see ConnectedThread#write(byte[])
 	 */
-	public void write(byte[] out) {
+	public void write(Object obj) {
 		// Create temporary object
 		ConnectedThread r;
 		// Synchronize a copy of the ConnectedThread
@@ -269,7 +272,7 @@ public class BluetoothChatService {
 			r = mConnectedThread;
 		}
 		// Perform the write unsynchronized
-		r.write(out);
+		r.write(obj);
 	}
 
 	/**
@@ -475,6 +478,9 @@ public class BluetoothChatService {
 		private final InputStream mmInStream;
 		private final OutputStream mmOutStream;
 
+		private ObjectOutputStream objOut;
+		private ObjectInputStream objIn;
+
 		public ConnectedThread(BluetoothSocket socket, String socketType) {
 			Log.d(TAG, "create ConnectedThread: " + socketType);
 			mmSocket = socket;
@@ -491,26 +497,35 @@ public class BluetoothChatService {
 
 			mmInStream = tmpIn;
 			mmOutStream = tmpOut;
+
+			try {
+				objOut = new ObjectOutputStream(mmOutStream);
+				objOut.flush();
+				objIn = new ObjectInputStream(mmInStream);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 
 		public void run() {
 			Log.i(TAG, "BEGIN mConnectedThread");
-			byte[] buffer = new byte[1024 * 1024];
-			int bytes;
 
 			// Keep listening to the InputStream while connected
 			while (true) {
 				try {
-					ObjectInputStream objIn = new ObjectInputStream(mmInStream);
-					objIn.read();
-					// TODO ??
-					// Read from the InputStream
-					bytes = mmInStream.read(buffer);
+					TransferablePhoto tPhoto = (TransferablePhoto) objIn
+							.readObject();
 					// Send the obtained bytes to the UI Activity
-					mHandler.obtainMessage(BluetoothChat.MESSAGE_READ, bytes,
-							-1, buffer).sendToTarget();
+					mHandler.obtainMessage(BluetoothChat.MESSAGE_READ, 0, -1,
+							tPhoto).sendToTarget();
 				} catch (IOException e) {
 					Log.e(TAG, "disconnected", e);
+					connectionLost();
+					// Start the service over to restart listening mode
+					BluetoothChatService.this.start();
+					break;
+				} catch (ClassNotFoundException e) {
+					Log.e(TAG, "class not found", e);
 					connectionLost();
 					// Start the service over to restart listening mode
 					BluetoothChatService.this.start();
@@ -525,12 +540,12 @@ public class BluetoothChatService {
 		 * @param buffer
 		 *            The bytes to write
 		 */
-		public void write(byte[] buffer) {
+		public void write(Object obj) {
 			try {
-				mmOutStream.write(buffer);
+				objOut.writeObject(obj);
 				// Share the sent message back to the UI Activity
-				mHandler.obtainMessage(BluetoothChat.MESSAGE_WRITE, -1, -1,
-						buffer).sendToTarget();
+				mHandler.obtainMessage(BluetoothChat.MESSAGE_WRITE, -1, -1, obj)
+						.sendToTarget();
 			} catch (IOException e) {
 				Log.e(TAG, "Exception during write", e);
 			}

@@ -9,21 +9,18 @@ import android.content.Context;
 import com.ece.smartGallery.DBLayout.Photo;
 
 public class TransferablePhoto implements Serializable {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -6090493483762339387L;
 	private String name;
 	private long timeStamp;
-	private String text; // text comment
+	private String text;
 
 	private byte[] imageBytes;
 	private byte[] voiceBytes;
 	private byte[] scratchBytes;
-
 	private int commentType;
 	private String location;
-	private double lng, lat;
+	private double lng;
+	private double lat;
 
 	public TransferablePhoto(Photo photo) {
 		this.name = photo.getName();
@@ -53,5 +50,73 @@ public class TransferablePhoto implements Serializable {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public long getTimeStamp() {
+		return timeStamp;
+	}
+
+	public void setTimeStamp(long timeStamp) {
+		this.timeStamp = timeStamp;
+	}
+
+	public String getText() {
+		return text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
+	}
+
+	public byte[] getImageBytes() {
+		return imageBytes;
+	}
+
+	public void setImageBytes(byte[] imageBytes) {
+		this.imageBytes = imageBytes;
+	}
+
+	public byte[] getVoiceBytes() {
+		return voiceBytes;
+	}
+
+	public void setVoiceBytes(byte[] voiceBytes) {
+		this.voiceBytes = voiceBytes;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public String getLoction() {
+		return this.location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	public double getLng() {
+		return lng;
+	}
+
+	public void setLng(double lng) {
+		this.lng = lng;
+	}
+
+	public double getLat() {
+		return lat;
+	}
+
+	public void setLat(double lat) {
+		this.lat = lat;
 	}
 }

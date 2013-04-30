@@ -1,7 +1,5 @@
 package com.ece.smartGallery.activity.bluetooth;
 
-import java.io.IOException;
-
 import android.app.ActionBar;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
@@ -15,7 +13,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -23,10 +20,7 @@ import android.widget.Toast;
 
 import com.ece.smartGallery.R;
 import com.ece.smartGallery.DBLayout.Photo;
-import com.ece.smartGallery.util.IO;
-import com.ece.smartGallery.util.TransforablePhoto;
-
-;
+import com.ece.smartGallery.util.TransferablePhoto;
 
 /**
  * This is the main Activity that displays the current chat session.
@@ -67,7 +61,7 @@ public class BluetoothChat extends Activity {
 	// Member object for the chat services
 	private BluetoothChatService mChatService = null;
 
-	private byte[] photoBytes;
+	private TransferablePhoto tPhoto;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -83,17 +77,12 @@ public class BluetoothChat extends Activity {
 		if (Intent.ACTION_SEND.equals(action)) {
 			// show the send button from sharing end
 			findViewById(R.id.button_send).setVisibility(View.VISIBLE);
-			Photo photo = intent.getParcelableExtra(Photo.PHOTO);
-			try {
-				photoBytes = IO.getByteArray(new TransforablePhoto(photo));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			Photo photo = (Photo) intent.getSerializableExtra(Photo.PHOTO);
+			this.tPhoto = new TransferablePhoto(photo);
 		}
 
 		// Get local Bluetooth adapter
 		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-
 		// If the adapter is null, then Bluetooth is not supported
 		if (mBluetoothAdapter == null) {
 			Toast.makeText(this, "Bluetooth is not available",
@@ -153,12 +142,7 @@ public class BluetoothChat extends Activity {
 
 		// Initialize the send button with a listener that for click events
 		mSendButton = (Button) findViewById(R.id.button_send);
-		mSendButton.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				// Send a message using content of the edit text widget
-				sendMessage(new byte[1024 * 1024]);
-			}
-		});
+		mSendButton.setOnClickListener(new SendListener(this, this.tPhoto));
 
 		// Initialize the BluetoothChatService to perform bluetooth connections
 		mChatService = new BluetoothChatService(this, mHandler);
@@ -209,7 +193,7 @@ public class BluetoothChat extends Activity {
 	 * @param message
 	 *            A string of text to send.
 	 */
-	private void sendMessage(byte[] message) {
+	public void sendMessage(Object obj) {
 		// Check that we're actually connected before trying anything
 		if (mChatService.getState() != BluetoothChatService.STATE_CONNECTED) {
 			Toast.makeText(this, R.string.not_connected, Toast.LENGTH_SHORT)
@@ -218,9 +202,9 @@ public class BluetoothChat extends Activity {
 		}
 
 		// Check that there's actually something to send
-		if (message.length > 0) {
+		if (obj != null) {
 			// Get the message bytes and tell the BluetoothChatService to write
-			mChatService.write(message);
+			mChatService.write(obj);
 			// Reset out string buffer to zero and clear the edit text field
 			mOutStringBuffer.setLength(0);
 		}
@@ -262,19 +246,19 @@ public class BluetoothChat extends Activity {
 				}
 				break;
 			case MESSAGE_WRITE:
-				Log.e("WAT", "Message write");
-				byte[] writeBuf = (byte[]) msg.obj;
+				// TODO ruoyul write
+				TransferablePhoto photoOut = (TransferablePhoto) msg.obj;
 				// construct a string from the buffer
-				String writeMessage = new String(writeBuf);
+				String writeMessage = photoOut.getLoction();
 				mConversationArrayAdapter.add("Me:  " + writeMessage);
 				break;
 			case MESSAGE_READ:
-				Log.e("WAT", "Message read");
-				byte[] readBuf = (byte[]) msg.obj;
+				// TODO ruoyul read 
+				TransferablePhoto photoIn = (TransferablePhoto) msg.obj;
 				// construct a string from the valid bytes in the buffer
-				String readMessage = new String(readBuf, 0, msg.arg1);
+				String readMessage = photoIn.getLoction();
 				mConversationArrayAdapter.add(mConnectedDeviceName + ":  "
-						+ readBuf.length);
+						+ readMessage);
 				break;
 			case MESSAGE_DEVICE_NAME:
 				// save the connected device's name

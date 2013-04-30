@@ -170,7 +170,15 @@ public class EditActivity extends Activity {
 		} else {
 			album = db.getAlbum(0);
 		}
-		boolean success =db.addPhoto(album, photo);
+		
+		boolean success = false;
+		if(photo.getId()>0){
+			success = db.updatePhoto(album, photo);
+		}
+		else{
+			success = db.addPhoto(album, photo);
+		}
+		
 		if (success) {
 			displayIntent.putExtra(Photo.PHOTO, photo);
 			startActivity(displayIntent);

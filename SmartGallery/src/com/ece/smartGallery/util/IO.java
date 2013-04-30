@@ -10,7 +10,6 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.UUID;
 
-import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
@@ -83,7 +82,7 @@ public class IO {
 		return Base64.encode(raw, Base64.DEFAULT);
 	}
 
-	public static Photo convertToPhoto(Context context, TransferablePhoto p) {
+	public static Photo convertToPhoto(TransferablePhoto p) {
 		Photo photo = new Photo();
 		photo.setAlbumId(1);
 		photo.setLat(p.getLat());
@@ -93,24 +92,24 @@ public class IO {
 		photo.setText(p.getText());
 		photo.setTimeStamp(p.getTimeStamp());
 		String fileName = UUID.randomUUID() + ".jpg";
-		photo.setImage(Uri.fromFile(new File(context
-				.getExternalFilesDir(Environment.DIRECTORY_PICTURES), fileName)));
-		((new IO()).new SaveFileTask(context, p.getImageBytes(), fileName))
+		photo.setImage(Uri.fromFile(new File(Environment
+				.getExternalStorageDirectory().getAbsoluteFile(), fileName)));
+		((new IO()).new SaveFileTask(p.getImageBytes(), fileName))
 				.execute();
 
 		if (p.getVoiceBytes() != null) {
 			String vName = UUID.randomUUID() + ".3pg";
-			photo.setImage(Uri.fromFile(new File(Environment
-					.getExternalStorageDirectory().getAbsoluteFile(), vName)));
-			((new IO()).new SaveFileTask(context, p.getVoiceBytes(), vName))
+			photo.setVoice(new File(Environment
+					.getExternalStorageDirectory().getAbsoluteFile(), vName).getAbsolutePath());
+			((new IO()).new SaveFileTask(p.getVoiceBytes(), vName))
 					.execute();
 		}
 
 		if (p.getScratchBytes() != null) {
 			String sName = UUID.randomUUID() + ".png";
-			photo.setImage(Uri.fromFile(new File(Environment
+			photo.setScratchURI(Uri.fromFile(new File(Environment
 					.getExternalStorageDirectory().getAbsoluteFile(), sName)));
-			((new IO()).new SaveFileTask(context, p.getScratchBytes(), sName))
+			((new IO()).new SaveFileTask(p.getScratchBytes(), sName))
 					.execute();
 		}
 		return photo;
@@ -119,10 +118,8 @@ public class IO {
 	class SaveFileTask extends AsyncTask<Void, Void, Void> {
 		private byte[] bytes;
 		private String fileName;
-		private Context context;
 
-		SaveFileTask(Context context, byte[] bytes, String fileName) {
-			this.context = context;
+		SaveFileTask(byte[] bytes, String fileName) {
 			this.bytes = bytes;
 			this.fileName = fileName;
 		}
@@ -130,7 +127,7 @@ public class IO {
 		@Override
 		protected Void doInBackground(Void... arg0) {
 			File photo = new File(
-					context.getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+					Environment.getExternalStorageDirectory().getAbsoluteFile(),
 					fileName);
 
 			if (photo.exists()) {

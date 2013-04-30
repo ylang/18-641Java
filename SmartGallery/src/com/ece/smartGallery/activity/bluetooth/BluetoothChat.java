@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -20,6 +22,8 @@ import android.widget.Toast;
 
 import com.ece.smartGallery.R;
 import com.ece.smartGallery.DBLayout.Photo;
+import com.ece.smartGallery.entities.DatabaseHandler;
+import com.ece.smartGallery.util.IO;
 import com.ece.smartGallery.util.TransferablePhoto;
 
 /**
@@ -222,6 +226,7 @@ public class BluetoothChat extends Activity {
 		actionBar.setSubtitle(subTitle);
 	}
 
+	private final Context context = this;
 	// The Handler that gets information back from the BluetoothChatService
 	private final Handler mHandler = new Handler() {
 		@Override
@@ -246,19 +251,41 @@ public class BluetoothChat extends Activity {
 				}
 				break;
 			case MESSAGE_WRITE:
-				// TODO ruoyul write
-				TransferablePhoto photoOut = (TransferablePhoto) msg.obj;
-				// construct a string from the buffer
-				String writeMessage = photoOut.getLoction();
-				mConversationArrayAdapter.add("Me:  " + writeMessage);
+				Toast.makeText(context, "Sent photo finished",
+						Toast.LENGTH_LONG).show();
+				Button buttonSend = (Button) ((Activity) context)
+						.findViewById(R.id.button_send);
+				buttonSend.setText("Back");
+				buttonSend.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View arg0) {
+						((Activity) context).finish();
+					}
+				});
 				break;
 			case MESSAGE_READ:
-				// TODO ruoyul read 
+				// get transferable
 				TransferablePhoto photoIn = (TransferablePhoto) msg.obj;
+				// get photo and save it
+				Photo photo = IO.convertToPhoto(photoIn);
+				DatabaseHandler db = new DatabaseHandler(context);
+				db.addPhoto(db.getAlbum(1), photo);
+
+				Log.e("READ", "Image size" + photoIn.getImageBytes().length
+						+ "");
 				// construct a string from the valid bytes in the buffer
-				String readMessage = photoIn.getLoction();
-				mConversationArrayAdapter.add(mConnectedDeviceName + ":  "
-						+ readMessage);
+				mConversationArrayAdapter.add("Got photo from "
+						+ mConnectedDeviceName);
+				buttonSend = (Button) ((Activity) context)
+						.findViewById(R.id.button_send);
+				buttonSend.setVisibility(View.VISIBLE);
+				buttonSend.setText("Back");
+				buttonSend.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View arg0) {
+						((Activity) context).finish();
+					}
+				});
 				break;
 			case MESSAGE_DEVICE_NAME:
 				// save the connected device's name

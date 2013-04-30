@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 
-import android.content.Context;
-
 import com.ece.smartGallery.DBLayout.Photo;
 
 public class TransferablePhoto implements Serializable {
@@ -44,7 +42,7 @@ public class TransferablePhoto implements Serializable {
 		if (photo.getScratchURI() != null
 				&& photo.getScratchURI().getPath().length() != 0) {
 			try {
-				this.voiceBytes = IO.loadFile(new File(photo.getScratchURI()
+				this.scratchBytes = IO.loadFile(new File(photo.getScratchURI()
 						.getPath()));
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -91,11 +89,11 @@ public class TransferablePhoto implements Serializable {
 	public void setVoiceBytes(byte[] voiceBytes) {
 		this.voiceBytes = voiceBytes;
 	}
-	
+
 	public void setScratchBytes(byte[] sBytes) {
 		this.scratchBytes = sBytes;
 	}
-	
+
 	public byte[] getScratchBytes() {
 		return this.scratchBytes;
 	}

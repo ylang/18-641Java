@@ -512,9 +512,9 @@ public class BluetoothChatService {
 
 			// Keep listening to the InputStream while connected
 			while (true) {
+				TransferablePhoto tPhoto = null;
 				try {
-					TransferablePhoto tPhoto = (TransferablePhoto) objIn
-							.readObject();
+					tPhoto = (TransferablePhoto) objIn.readObject();
 					// Send the obtained bytes to the UI Activity
 					mHandler.obtainMessage(BluetoothChat.MESSAGE_READ, 0, -1,
 							tPhoto).sendToTarget();

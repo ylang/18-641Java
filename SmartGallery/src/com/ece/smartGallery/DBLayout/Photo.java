@@ -13,8 +13,8 @@ public class Photo implements Serializable {
 	public static final int TOUCHPAD_TYPE = 3;
 
 	private static final long serialVersionUID = -4783890754000515921L;
-	private int id;
-	// private int albumId;
+	private int albumId = 1;
+	private int id = -1;
 	private String name;
 	private long timeStamp;
 	private String text; // text comment
@@ -31,6 +31,14 @@ public class Photo implements Serializable {
 
 	public Photo() {
 
+	}
+	
+	public void setAlbumId(int id) {
+		this.albumId = id;
+	}
+	
+	public int getAlbumId() {
+		return this.albumId;
 	}
 
 	public int getCommentType() {

@@ -26,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ece.smartGallery.R;
+import com.ece.smartGallery.DBLayout.Album;
 import com.ece.smartGallery.DBLayout.Photo;
 import com.ece.smartGallery.activity.bluetooth.BluetoothChat;
 import com.ece.smartGallery.activity.fb.FBActivity;
@@ -308,13 +309,12 @@ public class DisplayActivity extends Activity {
 			intent.putExtra(Photo.PHOTO, this.photo);
 			intent.setAction(Intent.ACTION_EDIT);
 			startActivity(intent);
+			finish();
 		}
 	}
 
 	public void to_home_page(View view){
-		Intent intent = new Intent(this,WelcomeActivity.class);
-		
-		startActivity(intent);
+		finish();
 	}
 
 }

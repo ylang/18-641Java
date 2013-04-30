@@ -37,7 +37,6 @@ public class EditActivity extends Activity {
 
 	private static final String LOG_TAG = "AudioRecordTest";
 	private String voiceCommentFileName = null;
-	private String scratchCommentFileName = null;
 
 	private Button mRecordButton = null;
 	private MediaRecorder mRecorder = null;
@@ -65,7 +64,8 @@ public class EditActivity extends Activity {
 		super.onStart();
 		intent = getIntent();
 		// from home, add a new picture
-		if (Intent.ACTION_INSERT.equals(intent.getAction()) && alreadyCapture == false) {
+		if (Intent.ACTION_INSERT.equals(intent.getAction())
+				&& alreadyCapture == false) {
 			albumid = (int) intent.getIntExtra(Album.ALBUM, -1);
 			Log.d(TAG, "launch camera");
 			// start camera and then come back to add comments
@@ -73,20 +73,15 @@ public class EditActivity extends Activity {
 			// voiceCommentFileName = GetVoiceCommentPath();
 		}
 		// from display or scratch, edit an existing picture
-		else if (Intent.ACTION_EDIT.equals(intent.getAction())){
-			albumid = (int) intent.getIntExtra(Album.ALBUM, -1);
+		else if (Intent.ACTION_EDIT.equals(intent.getAction())) {
 			photo = (Photo) intent.getSerializableExtra(Photo.PHOTO);
+			albumid = photo.getAlbumId();
 			LoadAsyncTask task = new LoadAsyncTask(imageView, photo, this);
 			task.execute();
 
 			// there exists voice comment
 			if (photo.getVoice() != null && !photo.getVoice().isEmpty()) {
 				voiceCommentFileName = photo.getVoice();
-			}
-
-			// there exists scratch comment
-			if (photo.getScratchURI() != null) {
-				scratchCommentFileName = photo.getScratchURI().getPath();
 			}
 		} else if (Intent.ACTION_SEND.equals(intent.getAction())) {
 			// send from share
@@ -106,15 +101,13 @@ public class EditActivity extends Activity {
 				}
 				mStartRecording = !mStartRecording;
 			}
-
 		});
 	}
-	
+
 	private void startCamera() {
 		this.alreadyCapture = true;
 		Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-		File path = this
-				.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+		File path = this.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 		String imageName = UUID.randomUUID().toString() + ".jpg";
 		File file = new File(path, imageName);
 		if (file.exists()) {
@@ -130,7 +123,8 @@ public class EditActivity extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == this.CAMERA_REQ) {
 			if (resultCode == RESULT_OK) {
-				LoadAsyncTask task = new LoadAsyncTask(imageView, cameraUri, this);
+				LoadAsyncTask task = new LoadAsyncTask(imageView, cameraUri,
+						this);
 				task.execute();
 				Log.d(TAG, "RESULT_OK returned from camera");
 				Log.d(TAG, "URI = " + cameraUri.toString());
@@ -138,6 +132,8 @@ public class EditActivity extends Activity {
 				photo.setImage(cameraUri);
 				photo.setLocation("Pittsburgh");
 				photo.setTimeStamp(System.currentTimeMillis());
+				Log.d(TAG, "album id = " + albumid);
+				photo.setAlbumId(albumid);
 			} else {
 				finish();
 			}
@@ -163,8 +159,6 @@ public class EditActivity extends Activity {
 			photo.setText(input_text_comment);
 		if (voiceCommentFileName != null && !voiceCommentFileName.isEmpty())
 			photo.setVoice(voiceCommentFileName);
-		if (scratchCommentFileName != null && !scratchCommentFileName.isEmpty())
-			photo.setVoice(scratchCommentFileName);
 		// File path = this.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 		// File sample = new File(path, "1.jpg");
 		// photo.setImage(Uri.fromFile(sample));
@@ -172,24 +166,25 @@ public class EditActivity extends Activity {
 		if (albumid != -1) {
 			album = db.getAlbum(albumid);
 		} else {
-			album = db.getAlbum(0);
+			album = db.getAlbum(1);
 		}
-		
+
 		boolean success = false;
-		if(photo.getId()>0){
+		if (photo.getId() > 0) {
 			success = db.updatePhoto(album, photo);
-		}
-		else{
+		} else {
 			success = db.addPhoto(album, photo);
 		}
-		
+
 		if (success) {
 			displayIntent.putExtra(Photo.PHOTO, photo);
 			startActivity(displayIntent);
+			finish();
 		} else {
-			Toast.makeText(this, "fail to save photo", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, "fail to save photo", Toast.LENGTH_SHORT)
+					.show();
 		}
-		
+
 	}
 
 	private void onRecord(boolean start, String voiceCommentFileName) {
@@ -234,6 +229,10 @@ public class EditActivity extends Activity {
 		return path;
 	}
 
+	public void set_scratch(Uri uri) {
+		this.photo.setScratchURI(uri);
+	}
+
 	public void scratch(View view) {
 		Intent intent = new Intent(this, ScratchActivity.class);
 		// Photo photo = new Photo();
@@ -244,7 +243,9 @@ public class EditActivity extends Activity {
 		// photo.setVoice(voiceCommentFileName);
 
 		intent.putExtra(Photo.PHOTO, photo);
+		// intent.putExtra(EditActivity.class.getName(), this);
 		startActivity(intent);
+		finish();
 	}
 
 	private Bitmap decodeFile(File f) {
@@ -312,7 +313,7 @@ public class EditActivity extends Activity {
 		private ImageView view;
 		private Bitmap bitmap;
 		private Context context;
-		
+
 		LoadAsyncTask(ImageView view, Uri uri, Context context) {
 			this.uri = uri;
 			this.view = view;
@@ -346,9 +347,7 @@ public class EditActivity extends Activity {
 	}
 
 	public void update(double lat, double lng) {
-
 		String text = "Your geolocation is lat: " + lat + " long: " + lng;
-
 		TextView tv = (TextView) findViewById(R.id.display_geolocation);
 		tv.setText(text);
 	}

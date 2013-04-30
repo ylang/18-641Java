@@ -95,6 +95,14 @@ public class Album {
 			return null;
 		}
 	}
+	
+	public void updatePhoto(Context context, String fileName, Photo photo) {
+		try {
+			Datastorage.savePhoto(context, fileName, photo);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 /*	
 	public String getPhotoFile(int id) {
 		if (id >= count) {

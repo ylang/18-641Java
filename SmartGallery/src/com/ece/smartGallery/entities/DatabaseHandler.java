@@ -110,6 +110,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			values.put(KEY_FILE, file);
 			long id = db.insert(TABLE_PHOTOS + album.getId(), null, values);
 			photo.setId((int) id);
+			album.updatePhoto(context, file, photo);
+			
 			values = new ContentValues();
 			values.put(KEY_NAME, album.getName());
 			values.put(KEY_COUNT, album.getCount());

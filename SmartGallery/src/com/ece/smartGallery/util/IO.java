@@ -16,7 +16,7 @@ import android.os.Environment;
 import android.util.Base64;
 import android.util.Log;
 
-import com.ece.smartGallery.DBLayout.Photo;
+import com.ece.smartGallery.entity.Photo;
 
 public class IO {
 

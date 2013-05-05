@@ -25,9 +25,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ece.smartGallery.R;
-import com.ece.smartGallery.DBLayout.Album;
-import com.ece.smartGallery.DBLayout.Photo;
 import com.ece.smartGallery.activity.DisplayActivity;
+import com.ece.smartGallery.entity.Album;
+import com.ece.smartGallery.entity.Photo;
 
 public class HomeGridAdapter extends BaseAdapter {
 	private final String TAG = this.getClass().getName();

@@ -21,8 +21,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.ece.smartGallery.R;
-import com.ece.smartGallery.DBLayout.Photo;
-import com.ece.smartGallery.entities.DatabaseHandler;
+import com.ece.smartGallery.db.DatabaseHandler;
+import com.ece.smartGallery.entity.Photo;
 import com.ece.smartGallery.util.IO;
 import com.ece.smartGallery.util.TransferablePhoto;
 

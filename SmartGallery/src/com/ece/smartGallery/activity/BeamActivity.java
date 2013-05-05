@@ -29,9 +29,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ece.smartGallery.R;
-import com.ece.smartGallery.DBLayout.Photo;
 import com.ece.smartGallery.activity.bluetooth.BluetoothChat;
 import com.ece.smartGallery.activity.fb.FBActivity;
+import com.ece.smartGallery.entity.Photo;
 import com.ece.smartGallery.util.Utility;
 
 public class BeamActivity extends Activity implements

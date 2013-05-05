@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 
-import com.ece.smartGallery.DBLayout.Photo;
+import com.ece.smartGallery.entity.Photo;
 
 public class TransferablePhoto implements Serializable {
 	private static final long serialVersionUID = -6090493483762339387L;

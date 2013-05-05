@@ -19,7 +19,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.ece.smartGallery.R;
-import com.ece.smartGallery.DBLayout.Photo;
+import com.ece.smartGallery.entity.Photo;
 import com.ece.smartGallery.util.Utility;
 import com.facebook.Request;
 import com.facebook.Response;

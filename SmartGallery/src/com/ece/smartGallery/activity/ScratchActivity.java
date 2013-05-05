@@ -6,7 +6,7 @@ import java.io.FileOutputStream;
 import java.util.UUID;
 
 import com.ece.smartGallery.R;
-import com.ece.smartGallery.DBLayout.Photo;
+import com.ece.smartGallery.entity.Photo;
 import com.ece.smartGallery.util.DrawView;
 
 import android.net.Uri;

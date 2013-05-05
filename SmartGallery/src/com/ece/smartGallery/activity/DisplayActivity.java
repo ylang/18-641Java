@@ -26,10 +26,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ece.smartGallery.R;
-import com.ece.smartGallery.DBLayout.Album;
-import com.ece.smartGallery.DBLayout.Photo;
 import com.ece.smartGallery.activity.bluetooth.BluetoothChat;
 import com.ece.smartGallery.activity.fb.FBActivity;
+import com.ece.smartGallery.entity.Album;
+import com.ece.smartGallery.entity.Photo;
 
 public class DisplayActivity extends Activity {
 	private static final String LOG_TAG = "AudioRecordTest";

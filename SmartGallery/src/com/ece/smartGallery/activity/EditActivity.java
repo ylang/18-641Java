@@ -30,9 +30,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ece.smartGallery.R;
-import com.ece.smartGallery.DBLayout.Album;
-import com.ece.smartGallery.DBLayout.Photo;
-import com.ece.smartGallery.entities.DatabaseHandler;
+import com.ece.smartGallery.db.DatabaseHandler;
+import com.ece.smartGallery.entity.Album;
+import com.ece.smartGallery.entity.Photo;
 import com.ece.smartGallery.util.LocationService;
 
 public class EditActivity extends Activity {

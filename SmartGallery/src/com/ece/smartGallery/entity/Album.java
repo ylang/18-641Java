@@ -1,10 +1,10 @@
-package com.ece.smartGallery.DBLayout;
+package com.ece.smartGallery.entity;
 
 import java.io.IOException;
 
 import android.content.Context;
 
-import com.ece.smartGallery.entities.Datastorage;
+import com.ece.smartGallery.db.Datastorage;
 
 public class Album {
 
@@ -103,56 +103,4 @@ public class Album {
 			e.printStackTrace();
 		}
 	}
-/*	
-	public String getPhotoFile(int id) {
-		if (id >= count) {
-			return null;
-		}
-		return this.photoList.get(id);
-	}*/
-//	private int id;
-//	private int userId;
-//	private String name;
-//	private String description;
-//	private Photo[] photos;
-//
-//	public int getId() {
-//		return id;
-//	}
-//
-//	public void setId(int id) {
-//		this.id = id;
-//	}
-//
-//	public int getUserId() {
-//		return userId;
-//	}
-//
-//	public void setUserId(int userId) {
-//		this.userId = userId;
-//	}
-//
-//	public String getName() {
-//		return name;
-//	}
-//
-//	public void setName(String name) {
-//		this.name = name;
-//	}
-//
-//	public String getDescription() {
-//		return description;
-//	}
-//
-//	public void setDescription(String description) {
-//		this.description = description;
-//	}
-//
-//	public Photo[] getPhotos() {
-//		return photos;
-//	}
-//
-//	public void setPhotos(Photo[] photos) {
-//		this.photos = photos;
-//	}
 }

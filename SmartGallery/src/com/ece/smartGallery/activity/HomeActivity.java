@@ -12,10 +12,10 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 
 import com.ece.smartGallery.R;
-import com.ece.smartGallery.DBLayout.Album;
-import com.ece.smartGallery.DBLayout.Photo;
 import com.ece.smartGallery.adapter.HomeGridAdapter;
-import com.ece.smartGallery.entities.DatabaseHandler;
+import com.ece.smartGallery.db.DatabaseHandler;
+import com.ece.smartGallery.entity.Album;
+import com.ece.smartGallery.entity.Photo;
 
 public class HomeActivity extends Activity {
 	private LinearLayout addPhoto;

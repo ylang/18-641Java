@@ -1,4 +1,4 @@
-package com.ece.smartGallery.entities;
+package com.ece.smartGallery.db;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,8 +12,8 @@ import java.io.OptionalDataException;
 import android.content.Context;
 import android.os.Environment;
 
-import com.ece.smartGallery.DBLayout.Album;
-import com.ece.smartGallery.DBLayout.Photo;
+import com.ece.smartGallery.entity.Album;
+import com.ece.smartGallery.entity.Photo;
 
 public class Datastorage {
 	private static final String ALBUM_FILE = "smart_gallery_album.dat";

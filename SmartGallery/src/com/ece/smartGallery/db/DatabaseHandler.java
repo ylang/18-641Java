@@ -1,4 +1,4 @@
-package com.ece.smartGallery.entities;
+package com.ece.smartGallery.db;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,8 +10,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.ece.smartGallery.DBLayout.Album;
-import com.ece.smartGallery.DBLayout.Photo;
+import com.ece.smartGallery.entity.Album;
+import com.ece.smartGallery.entity.Photo;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 

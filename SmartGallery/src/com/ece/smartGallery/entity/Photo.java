@@ -1,4 +1,4 @@
-package com.ece.smartGallery.DBLayout;
+package com.ece.smartGallery.entity;
 
 import java.io.File;
 import java.io.Serializable;
@@ -83,14 +83,6 @@ public class Photo implements Serializable {
 	public void setId(int id) {
 		this.id = id;
 	}
-
-	// public int getAlbumId() {
-	// return albumId;
-	// }
-	//
-	// public void setAlbumId(int albumId) {
-	// this.albumId = albumId;
-	// }
 
 	public Uri getScratchURI() {
 		if (this.hasSractch) {

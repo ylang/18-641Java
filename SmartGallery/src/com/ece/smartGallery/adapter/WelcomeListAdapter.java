@@ -10,7 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.ece.smartGallery.R;
-import com.ece.smartGallery.DBLayout.Album;
+import com.ece.smartGallery.entity.Album;
 
 public class WelcomeListAdapter extends BaseAdapter {
 

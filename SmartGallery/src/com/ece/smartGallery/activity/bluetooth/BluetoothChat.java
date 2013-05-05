@@ -74,7 +74,7 @@ public class BluetoothChat extends Activity {
 			Log.e(TAG, "+++ ON CREATE +++");
 
 		// Set up the window layout
-		setContentView(R.layout.main);
+		setContentView(R.layout.bluetooth_main);
 
 		Intent intent = getIntent();
 		String action = intent.getAction();
@@ -140,7 +140,7 @@ public class BluetoothChat extends Activity {
 
 		// Initialize the array adapter for the conversation thread
 		mConversationArrayAdapter = new ArrayAdapter<String>(this,
-				R.layout.message);
+				R.layout.bluetooth_message);
 		mConversationView = (ListView) findViewById(R.id.in);
 		mConversationView.setAdapter(mConversationArrayAdapter);
 

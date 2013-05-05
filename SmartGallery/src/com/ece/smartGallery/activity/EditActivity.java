@@ -72,7 +72,6 @@ public class EditActivity extends Activity {
 			Log.d(TAG, "launch camera");
 			// start camera and then come back to add comments
 			startCamera();
-			// voiceCommentFileName = GetVoiceCommentPath();
 		}
 		// from display or scratch, edit an existing picture
 		else if (Intent.ACTION_EDIT.equals(intent.getAction())) {
@@ -174,15 +173,11 @@ public class EditActivity extends Activity {
 		// retrieve user input
 		String input_text_comment = ((EditText) findViewById(R.id.edit_comment_input))
 				.getText().toString();
-
-		// Photo photo = new Photo();
+		
 		if (input_text_comment != null && !input_text_comment.isEmpty())
 			photo.setText(input_text_comment);
 		if (voiceCommentFileName != null && !voiceCommentFileName.isEmpty())
 			photo.setVoice(voiceCommentFileName);
-		// File path = this.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-		// File sample = new File(path, "1.jpg");
-		// photo.setImage(Uri.fromFile(sample));
 		Album album;
 		if (albumid != -1) {
 			album = db.getAlbum(albumid);
@@ -256,15 +251,7 @@ public class EditActivity extends Activity {
 
 	public void scratch(View view) {
 		Intent intent = new Intent(this, ScratchActivity.class);
-		// Photo photo = new Photo();
-		// // photo.setText(input_text_comment);
-		// File path = this.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-		// File sample = new File(path, "1.jpg");
-		// photo.setImage(Uri.fromFile(sample));
-		// photo.setVoice(voiceCommentFileName);
-
 		intent.putExtra(Photo.PHOTO, photo);
-		// intent.putExtra(EditActivity.class.getName(), this);
 		startActivity(intent);
 		finish();
 	}

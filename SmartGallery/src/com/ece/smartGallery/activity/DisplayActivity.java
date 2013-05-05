@@ -65,15 +65,13 @@ public class DisplayActivity extends Activity {
 		TextView text_comment = (TextView) findViewById(R.id.display_text_comment);
 		text_comment.setText(photo.getText());
 		}
-
-		// LinearLayout ll = new LinearLayout(this);
-		// mPlayButton = new PlayButton(this);
-		// ll.addView(mPlayButton,
-		// new LinearLayout.LayoutParams(
-		// ViewGroup.LayoutParams.WRAP_CONTENT,
-		// ViewGroup.LayoutParams.WRAP_CONTENT,
-		// 0));
-		// setContentView(ll);
+		
+		String location = photo.getLocation();
+		if(location!=null && !location.isEmpty()){
+			String text = "Picture taken in: "+location ;
+			TextView tv = (TextView) findViewById(R.id.display_geolocation);
+			tv.setText(text);
+		}
 
 		mPlayButton = (Button) findViewById(R.id.play_voice_comment);
 		mPlayButton.setText("Start playing");
@@ -90,12 +88,6 @@ public class DisplayActivity extends Activity {
 				mStartPlaying = !mStartPlaying;
 			}
 		});
-
-		// Intent intent = getIntent();
-		// String text_comment = intent.getStringExtra("text_comment");
-		// ((TextView)
-		// findViewById(R.id.display_text_comment)).setText(String.valueOf(text_comment));
-		//
 
 	}
 

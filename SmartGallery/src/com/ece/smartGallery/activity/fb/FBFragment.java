@@ -176,7 +176,7 @@ public class FBFragment extends Fragment {
 					}
 				});
 		Bundle params = request.getParameters();
-		params.putString("message", "FbAPIs Sample App photo upload");
+		params.putString("message", "Smart Gallery App photo upload");
 		request.executeAsync();
 	}
 

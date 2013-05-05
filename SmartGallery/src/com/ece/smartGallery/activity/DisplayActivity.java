@@ -66,15 +66,6 @@ public class DisplayActivity extends Activity {
 		text_comment.setText(photo.getText());
 		}
 
-		// LinearLayout ll = new LinearLayout(this);
-		// mPlayButton = new PlayButton(this);
-		// ll.addView(mPlayButton,
-		// new LinearLayout.LayoutParams(
-		// ViewGroup.LayoutParams.WRAP_CONTENT,
-		// ViewGroup.LayoutParams.WRAP_CONTENT,
-		// 0));
-		// setContentView(ll);
-
 		mPlayButton = (Button) findViewById(R.id.play_voice_comment);
 		mPlayButton.setText("Start playing");
 		mPlayButton.setOnClickListener(new View.OnClickListener() {
@@ -90,12 +81,6 @@ public class DisplayActivity extends Activity {
 				mStartPlaying = !mStartPlaying;
 			}
 		});
-
-		// Intent intent = getIntent();
-		// String text_comment = intent.getStringExtra("text_comment");
-		// ((TextView)
-		// findViewById(R.id.display_text_comment)).setText(String.valueOf(text_comment));
-		//
 
 	}
 

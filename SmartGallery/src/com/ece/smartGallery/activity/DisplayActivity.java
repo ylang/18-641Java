@@ -57,7 +57,7 @@ public class DisplayActivity extends Activity {
 			TextView text_comment = (TextView) findViewById(R.id.display_text_comment);
 			text_comment.setText(photo.getText());
 		}
-		updateImage();
+		updatePhotoImage();
 
 		String location = photo.getLocation();
 		if (location != null && !location.isEmpty()) {
@@ -141,7 +141,7 @@ public class DisplayActivity extends Activity {
 		mPlayer = null;
 	}
 
-	private void updateImage() {
+	private void updateScratch() {
 		//Make sure the scratch is updated first.
 		if (photo.getScratchURI() != null) {
 			LinearLayout s = (LinearLayout) findViewById(R.id.scratchBlock);
@@ -150,8 +150,6 @@ public class DisplayActivity extends Activity {
 			LoadAsyncTaskScratch taskS = new LoadAsyncTaskScratch(scratchView,
 					photo, this);
 			taskS.execute();
-		} else {
-			updatePhotoImage();
 		}
 	}
 
@@ -273,6 +271,7 @@ public class DisplayActivity extends Activity {
 		protected void onPostExecute(Void arg0) {
 			setImage(view, bitmap, photo);
 			Log.d(TAG, "onPostExecute");
+			updateScratch();
 		}
 	}
 
@@ -305,7 +304,6 @@ public class DisplayActivity extends Activity {
 		protected void onPostExecute(Void arg0) {
 			setImage(view, bitmap, photo);
 			Log.d(TAG, "onPostExecute");
-			updatePhotoImage();
 		}
 
 	}

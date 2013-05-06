@@ -23,6 +23,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.ece.smartGallery.R;
@@ -39,6 +40,7 @@ public class DisplayActivity extends Activity {
 	private MediaPlayer mPlayer = null;
 	private boolean mStartPlaying = true;
 	private Photo photo;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -47,21 +49,19 @@ public class DisplayActivity extends Activity {
 		Intent intent = getIntent();
 
 		photo = (Photo) intent.getSerializableExtra(Photo.PHOTO);
-		ImageView imageView = ((ImageView) findViewById(R.id.display_image));
-		LoadAsyncTask task = new LoadAsyncTask(imageView, photo, this);
-		task.execute();
 
 		mFileName = photo.getVoice();
-		
+
 		String t = photo.getText();
-		if(t!=null && !t.isEmpty()){
-		TextView text_comment = (TextView) findViewById(R.id.display_text_comment);
-		text_comment.setText(photo.getText());
+		if (t != null && !t.isEmpty()) {
+			TextView text_comment = (TextView) findViewById(R.id.display_text_comment);
+			text_comment.setText(photo.getText());
 		}
-		
+		updateImage();
+
 		String location = photo.getLocation();
-		if(location!=null && !location.isEmpty()){
-			String text = "Picture taken in: "+location ;
+		if (location != null && !location.isEmpty()) {
+			String text = "Picture taken in: " + location;
 			TextView tv = (TextView) findViewById(R.id.display_geolocation);
 			tv.setText(text);
 		}
@@ -71,7 +71,7 @@ public class DisplayActivity extends Activity {
 		mPlayButton.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
-				if(mFileName!= null && !mFileName.isEmpty())
+				if (mFileName != null && !mFileName.isEmpty())
 					onPlay(mStartPlaying);
 				if (mStartPlaying) {
 					mPlayButton.setText("Stop playing");
@@ -140,15 +140,25 @@ public class DisplayActivity extends Activity {
 		mPlayer.release();
 		mPlayer = null;
 	}
-	
-	private void updateScratch() {
-		if(photo.getScratchURI()!=null){
+
+	private void updateImage() {
+		//Make sure the scratch is updated first.
+		if (photo.getScratchURI() != null) {
 			LinearLayout s = (LinearLayout) findViewById(R.id.scratchBlock);
 			s.setVisibility(View.VISIBLE);
 			ImageView scratchView = ((ImageView) findViewById(R.id.display_scratch));
-			LoadAsyncTaskScratch taskS = new LoadAsyncTaskScratch(scratchView, photo, this);
+			LoadAsyncTaskScratch taskS = new LoadAsyncTaskScratch(scratchView,
+					photo, this);
 			taskS.execute();
+		} else {
+			updatePhotoImage();
 		}
+	}
+
+	private void updatePhotoImage() {
+		ImageView imageView = ((ImageView) findViewById(R.id.display_image));
+		LoadAsyncTask task = new LoadAsyncTask(imageView, photo, this);
+		task.execute();
 	}
 
 	class PlayButton extends Button {
@@ -230,6 +240,8 @@ public class DisplayActivity extends Activity {
 
 	private void setImage(ImageView view, Bitmap b, final Photo photo) {
 		view.setImageBitmap(b);
+		ScrollView v = (ScrollView) findViewById(R.id.scrollView);
+		v.fullScroll(ScrollView.FOCUS_UP);
 	}
 
 	class LoadAsyncTask extends AsyncTask<Void, Void, Void> {
@@ -261,10 +273,9 @@ public class DisplayActivity extends Activity {
 		protected void onPostExecute(Void arg0) {
 			setImage(view, bitmap, photo);
 			Log.d(TAG, "onPostExecute");
-			updateScratch();
 		}
 	}
-	
+
 	class LoadAsyncTaskScratch extends AsyncTask<Void, Void, Void> {
 
 		private Photo photo;
@@ -294,13 +305,14 @@ public class DisplayActivity extends Activity {
 		protected void onPostExecute(Void arg0) {
 			setImage(view, bitmap, photo);
 			Log.d(TAG, "onPostExecute");
+			updatePhotoImage();
 		}
 
 	}
-	
-	public void to_edit_page(View view){
-		Intent intent = new Intent(this,EditActivity.class);
-		if(this.photo!=null){
+
+	public void to_edit_page(View view) {
+		Intent intent = new Intent(this, EditActivity.class);
+		if (this.photo != null) {
 			intent.putExtra(Photo.PHOTO, this.photo);
 			intent.setAction(Intent.ACTION_EDIT);
 			startActivity(intent);
@@ -308,7 +320,7 @@ public class DisplayActivity extends Activity {
 		}
 	}
 
-	public void to_home_page(View view){
+	public void to_home_page(View view) {
 		finish();
 	}
 

@@ -77,10 +77,12 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/scratchBlock"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:orientation="horizontal" >
+                android:visibility="gone"
+                android:orientation="vertical" >
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -90,11 +92,9 @@
 
                 <ImageView
                     android:id="@+id/display_scratch"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:contentDescription="@string/default_picture"
-                    android:minWidth="300dp"
-                    android:src="@drawable/ic_launcher" />
+                    android:contentDescription="@string/default_picture" />
             </LinearLayout>
 
             <RelativeLayout

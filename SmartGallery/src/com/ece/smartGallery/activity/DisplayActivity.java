@@ -21,14 +21,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ece.smartGallery.R;
 import com.ece.smartGallery.activity.bluetooth.BluetoothChat;
 import com.ece.smartGallery.activity.fb.FBActivity;
-import com.ece.smartGallery.entity.Album;
 import com.ece.smartGallery.entity.Photo;
 
 public class DisplayActivity extends Activity {
@@ -51,12 +50,6 @@ public class DisplayActivity extends Activity {
 		ImageView imageView = ((ImageView) findViewById(R.id.display_image));
 		LoadAsyncTask task = new LoadAsyncTask(imageView, photo, this);
 		task.execute();
-		
-		if(photo.getScratchURI()!=null){
-			ImageView scratchView = ((ImageView) findViewById(R.id.display_scratch));
-			LoadAsyncTaskScratch taskS = new LoadAsyncTaskScratch(scratchView, photo, this);
-			taskS.execute();
-		}
 
 		mFileName = photo.getVoice();
 		
@@ -103,7 +96,6 @@ public class DisplayActivity extends Activity {
 		// Handle item selection
 		Intent intent;
 		switch (item.getItemId()) {
-		// TODO: fix this later
 		case R.id.action_share_via_fb:
 			intent = new Intent(this, FBActivity.class);
 			intent.putExtra(Photo.IMAGE, photo.getImage());
@@ -147,6 +139,16 @@ public class DisplayActivity extends Activity {
 	private void stopPlaying() {
 		mPlayer.release();
 		mPlayer = null;
+	}
+	
+	private void updateScratch() {
+		if(photo.getScratchURI()!=null){
+			LinearLayout s = (LinearLayout) findViewById(R.id.scratchBlock);
+			s.setVisibility(View.VISIBLE);
+			ImageView scratchView = ((ImageView) findViewById(R.id.display_scratch));
+			LoadAsyncTaskScratch taskS = new LoadAsyncTaskScratch(scratchView, photo, this);
+			taskS.execute();
+		}
 	}
 
 	class PlayButton extends Button {
@@ -259,6 +261,7 @@ public class DisplayActivity extends Activity {
 		protected void onPostExecute(Void arg0) {
 			setImage(view, bitmap, photo);
 			Log.d(TAG, "onPostExecute");
+			updateScratch();
 		}
 	}
 	

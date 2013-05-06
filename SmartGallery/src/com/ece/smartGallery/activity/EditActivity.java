@@ -166,6 +166,11 @@ public class EditActivity extends Activity {
 		getMenuInflater().inflate(R.menu.edit, menu);
 		return true;
 	}
+	
+	public void cancel(View view){
+		
+		finish();
+	}
 
 	public void save(View view) {
 		Intent displayIntent = new Intent(this, DisplayActivity.class);

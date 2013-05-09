@@ -6,8 +6,8 @@
     <string name="hello_world">Hello world!</string>
     <string name="add">icon_add</string>
     <string name="add_picture">Create a new picture</string>
-    <string name="title_activity_display">DisplayActivity</string>
-    <string name="title_activity_edit">EditActivity</string>
+    <string name="title_activity_display">Display</string>
+    <string name="title_activity_edit">Edit</string>
     <string name="default_picture">default picture</string>
     <string name="default_text">default text</string>
     <string name="default_text_comment"> default text comment</string>
@@ -26,23 +26,23 @@
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
     <string name="clear">Clear</string>
-    <string name="title_activity_scratch">ScratchActivity</string>
-    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_scratch">Scratch Drawing</string>
+    <string name="title_activity_login">Login</string>
 
     <!-- @ruoyul Facebook app id -->
     <string name="app_id">449762498438737</string>
     <string name="post">Post on Facebook</string>
-    <string name="title_activity_welcome">WelcomeActivity</string>
+    <string name="title_activity_welcome">Welcome</string>
     <string name="add_album">Create a new album</string>
     <string name="share">share</string>
     <string name="share_nfc">share via NFC</string>
     <string name="share_bluetooth">share via bluetooth</string>
     <string name="share_fb">share via Facebook</string>
-    <string name="title_activity_beam">BeamActivity</string>
+    <string name="title_activity_beam">Beam</string>
     <string name="bluetooth_accept">Accept Bluetooth</string>
-    <string name="title_activity_bluetooth">BluetoothActivity</string>
+    <string name="title_activity_bluetooth">Bluetooth</string>
     <string name="title_activity_bluetooth_chat">BluetoothChat</string>
-    <string name="title_activity_device_list">DeviceListActivity</string>
+    <string name="title_activity_device_list">DeviceList</string>
 
     <!-- bluetooth -->
     <string name="title_paired_devices">Paired Devices</string>
